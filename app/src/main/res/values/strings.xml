@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">GoRent</string>
+    <!-- Strings related to login -->
+    <!-- Strings related to login and signup-->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_full_name">Full name</string>
+    <string name="prompt_confirm_password">Confirm password</string>
+    <!-- Strings related to buttons -->
+    <string name="action_sign_in">Already a member? Login</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_up">Don\'t have an account? Sign up</string>
+    <string name="action_sign_up_short">Sign up</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="welcome">"Welcome"</string>
+    <!-- Strings related to errors -->
+    <string name="invalid_name">Not a valid full name</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_confirmation_password">Passwords don\'t match</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="sign_up_failed">Sign up failed</string>
+    <string name="server_error_message">Error connecting to the server. Please try again</string>
+
+    <!-- Strings related to Drawer Activity -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings related to title activities -->
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="home_second">Home Second</string>
+
+    <!-- Shared preferences -->
+    <string name="preference_file_key">preferences-file</string>
+</resources>
