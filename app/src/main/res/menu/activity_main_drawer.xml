@@ -6,16 +6,40 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="@string/menu_search" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_rent"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="@string/menu_rent" />
+
+        <item
+            android:id="@+id/nav_rented_items"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/menu_rented_items" />
+
+        <item
+            android:id="@+id/nav_lend"
+            android:icon="@drawable/ic_monetization_on_black_24dp"
+            android:title="@string/menu_lend" />
+
+        <item
+            android:id="@+id/nav_lent_items"
+            android:icon="@drawable/ic_account_balance_wallet_black_24dp"
+            android:title="@string/menu_lent_items" />
+
+    </group>
+
+    <group android:id="@+id/menu_group2">
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="@string/menu_help"
+            />
     </group>
 
 </menu>

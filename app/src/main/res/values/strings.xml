@@ -34,9 +34,13 @@
 
     <!-- Strings related to title activities -->
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="home_second">Home Second</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_rent">Rent</string>
+    <string name="menu_rented_items">Rented stuff</string>
+    <string name="menu_lend">Lend</string>
+    <string name="menu_lent_items">My lent stuff</string>
+    <string name="menu_account">My account</string>
+    <string name="menu_help">Help</string>
 
     <!-- Shared preferences -->
     <string name="preference_file_key">preferences-file</string>
