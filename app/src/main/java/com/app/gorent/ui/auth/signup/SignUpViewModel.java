@@ -23,7 +23,7 @@ public class SignUpViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    public LiveData<SignUpFormState> getSignUpFormState() {
+    LiveData<SignUpFormState> getSignUpFormState() {
         return signUpFormState;
     }
 
@@ -31,7 +31,7 @@ public class SignUpViewModel extends ViewModel {
         this.signUpFormState = signUpFormState;
     }
 
-    public LiveData<AuthResult> getSignUpResult() {
+    LiveData<AuthResult> getSignUpResult() {
         return signUpResult;
     }
 
@@ -39,7 +39,7 @@ public class SignUpViewModel extends ViewModel {
         this.signUpResult = signUpResult;
     }
 
-    public void signUpDataChanged(String full_name, String email, String password,  String confirm_password){
+    void signUpDataChanged(String full_name, String email, String password,  String confirm_password){
         if(!Validator.isNameValid(full_name)){
             signUpFormState.setValue(new SignUpFormState(R.string.invalid_name, null, null, null));
         }else if(!Validator.isEmailValid(email)){

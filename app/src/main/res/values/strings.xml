@@ -6,12 +6,15 @@
     <string name="prompt_password">Password</string>
     <string name="prompt_full_name">Full name</string>
     <string name="prompt_confirm_password">Confirm password</string>
+    <string name="prompt_delivery_date">Delivery date</string>
     <!-- Strings related to buttons -->
     <string name="action_sign_in">Already a member? Login</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_sign_up">Don\'t have an account? Sign up</string>
     <string name="action_sign_up_short">Sign up</string>
     <string name="action_logout">Logout</string>
+    <string name="action_rent">Rent</string>
+
 
     <string name="welcome">"Welcome"</string>
     <!-- Strings related to errors -->
@@ -25,6 +28,7 @@
 
     <!-- Strings related to Drawer Activity -->
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_item_info">Item details</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -44,4 +48,7 @@
 
     <!-- Shared preferences -->
     <string name="preference_file_key">preferences-file</string>
+    <string name="prompt_current_date">Current date</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

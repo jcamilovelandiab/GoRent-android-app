@@ -39,46 +39,46 @@ class SignUpFormState {
     }
 
     @Nullable
-    public Integer getFull_nameError() {
+    Integer getFull_nameError() {
         return full_nameError;
     }
 
-    public void setFull_nameError(@Nullable Integer full_nameError) {
+    void setFull_nameError(@Nullable Integer full_nameError) {
         this.full_nameError = full_nameError;
     }
 
     @Nullable
-    public Integer getEmailError() {
+    Integer getEmailError() {
         return emailError;
     }
 
-    public void setEmailError(@Nullable Integer emailError) {
+    void setEmailError(@Nullable Integer emailError) {
         this.emailError = emailError;
     }
 
     @Nullable
-    public Integer getPasswordError() {
+    Integer getPasswordError() {
         return passwordError;
     }
 
-    public void setPasswordError(@Nullable Integer passwordError) {
+    void setPasswordError(@Nullable Integer passwordError) {
         this.passwordError = passwordError;
     }
 
     @Nullable
-    public Integer getConfirm_passwordError() {
+    Integer getConfirm_passwordError() {
         return confirm_passwordError;
     }
 
-    public void setConfirm_passwordError(@Nullable Integer confirm_passwordError) {
+    void setConfirm_passwordError(@Nullable Integer confirm_passwordError) {
         this.confirm_passwordError = confirm_passwordError;
     }
 
-    public boolean isDataValid() {
+    boolean isDataValid() {
         return isDataValid;
     }
 
-    public void setDataValid(boolean dataValid) {
+    void setDataValid(boolean dataValid) {
         isDataValid = dataValid;
     }
 }

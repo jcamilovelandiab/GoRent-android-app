@@ -24,6 +24,10 @@ public class ItemListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Item> items;
 
+    public ItemListAdapter(Context context, ArrayList<Item> itemList) {
+        this.context = context;
+        this.items = itemList;
+    }
 
     @Override
     public int getCount() {
@@ -55,19 +59,19 @@ public class ItemListAdapter extends BaseAdapter {
             tv_item_description.setText(item.getDescription());
 
             TextView tv_item_price = view.findViewById(R.id.item_row_layout_tv_price);
-            tv_item_price.setText(item.getPrice().toString());
+            tv_item_price.setText(String.format("$ %d",item.getPrice()));
 
             TextView tv_item_time_unit = view.findViewById(R.id.item_row_layout_tv_time_unit);
-            tv_item_time_unit.setText(item.getPrice().toString());
+            tv_item_time_unit.setText(String.format("Price per %s",item.getTimeUnit()));
 
             ImageView iv_image = view.findViewById(R.id.item_row_layout_iv_image);
-            if(item.getCategory().getName().equals("houses")){
+            if(item.getCategory().getName().toLowerCase().equals("houses")){
                 iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.houses));
-            }else if(item.getCategory().getName().equals("cars")){
+            }else if(item.getCategory().getName().toLowerCase().equals("cars")){
                 iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.cars));
-            }else if(item.getCategory().getName().equals("pianos")){
+            }else if(item.getCategory().getName().toLowerCase().equals("pianos")){
                 iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.pianos));
-            }else if(item.getCategory().getName().equals("laptops")){
+            }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
                 iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.laptops));
             }
 

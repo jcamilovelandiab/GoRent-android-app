@@ -22,19 +22,19 @@ public class ItemRepository {
     }
 
     public List<Item> getAvailableItems(){
-        return null;
+        return dataSource.getAvailableItems();
     }
 
-    public Item getItemById(){
-        return null;
+    public Item getItemById(Long id){
+        return dataSource.getItemById(id);
     }
 
     public List<Item> getItemsByName(String name){
-        return null;
+        return dataSource.getItemsByName(name);
     }
 
     public List<Item> getItemsByCategory(String nameCategory){
-        return null;
+        return dataSource.getItemsByCategory(nameCategory);
     }
 
 }

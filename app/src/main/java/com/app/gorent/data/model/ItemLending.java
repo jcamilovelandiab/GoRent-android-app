@@ -6,6 +6,7 @@ public class ItemLending {
     String lendingDate;
     String dueDate;
     String returnDate;
+    Long totalPrice;
     User renter;
     Item item;
 
@@ -55,6 +56,14 @@ public class ItemLending {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Long getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Long totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override

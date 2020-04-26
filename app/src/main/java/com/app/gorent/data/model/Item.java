@@ -11,11 +11,12 @@ public class Item {
     private Category category;
     private String image_path;
 
-    public Item(Long id, String name, String description, Long price, Category category, ItemOwner itemOwner) {
+    public Item(Long id, String name, String description, Long price, String timeUnit, Category category, ItemOwner itemOwner) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.timeUnit = timeUnit;
         this.category = category;
         this.itemOwner = itemOwner;
     }
@@ -86,12 +87,12 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item: " +
-                "   Name: " + name + "\r\n" +
-                "   Description: " + description + "\r\n" +
-                "   Price: " + price + "\r\n" +
-                "   Time unit: " + timeUnit + "\r\n" +
-                "   " + itemOwner + "\r\n" +
-                "   " + category;
+        return "-Item" + "\r\n" +
+                "Name: " + name + "\r\n" +
+                "Description: " + description + "\r\n" +
+                "Price: " + price + "\r\n" +
+                "Time unit: " + timeUnit + "\r\n" +
+                itemOwner + "\r\n" +
+                category+"";
     }
 }

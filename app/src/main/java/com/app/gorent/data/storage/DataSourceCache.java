@@ -38,23 +38,23 @@ public class DataSourceCache {
         itemOwners.put(itemOwner1.getId(), itemOwner1);
         itemOwners.put(itemOwner2.getId(), itemOwner2);
 
-        Category category1 = new Category(1L, "Houses", "Luxury houses");
-        Category category2 = new Category(2L, "Cars", "Luxury cars. Lamborghini");
-        Category category3 = new Category(3L, "Pianos", "Grand piano");
-        Category category4 = new Category(4L, "Laptops", "Lenovo Computers");
+        Category category1 = new Category(1L, "houses", "Luxury houses");
+        Category category2 = new Category(2L, "cars", "Luxury cars. Lamborghini");
+        Category category3 = new Category(3L, "pianos", "Grand piano");
+        Category category4 = new Category(4L, "laptops", "Lenovo Computers");
         categories.put(category1.getId(), category1);
         categories.put(category2.getId(), category2);
         categories.put(category3.getId(), category3);
         categories.put(category4.getId(), category4);
 
         Item item1 = new Item(1L, "Lenovo legion","Legion Y15. RAM 16GB, Almacenamiento 1TB",
-                30000L, category4, itemOwner1);
+                3000L,"day", category4, itemOwner1);
         Item item2 = new Item(2L, "Rest house","Palm Beach Gardens UT, United States",
-                10000000L, category1, itemOwner1);
+                10000000L, "month",category1, itemOwner1);
         Item item3 = new Item(3L, "Lamborghini Gallardo Spyder","Lamborghini Gallardo Lp-560-4 Mod 2013\n",
-                3700000L, category2, itemOwner2);
+                370000L, "week", category2, itemOwner2);
         Item item4 = new Item(4L, "Pristine 1927 Steinway M","Piano was built in 1976 and is an exceptional piano which needs nothing.",
-                374869L, category3, itemOwner1);
+                374869L, "month",category3, itemOwner1);
 
         items.put(item1.getId(), item1);
         items.put(item2.getId(), item2);
@@ -97,11 +97,11 @@ public class DataSourceCache {
         List<Item> availableItems = new ArrayList<>();
         for (Map.Entry<Long, Item> entryItem: items.entrySet()) {
             Long itemId = entryItem.getKey();
-            boolean isLentItem = true;
+            boolean isLentItem = false;
             for (Map.Entry<Long, ItemLending> entry: itemLending.entrySet()) {
                 ItemLending element = entry.getValue();
                 if(element.getItem().getId().equals(itemId)){ //it's a lent item
-                    isLentItem = false;
+                    isLentItem = true;
                     break;
                 }
             }

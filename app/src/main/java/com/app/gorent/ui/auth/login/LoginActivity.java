@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.app.gorent.R;
 import com.app.gorent.ui.auth.AuthResult;
 import com.app.gorent.ui.auth.LoggedInUserView;
-import com.app.gorent.ui.auth.ViewModelFactory;
+import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.ui.auth.signup.SignUpActivity;
 import com.app.gorent.ui.main.MainActivity;
 
