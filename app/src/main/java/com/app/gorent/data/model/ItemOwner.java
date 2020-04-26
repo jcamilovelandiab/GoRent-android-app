@@ -2,23 +2,22 @@ package com.app.gorent.data.model;
 
 public class ItemOwner {
 
-    private Long id;
+    private String userId;
     private String full_name;
     private String email;
     private Location home;
 
-    public ItemOwner(Long id, String full_name, String email) {
-        this.id = id;
+    public ItemOwner(String full_name, String email) {
         this.full_name = full_name;
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFull_name() {

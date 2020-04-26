@@ -2,8 +2,12 @@ package com.app.gorent.data.repositories;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
+import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
+import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.Result;
 
+import java.util.Date;
 import java.util.List;
 
 public class ItemLendingRepository {
@@ -22,12 +26,20 @@ public class ItemLendingRepository {
         return instance;
     }
 
+    public Result<String> rentItemByUser(Date dueDate, Long totalPrice, Item item){
+        return dataSource.rentItemByUser(dueDate, totalPrice,item);
+    }
+
+    public Result<String> returnItem(ItemLending itemLending){
+        return dataSource.returnItem(itemLending);
+    }
+
     public List<ItemLending> getListItemLendingByEmailOwner(String email){
-        return null;
+        return dataSource.getListItemLendingByEmailOwner(email);
     }
 
     public List<ItemLending> getListItemLendingByEmailRenter(String email){
-        return null;
+        return dataSource.getListItemLendingByEmailRenter(email);
     }
 
 }

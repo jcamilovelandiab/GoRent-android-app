@@ -1,14 +1,24 @@
 package com.app.gorent.data.model;
 
+import java.util.Date;
+
 public class ItemLending {
 
     Long id;
-    String lendingDate;
-    String dueDate;
-    String returnDate;
+    Date lendingDate;
+    Date dueDate;
+    Date returnDate;
     Long totalPrice;
     User renter;
     Item item;
+
+    public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, Item item,User renter) {
+        this.lendingDate = lendingDate;
+        this.dueDate = dueDate;
+        this.totalPrice = totalPrice;
+        this.renter = renter;
+        this.item = item;
+    }
 
     public Long getId() {
         return id;
@@ -18,27 +28,27 @@ public class ItemLending {
         this.id = id;
     }
 
-    public String getLendingDate() {
+    public Date getLendingDate() {
         return lendingDate;
     }
 
-    public void setLendingDate(String lendingDate) {
+    public void setLendingDate(Date lendingDate) {
         this.lendingDate = lendingDate;
     }
 
-    public String getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
 
-    public String getReturnDate() {
+    public Date getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(String returnDate) {
+    public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
 

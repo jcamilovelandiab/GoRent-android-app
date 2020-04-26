@@ -39,6 +39,14 @@ public class UserRepository {
         dataSource.logout();
     }
 
+    public LoggedInUser getLoggedUser() {
+        return user;
+    }
+
+    public void setUser(LoggedInUser user) {
+        this.user = user;
+    }
+
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
         // If user credentials will be cached in local storage, it is recommended it be encrypted

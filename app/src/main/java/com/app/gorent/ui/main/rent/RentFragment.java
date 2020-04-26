@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
-import com.app.gorent.ui.item_information.ItemInfoActivity;
+import com.app.gorent.ui.item_details.ItemInfoActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;

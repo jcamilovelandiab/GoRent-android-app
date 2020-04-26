@@ -22,10 +22,13 @@ public class ItemOwnerRepository {
         return instance;
     }
 
+    public ItemOwner save(ItemOwner itemOwner){
+        return dataSource.saveItemOwner(itemOwner);
+    }
+
     public ItemOwner getItemOwnerById(Long id){
         return null;
     }
-
     public List<Item> getItemsByEmailOwner(String email){
         return null;
     }

@@ -11,8 +11,7 @@ public class Item {
     private Category category;
     private String image_path;
 
-    public Item(Long id, String name, String description, Long price, String timeUnit, Category category, ItemOwner itemOwner) {
-        this.id = id;
+    public Item(String name, String description, Long price, String timeUnit, Category category, ItemOwner itemOwner) {
         this.name = name;
         this.description = description;
         this.price = price;

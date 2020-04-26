@@ -20,6 +20,11 @@ public class User {
         this.password = password;
     }
 
+    public User(String full_name, String email) {
+        this.full_name = full_name;
+        this.email = email;
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -62,8 +67,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User:" + "\r\n" +
-                "   Name: " + full_name + "\r\n" +
-                "   Email: " + email;
+        return "-User:" + "\r\n" +
+                "Name: " + full_name + "\r\n" +
+                "Email: " + email;
     }
 }

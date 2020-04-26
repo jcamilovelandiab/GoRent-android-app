@@ -25,6 +25,8 @@
     <string name="login_failed">"Login failed"</string>
     <string name="sign_up_failed">Sign up failed</string>
     <string name="server_error_message">Error connecting to the server. Please try again</string>
+    <string name="rental_failed">Error trying to rent the item. Please try again</string>
+    <string name="invalid_delivery_date">Delivery date must be after the current date</string>
 
     <!-- Strings related to Drawer Activity -->
     <string name="title_activity_main">MainActivity</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.item_information.ItemInfoActivity">
+    tools:context=".ui.item_details.ItemInfoActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -69,6 +69,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="text"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
                         android:hint="@string/prompt_current_date"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +101,7 @@
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:id="@+id/item_info_tv_total_price"
-                    android:text="Total: $200.000"
+                    android:text="Total: $0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -114,12 +117,12 @@
                         android:id="@+id/item_info_btn_accept"
                         android:layout_margin="10dp"
                         android:text="@string/action_accept"
+                        android:enabled="false"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
 
                     <Button
-                        android:backgroundTint="@color/cardview_shadow_end_color"
                         android:id="@+id/item_info_btn_cancel"
                         android:layout_margin="10dp"
                         android:text="@string/action_cancel"
