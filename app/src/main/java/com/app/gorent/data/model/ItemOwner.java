@@ -1,31 +1,24 @@
 package com.app.gorent.data.model;
 
-/**
- * @author Juan Camilo Velandia Botello
- */
-public class User {
+public class ItemOwner {
 
-    private String userId;
+    private Long id;
     private String full_name;
     private String email;
-    private String password;
     private Location home;
 
-    public User() {
-    }
-
-    public User(String full_name, String email, String password) {
+    public ItemOwner(Long id, String full_name, String email) {
+        this.id = id;
         this.full_name = full_name;
         this.email = email;
-        this.password = password;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFull_name() {
@@ -44,14 +37,6 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Location getHome() {
         return home;
     }
@@ -62,7 +47,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User:" + "\r\n" +
+        return "Item Owner:" + "\r\n" +
                 "   Name: " + full_name + "\r\n" +
                 "   Email: " + email;
     }

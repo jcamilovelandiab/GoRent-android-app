@@ -4,16 +4,20 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.app.gorent.data.model.Item;
+
+import java.util.List;
+
 public class RentViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<List<Item>> availableItems;
 
     public RentViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is rent stuff fragment");
+        availableItems = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Item>> getItems(){
+        return availableItems;
     }
+
 }
