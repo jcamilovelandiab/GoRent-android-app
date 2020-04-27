@@ -1,23 +1,17 @@
 package com.app.gorent.ui.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemListAdapter extends BaseAdapter {
 
@@ -49,7 +43,7 @@ public class ItemListAdapter extends BaseAdapter {
         View view = convertView;
         if(view==null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.item_row_layout,null);
+            view = inflater.inflate(R.layout.layout_item_row,null);
             Item item = (Item) getItem(position);
 
             TextView tv_item_name = view.findViewById(R.id.item_row_layout_tv_name);

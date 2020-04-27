@@ -11,6 +11,7 @@ import com.app.gorent.utils.Result;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +33,8 @@ public class DataSourceCache {
     private static User loggedUser;
 
     public DataSourceCache(){
-        User user1 = new User("juan camilo","camilo@mail.com", "camilo123");
-        User user2 = new User("juan","juan@mail.com", "juan123");
+        User user1 = new User("juan","juan@mail.com", "juan123");
+        User user2 = new User("juan camilo","camilo@mail.com", "camilo123");
         signUp(user1);
         signUp(user2);
         ItemOwner itemOwner1 = new ItemOwner(user1.getFull_name(),user1.getEmail());
@@ -62,6 +63,27 @@ public class DataSourceCache {
         saveItem(item2);
         saveItem(item3);
         saveItem(item4);
+
+        Calendar c1= Calendar.getInstance();
+        c1.add(Calendar.DATE, 30);
+        Date dueDate1=c1.getTime();
+
+        Calendar c2= Calendar.getInstance();
+        c2.add(Calendar.DATE, 10);
+        Date dueDate2=c2.getTime();
+
+        if(loggedUser==null){
+            loggedUser = usersMp.get(user2.getEmail());
+            rentItemByUser(dueDate1,10000L, item1);
+            rentItemByUser(dueDate2,15000L, item2);
+            rentItemByUser(dueDate1,20000L, item4);
+            loggedUser = null;
+        }else{
+            rentItemByUser(dueDate1,10000L, item1);
+            rentItemByUser(dueDate2,15000L, item2);
+            rentItemByUser(dueDate1,20000L, item4);
+        }
+
     }
     // Users
     public Result<LoggedInUser> login(String email, String password) {
@@ -183,6 +205,26 @@ public class DataSourceCache {
         List<ItemLending> listItemLending = new ArrayList<>();
         for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
             if(entry.getValue().getRenter().getEmail().equals(email)){
+                listItemLending.add(entry.getValue());
+            }
+        }
+        return listItemLending;
+    }
+
+    public List<ItemLending> getLentItemHistoryOfLoggedUser(){
+        List<ItemLending> itemList = new ArrayList<>();
+        for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
+            if(entry.getValue().getItem().getItemOwner().getEmail().equals(loggedUser.getEmail())){
+                itemList.add(entry.getValue());
+            }
+        }
+        return itemList;
+    }
+
+    public List<ItemLending> getRentedItemHistoryOfLoggedUser(){
+        List<ItemLending> listItemLending = new ArrayList<>();
+        for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
+            if(entry.getValue().getRenter().getEmail().equals(loggedUser.getEmail())){
                 listItemLending.add(entry.getValue());
             }
         }

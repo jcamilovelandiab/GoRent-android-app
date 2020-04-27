@@ -1,4 +1,4 @@
-package com.app.gorent.ui.item_details;
+package com.app.gorent.ui.rental_form;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,12 +9,13 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.repositories.UserRepository;
+import com.app.gorent.ui.rental_form.RentalFormState;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.Result;
 
 import java.util.Date;
 
-public class ItemInfoViewModel extends ViewModel {
+public class RentalFormViewModel extends ViewModel {
 
     private ItemRepository itemRepository;
     private ItemLendingRepository itemLendingRepository;
@@ -23,8 +24,8 @@ public class ItemInfoViewModel extends ViewModel {
     private MutableLiveData<RentalFormState> rentalFormState = new MutableLiveData<>();
     private Item item;
 
-    public ItemInfoViewModel(ItemRepository itemRepository, ItemLendingRepository itemLendingRepository,
-        UserRepository userRepository) {
+    public RentalFormViewModel(ItemRepository itemRepository, ItemLendingRepository itemLendingRepository,
+                               UserRepository userRepository) {
         this.itemRepository = itemRepository;
         this.itemLendingRepository = itemLendingRepository;
         this.userRepository = userRepository;

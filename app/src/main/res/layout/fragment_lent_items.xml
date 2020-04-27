@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.lent_items.LentItemsFragment">
+    tools:context=".ui.main.lent_items_history.LentItemsFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/lent_items_lv_item_lending_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Lent items" />
+        android:layout_height="match_parent">
+    </ListView>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

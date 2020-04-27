@@ -1,4 +1,4 @@
-package com.app.gorent.ui.main.rented_items;
+package com.app.gorent.ui.main.rented_items_history;
 
 import androidx.lifecycle.ViewModel;
 

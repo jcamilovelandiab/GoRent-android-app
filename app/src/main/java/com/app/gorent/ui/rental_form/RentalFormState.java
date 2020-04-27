@@ -1,4 +1,4 @@
-package com.app.gorent.ui.item_details;
+package com.app.gorent.ui.rental_form;
 
 import androidx.annotation.Nullable;
 

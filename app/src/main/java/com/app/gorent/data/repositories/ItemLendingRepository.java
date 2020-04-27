@@ -34,12 +34,12 @@ public class ItemLendingRepository {
         return dataSource.returnItem(itemLending);
     }
 
-    public List<ItemLending> getListItemLendingByEmailOwner(String email){
-        return dataSource.getListItemLendingByEmailOwner(email);
+    public List<ItemLending> getLentItemHistoryOfLoggedUser(){
+        return dataSource.getLentItemHistoryOfLoggedUser();
     }
 
-    public List<ItemLending> getListItemLendingByEmailRenter(String email){
-        return dataSource.getListItemLendingByEmailRenter(email);
+    public List<ItemLending> getRentedItemHistoryOfLoggedUser(){
+        return dataSource.getRentedItemHistoryOfLoggedUser();
     }
 
 }

@@ -42,6 +42,6 @@ public class Category {
     public String toString() {
         return "-Category" + "\r\n" +
                 "Name: " + name + "\r\n" +
-                "description: " + description;
+                "Description: " + description;
     }
 }

@@ -28,8 +28,4 @@ public class RentViewModel extends ViewModel {
         return itemList;
     }
 
-    public void setItemList(List<Item> items){
-        this.itemList = items;
-    }
-
 }

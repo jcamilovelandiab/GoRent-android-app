@@ -89,9 +89,9 @@ public class Item {
         return "-Item" + "\r\n" +
                 "Name: " + name + "\r\n" +
                 "Description: " + description + "\r\n" +
-                "Price: " + price + "\r\n" +
+                "Price: $" + price + "\r\n" +
                 "Time unit: " + timeUnit + "\r\n" +
                 itemOwner + "\r\n" +
-                category+"";
+                category;
     }
 }

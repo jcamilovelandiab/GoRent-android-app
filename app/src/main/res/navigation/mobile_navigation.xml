@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/nav_rented_items"
-        android:name="com.app.gorent.ui.main.rented_items.RentedItemsFragment"
+        android:name="com.app.gorent.ui.main.rented_items_history.RentedItemsFragment"
         android:label="@string/menu_rented_items"
         tools:layout="@layout/fragment_rented_items" />
 
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/nav_lent_items"
-        android:name="com.app.gorent.ui.main.lent_items.LentItemsFragment"
+        android:name="com.app.gorent.ui.main.lent_items_history.LentItemsFragment"
         android:label="@string/menu_lent_items"
         tools:layout="@layout/fragment_lent_items" />
 

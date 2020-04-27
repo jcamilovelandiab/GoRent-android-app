@@ -1,5 +1,7 @@
 package com.app.gorent.data.model;
 
+import androidx.annotation.Nullable;
+
 import java.util.Date;
 
 public class ItemLending {
@@ -7,6 +9,7 @@ public class ItemLending {
     Long id;
     Date lendingDate;
     Date dueDate;
+    @Nullable
     Date returnDate;
     Long totalPrice;
     User renter;
@@ -44,6 +47,7 @@ public class ItemLending {
         this.dueDate = dueDate;
     }
 
+    @Nullable
     public Date getReturnDate() {
         return returnDate;
     }
