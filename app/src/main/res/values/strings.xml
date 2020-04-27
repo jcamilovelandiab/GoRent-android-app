@@ -55,4 +55,6 @@
 
     <!-- Shared preferences -->
     <string name="preference_file_key">preferences-file</string>
+    <string name="prompt_return_date">Return date</string>
+    <string name="prompt_address">Address</string>
 </resources>

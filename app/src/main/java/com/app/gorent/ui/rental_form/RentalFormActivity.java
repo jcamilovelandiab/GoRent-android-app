@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
-import com.app.gorent.ui.item_details.ItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.BasicResult;
 
@@ -29,6 +28,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class RentalFormActivity extends AppCompatActivity {
 
@@ -61,6 +68,7 @@ public class RentalFormActivity extends AppCompatActivity {
         configureDueDate();
         configureTextWatchers();
         configureRentalResultObserver();
+
         configureRentalFormStateObserver();
     }
 
