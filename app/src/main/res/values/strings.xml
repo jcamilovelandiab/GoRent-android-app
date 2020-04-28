@@ -57,4 +57,22 @@
     <string name="preference_file_key">preferences-file</string>
     <string name="prompt_return_date">Return date</string>
     <string name="prompt_address">Address</string>
+    <string name="prompt_search_item">Search an item</string>
+    <string name="action_filter">Filter</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="title_new_item_form">Publish your item</string>
+    <string name="title_item_information">Item</string>
+    <string name="title_edit_item">Edit item</string>
+
+    <string name="prompt_item_name">Item name</string>
+    <string name="prompt_item_description">Description</string>
+    <string name="prompt_item_price">Price</string>
+    <string name="action_save">Save</string>
+    <string name="action_update">update</string>
+    <string name="action_delete">delete</string>
 </resources>

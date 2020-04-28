@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
-import com.app.gorent.ui.item_details.ItemDetailsActivity;
+import com.app.gorent.ui.rent_item_details.RentItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class RentFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Item item = (Item) lv_items.getAdapter().getItem(position);
-                Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), RentItemDetailsActivity.class);
                 intent.putExtra("itemId",item.getId());
                 startActivity(intent);
             }

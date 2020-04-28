@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -30,9 +32,18 @@ public class DataSourceCache {
     private static Map<Long, Item> itemsMp = new HashMap<>();
     private static Map<String, ItemOwner> itemOwnersMp = new HashMap<>();
     private static Map<String, User> usersMp = new HashMap<>();
-    private static User loggedUser;
+    private static User loggedUser = null;
 
-    public DataSourceCache(){
+    public static DataSourceCache instance=null;
+
+    public static DataSourceCache getInstance(){
+        if(instance==null){
+            instance = new DataSourceCache();
+        }
+        return instance;
+    }
+
+    private DataSourceCache(){
         User user1 = new User("juan","juan@mail.com", "juan123");
         User user2 = new User("juan camilo","camilo@mail.com", "camilo123");
         signUp(user1);
@@ -72,17 +83,13 @@ public class DataSourceCache {
         c2.add(Calendar.DATE, 10);
         Date dueDate2=c2.getTime();
 
-        if(loggedUser==null){
-            loggedUser = usersMp.get(user2.getEmail());
-            rentItemByUser(dueDate1,10000L, item1);
-            rentItemByUser(dueDate2,15000L, item2);
-            rentItemByUser(dueDate1,20000L, item4);
-            loggedUser = null;
-        }else{
-            rentItemByUser(dueDate1,10000L, item1);
-            rentItemByUser(dueDate2,15000L, item2);
-            rentItemByUser(dueDate1,20000L, item4);
-        }
+        loggedUser = usersMp.get(user2.getEmail());
+        rentItemByUser(dueDate1,10000L, item1);
+        rentItemByUser(dueDate2,15000L, item2);
+        rentItemByUser(dueDate1,20000L, item4);
+        loggedUser = usersMp.get(user1.getEmail());
+        rentItemByUser(dueDate2,15000L,item3);
+        loggedUser = null;
 
     }
     // Users
@@ -176,6 +183,16 @@ public class DataSourceCache {
         List<Item> itemList = new ArrayList<>();
         for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
             if(entry.getValue().getItemOwner().getEmail().equals(email)){
+                itemList.add(entry.getValue());
+            }
+        }
+        return itemList;
+    }
+
+    public List<Item> getItemsOfLoggedUser(){
+        List<Item> itemList = new ArrayList<>();
+        for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
+            if(entry.getValue().getItemOwner().getEmail().equals(loggedUser.getEmail())){
                 itemList.add(entry.getValue());
             }
         }

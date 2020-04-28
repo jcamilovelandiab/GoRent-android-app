@@ -37,4 +37,8 @@ public class ItemRepository {
         return dataSource.getItemsByCategory(nameCategory);
     }
 
+    public List<Item> getItemsOfLoggedUser(){
+        return dataSource.getItemsOfLoggedUser();
+    }
+
 }

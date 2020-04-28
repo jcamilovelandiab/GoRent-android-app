@@ -1,16 +1,16 @@
-package com.app.gorent.ui.item_details;
+package com.app.gorent.ui.rent_item_details;
 
 import androidx.lifecycle.ViewModel;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.repositories.ItemRepository;
 
-public class ItemDetailsViewModel extends ViewModel {
+public class RentItemDetailsViewModel extends ViewModel {
 
     private ItemRepository itemRepository;
     private Item item;
 
-    public ItemDetailsViewModel(ItemRepository itemRepository){
+    public RentItemDetailsViewModel(ItemRepository itemRepository){
         this.itemRepository = itemRepository;
     }
 
