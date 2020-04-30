@@ -44,8 +44,8 @@ public class DataSourceCache {
     }
 
     private DataSourceCache(){
-        User user1 = new User("juan","juan@mail.com", "juan123");
-        User user2 = new User("juan camilo","camilo@mail.com", "camilo123");
+        User user1 = new User("Juan Felipe","juan@mail.com", "juan123");
+        User user2 = new User("Juan Camilo","camilo@mail.com", "camilo123");
         signUp(user1);
         signUp(user2);
         ItemOwner itemOwner1 = new ItemOwner(user1.getFull_name(),user1.getEmail());
@@ -98,8 +98,8 @@ public class DataSourceCache {
             // TODO: handle loggedInUser authentication
             if(usersMp.containsKey(email) && usersMp.get(email).getPassword().equals(password)){
                 loggedUser = usersMp.get(email);
-                String first_name = loggedUser.getFull_name().split(" ")[0];
-                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), first_name);
+                //String first_name = loggedUser.getFull_name().split(" ")[0];
+                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
                 return new Result.Success<>(loggedInUser);
             }
             return new Result.Error(new IOException("Invalid login"));
@@ -115,8 +115,8 @@ public class DataSourceCache {
         loggedUser = user;
         loggedUser.setUserId(java.util.UUID.randomUUID().toString());
         usersMp.put(user.getEmail(), user);
-        String first_name = loggedUser.getFull_name().split(" ")[0];
-        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), first_name);
+        //String first_name = loggedUser.getFull_name().split(" ")[0];
+        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
         return new Result.Success<>(loggedInUser);
     }
 

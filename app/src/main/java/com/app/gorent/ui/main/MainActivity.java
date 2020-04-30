@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
+import com.app.gorent.data.model.LoggedInUser;
+import com.app.gorent.data.model.User;
 import com.app.gorent.data.repositories.UserRepository;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.ui.auth.login.LoginActivity;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private UserRepository userRepository;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View headerView =  navigationView.getHeaderView(0);
+        TextView nav_header_title = headerView.findViewById(R.id.nav_header_title);
+        TextView nav_header_subtitle = headerView.findViewById(R.id.nav_header_subtitle);
+        LoggedInUser loggedUser = userRepository.getLoggedUser();
+        nav_header_title.setText(loggedUser.getDisplayName());
+        nav_header_subtitle.setText(loggedUser.getUserId());
     }
 
     @Override
