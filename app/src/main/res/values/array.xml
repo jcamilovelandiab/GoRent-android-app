@@ -2,7 +2,13 @@
 <resources>
 
     <string-array name="categories">
-        <item>Select a category</item>
+        <item>Select category</item>
+    </string-array>
+
+    <string-array name="fee_types">
+        <item>Select fee type</item>
+        <item>Daily fee</item>
+        <item>Monthly fee</item>
     </string-array>
 
 </resources>

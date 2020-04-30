@@ -2,6 +2,7 @@ package com.app.gorent.data.repositories;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.storage.DataSourceCache;
+import com.app.gorent.utils.Result;
 
 import java.util.List;
 
@@ -39,6 +40,10 @@ public class ItemRepository {
 
     public List<Item> getItemsOfLoggedUser(){
         return dataSource.getItemsOfLoggedUser();
+    }
+
+    public Result<String> saveItem(Item item){
+        return dataSource.saveItem(item);
     }
 
 }

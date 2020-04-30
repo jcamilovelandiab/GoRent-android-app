@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
+import com.app.gorent.data.repositories.CategoryRepository;
 import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.storage.DataSourceCache;
@@ -11,6 +12,7 @@ import com.app.gorent.data.repositories.UserRepository;
 import com.app.gorent.ui.auth.login.LoginViewModel;
 import com.app.gorent.ui.auth.signup.SignUpViewModel;
 import com.app.gorent.ui.item_information.ItemInformationViewModel;
+import com.app.gorent.ui.new_item.CreateItemFormViewModel;
 import com.app.gorent.ui.rent_item_details.RentItemDetailsViewModel;
 import com.app.gorent.ui.main.lend.LendViewModel;
 import com.app.gorent.ui.main.lent_items_history.LentItemsViewModel;
@@ -52,7 +54,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new LendViewModel(ItemRepository.getInstance(dataSourceCache));
         }else if(modelClass.isAssignableFrom(ItemInformationViewModel.class)){
             return (T) new ItemInformationViewModel(ItemRepository.getInstance(dataSourceCache));
-        }else{
+        }else if(modelClass.isAssignableFrom(CreateItemFormViewModel.class)){
+            return (T) new CreateItemFormViewModel(ItemRepository.getInstance(dataSourceCache),
+                    CategoryRepository.getInstance(dataSourceCache));
+        } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }

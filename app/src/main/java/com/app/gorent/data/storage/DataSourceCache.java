@@ -271,10 +271,10 @@ public class DataSourceCache {
         }
     }
 
-    public Item saveItem(Item item){
+    public Result<String> saveItem(Item item){
         item.setId(++itemCounter);
         itemsMp.put(item.getId(), item);
-        return itemsMp.get(item.getId());
+        return new Result.Success<>("Item successfully saved");
     }
 
     public Item updateItem(Item item){
@@ -303,6 +303,14 @@ public class DataSourceCache {
         category.setId(++categoryCounter);
         categoriesMp.put(category.getId(), category);
         return categoriesMp.get(category.getId());
+    }
+
+    public List<String> getNameCategories(){
+        List<String> nameCategoryList = new ArrayList<>();
+        for(Map.Entry<Long, Category> entry: categoriesMp.entrySet()){
+            nameCategoryList.add(entry.getValue().getName());
+        }
+        return nameCategoryList;
     }
 
 }
