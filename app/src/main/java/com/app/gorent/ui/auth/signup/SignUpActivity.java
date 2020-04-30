@@ -173,6 +173,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(intent);
                 setResult(Activity.RESULT_OK);
                 //Complete and destroy signUp activity once successful
                 finish();

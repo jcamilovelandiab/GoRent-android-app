@@ -84,12 +84,15 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:layout_margin="10dp"
             android:id="@+id/signup_btn_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="@string/action_sign_up_short"
             android:padding="12dp"
+            android:background="@drawable/button_round"
+            android:textColor="#FFFFFF"
             />
 
         <androidx.appcompat.widget.AppCompatButton
