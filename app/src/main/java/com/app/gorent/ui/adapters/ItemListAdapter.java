@@ -56,7 +56,7 @@ public class ItemListAdapter extends BaseAdapter {
             tv_item_price.setText(String.format("$ %d",item.getPrice()));
 
             TextView tv_item_time_unit = view.findViewById(R.id.item_row_layout_tv_time_unit);
-            tv_item_time_unit.setText(String.format("Price per %s",item.getTimeUnit()));
+            tv_item_time_unit.setText(String.format("Fee type: %s",item.getFeeType()));
 
             ImageView iv_image = view.findViewById(R.id.item_row_layout_iv_image);
             if(item.getCategory().getName().toLowerCase().equals("houses")){

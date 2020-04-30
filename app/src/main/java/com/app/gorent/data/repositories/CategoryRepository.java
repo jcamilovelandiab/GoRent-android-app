@@ -25,8 +25,8 @@ public class CategoryRepository {
         return dataSource.getNameCategories();
     }
 
-    public Category getCategoryById(){
-        return null;
+    public Category getCategoryByName(String nameCategory){
+        return dataSource.getCategoryByName(nameCategory);
     }
 
 }

@@ -31,7 +31,12 @@
     <string name="server_error_message">Error connecting to the server. Please try again</string>
     <string name="rental_failed">Error trying to rent the item. Please try again</string>
     <string name="invalid_delivery_date">Delivery date must be after the current date</string>
-
+    <string name="invalid_item_name">Not a valid item name</string>
+    <string name="invalid_item_description">Not a valid description</string>
+    <string name="invalid_item_price">Not a valid price</string>
+    <string name="invalid_item_fee_type">Not a valid fee type</string>
+    <string name="invalid_item_category">Not a valid category</string>
+    <string name="item_creation_failed">Item creation failed. Try again</string>
     <!-- Strings related to Drawer Activity -->
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_item_info">Item details</string>

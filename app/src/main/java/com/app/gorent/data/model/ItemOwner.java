@@ -7,7 +7,7 @@ public class ItemOwner {
     private String email;
     private Location home;
 
-    public ItemOwner(String full_name, String email) {
+    public ItemOwner(String email, String full_name) {
         this.full_name = full_name;
         this.email = email;
     }

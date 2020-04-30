@@ -48,8 +48,8 @@ public class DataSourceCache {
         User user2 = new User("Juan Camilo","camilo@mail.com", "camilo123");
         signUp(user1);
         signUp(user2);
-        ItemOwner itemOwner1 = new ItemOwner(user1.getFull_name(),user1.getEmail());
-        ItemOwner itemOwner2 = new ItemOwner(user2.getFull_name(),user2.getEmail());
+        ItemOwner itemOwner1 = new ItemOwner(user1.getEmail(),user1.getFull_name());
+        ItemOwner itemOwner2 = new ItemOwner(user2.getEmail(),user2.getFull_name());
         saveItemOwner(itemOwner1);
         saveItemOwner(itemOwner2);
 
@@ -271,6 +271,14 @@ public class DataSourceCache {
         }
     }
 
+    public Result<String> saveItem(String name, String description, Long price, String feeType, Category category){
+        ItemOwner itemOwner = new ItemOwner(loggedUser.getEmail(), loggedUser.getFull_name());
+        Item item = new Item(name+"", description+"", price+0L, feeType+"", category,itemOwner);
+        item.setId(++itemCounter);
+        itemsMp.put(item.getId(), item);
+        return new Result.Success<>("Item successfully saved");
+    }
+
     public Result<String> saveItem(Item item){
         item.setId(++itemCounter);
         itemsMp.put(item.getId(), item);
@@ -311,6 +319,15 @@ public class DataSourceCache {
             nameCategoryList.add(entry.getValue().getName());
         }
         return nameCategoryList;
+    }
+
+    public Category getCategoryByName(String nameCategory){
+        for (Map.Entry<Long, Category> entry: categoriesMp.entrySet()){
+            if(entry.getValue().getName().equals(nameCategory)){
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
 }

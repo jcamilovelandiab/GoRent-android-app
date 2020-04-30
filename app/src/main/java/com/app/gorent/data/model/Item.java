@@ -6,16 +6,16 @@ public class Item {
     private String name;
     private String description;
     private Long price;
-    private String timeUnit;
+    private String feeType;
     private ItemOwner itemOwner;
     private Category category;
     private String image_path;
 
-    public Item(String name, String description, Long price, String timeUnit, Category category, ItemOwner itemOwner) {
+    public Item(String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.timeUnit = timeUnit;
+        this.feeType = feeType;
         this.category = category;
         this.itemOwner = itemOwner;
     }
@@ -52,12 +52,12 @@ public class Item {
         this.price = price;
     }
 
-    public String getTimeUnit() {
-        return timeUnit;
+    public String getFeeType() {
+        return feeType;
     }
 
-    public void setTimeUnit(String timeUnit) {
-        this.timeUnit = timeUnit;
+    public void setFeeType(String feeType) {
+        this.feeType = feeType;
     }
 
     public ItemOwner getItemOwner() {
@@ -90,7 +90,7 @@ public class Item {
                 "Name: " + name + "\r\n" +
                 "Description: " + description + "\r\n" +
                 "Price: $" + price + "\r\n" +
-                "Time unit: " + timeUnit + "\r\n" +
+                "Fee type: " + feeType + "\r\n" +
                 itemOwner + "\r\n" +
                 category;
     }

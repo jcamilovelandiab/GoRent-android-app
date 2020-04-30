@@ -30,4 +30,22 @@ public class Validator {
         return name.matches(regex);
     }
 
+    public static boolean isItemNameValid(String name){
+        if(name.length()<5) return false;
+        // \\p{L} is a Unicode Character Property that matches any kind of letter from any language
+        String regex = "^[\\p{L}]+[\\p{L} 0-9,.'-]*$";
+        return name.matches(regex);
+    }
+
+    public static boolean isDescriptionValid(String name){
+        if(name.length()<5) return false;
+        String regex = "^[\\p{L} 0-9]+[\\p{L} 0-9,#$.'-]*$";
+        return name.matches(regex);
+    }
+
+    public static boolean isStringNumeric(String string){
+        String regex = "^[0-9][0-9]*$";
+        return string.matches(regex);
+    }
+
 }

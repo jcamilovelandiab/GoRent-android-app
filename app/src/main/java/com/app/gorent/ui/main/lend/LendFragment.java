@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
 import com.app.gorent.ui.item_information.ItemInformationActivity;
-import com.app.gorent.ui.new_item.CreateItemFormActivity;
+import com.app.gorent.ui.new_item.ItemFormActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -69,7 +68,7 @@ public class LendFragment extends Fragment {
         fab_add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CreateItemFormActivity.class);
+                Intent intent = new Intent(getActivity(), ItemFormActivity.class);
                 startActivity(intent);
             }
         });
