@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -182,18 +183,20 @@ public class ItemFormActivity extends AppCompatActivity {
     }
 
     private void showErrorMessage(final String errorMsg){
-        runOnUiThread(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             public void run() {
-                Toast toast = Toast.makeText(ItemFormActivity.this, errorMsg, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(ItemFormActivity.this, errorMsg, Toast.LENGTH_LONG);
                 View view = toast.getView();
                 //Gets the actual oval background of the Toast then sets the colour filter
                 view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                 //Gets the TextView from the Toast so it can be edited
                 TextView text = view.findViewById(android.R.id.message);
+                text.setGravity(Gravity.CENTER);
                 text.setTextColor(Color.WHITE);
                 toast.show();
             }
-        });
+        }, 2500);
     }
 
     private void showMessage(final String msg){
@@ -201,6 +204,12 @@ public class ItemFormActivity extends AppCompatActivity {
             public void run() {
                 Toast toast = Toast.makeText(ItemFormActivity.this, msg, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0,0);
+                View view = toast.getView();
+                //Gets the actual oval background of the Toast then sets the colour filter
+                view.getBackground().setColorFilter(Color.parseColor("#03DAC5"), PorterDuff.Mode.SRC_IN);
+                //Gets the TextView from the Toast so it can be edited
+                TextView text = view.findViewById(android.R.id.message);
+                text.setTextColor(Color.BLACK);
                 toast.show();
             }
         });
