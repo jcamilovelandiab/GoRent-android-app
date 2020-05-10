@@ -35,6 +35,11 @@
 
     <group android:id="@+id/menu_group2">
         <item
+            android:id="@+id/nav_credits"
+            android:icon="@drawable/ic_group_work_black_24dp"
+            android:title="@string/title_credits"
+            />
+        <item
             android:id="@+id/nav_help"
             android:icon="@drawable/ic_help_black_24dp"
             android:title="@string/menu_help"

@@ -42,4 +42,10 @@
         android:label="@string/menu_lent_items"
         tools:layout="@layout/fragment_lent_items" />
 
+    <fragment
+        android:id="@+id/nav_credits"
+        android:name="com.app.gorent.ui.main.credits.CreditsFragment"
+        android:label="@string/title_credits"
+        tools:layout="@layout/fragment_credits" />
+
 </navigation>

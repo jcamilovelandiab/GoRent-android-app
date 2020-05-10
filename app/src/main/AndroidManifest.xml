@@ -8,7 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.item_information.ItemInformationActivity"></activity>
+        <activity android:name=".ui.item_information.ItemInformationActivity" />
         <activity android:name=".ui.new_item.ItemFormActivity" />
         <activity android:name=".ui.rental_form.RentalFormActivity" />
         <activity android:name=".ui.rent_item_details.RentItemDetailsActivity" />

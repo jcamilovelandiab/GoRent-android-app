@@ -9,6 +9,13 @@
         </shape>
     </item>
 
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/colorPrimaryDark"/>
+            <corners android:radius="20dp"/>
+        </shape>
+    </item>
+
     <item>
         <shape>
             <solid android:color="@color/colorPrimary"/>

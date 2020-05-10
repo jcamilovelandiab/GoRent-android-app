@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.credits.CreditsFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/creditos_iv_tecnologico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/escudo" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_tecnologico"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/university"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/creditos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/title_credits"
+                    android:textColor="#DF0A0A"
+                    android:textSize="36sp"
+                    android:textStyle="normal|bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="398dp"
+                android:layout_height="205dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/creditos_tv_estudiante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/studen_label"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_nombre_estudiante"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student"
+                    />
+
+                <TextView
+                    android:id="@+id/creditos_tv_nombre_estudiante2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student2"
+                    />
+
+                <TextView
+                    android:id="@+id/creditos_tv_nombre_estudiante3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student3"
+                    />
+
+                <TextView
+                    android:id="@+id/creditos_tv_profesor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/professor_label"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_nombre_profesor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profesor" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_carrera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/major_label"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_nombre_carrera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/major" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_materia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_label"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_nombre_materia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/class_name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="397dp"
+                android:layout_height="33dp">
+
+                <TextView
+                    android:id="@+id/creditos_tv_semestre"
+                    android:layout_width="216dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/semester" />
+
+                <TextView
+                    android:id="@+id/creditos_tv_grupo"
+                    android:layout_width="182dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grupo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/creditos_tv_ciclo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/ciclo"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
