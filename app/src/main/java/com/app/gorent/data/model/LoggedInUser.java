@@ -5,19 +5,27 @@ package com.app.gorent.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
-    private String displayName;
+    private String email;
+    private String full_name;
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
-        this.displayName = displayName;
+    public LoggedInUser(String email, String full_name) {
+        this.email = email;
+        this.full_name = full_name;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 }

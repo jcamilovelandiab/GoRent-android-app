@@ -6,8 +6,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.app.gorent.data.storage.Storage;
-import com.app.gorent.ui.auth.login.LoginActivity;
-import com.app.gorent.ui.main.MainActivity;
+import com.app.gorent.ui.activities.auth.login.LoginActivity;
+import com.app.gorent.ui.activities.main.MainActivity;
 
 public class LauncherActivity extends AppCompatActivity {
 

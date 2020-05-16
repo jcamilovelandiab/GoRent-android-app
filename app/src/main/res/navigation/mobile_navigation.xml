@@ -7,44 +7,44 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.app.gorent.ui.main.home.HomeFragment"
+        android:name="com.app.gorent.ui.activities.main.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home"
     />
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.app.gorent.ui.main.search.SearchFragment"
+        android:name="com.app.gorent.ui.activities.main.search.SearchFragment"
         android:label="@string/menu_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/nav_rent"
-        android:name="com.app.gorent.ui.main.rent.RentFragment"
+        android:name="com.app.gorent.ui.activities.main.rent.RentFragment"
         android:label="@string/menu_rent"
         tools:layout="@layout/fragment_rent" />
 
     <fragment
         android:id="@+id/nav_rented_items"
-        android:name="com.app.gorent.ui.main.rented_items_history.RentedItemsFragment"
+        android:name="com.app.gorent.ui.activities.main.rented_items_history.RentedItemsFragment"
         android:label="@string/menu_rented_items"
         tools:layout="@layout/fragment_rented_items" />
 
     <fragment
         android:id="@+id/nav_lend"
-        android:name="com.app.gorent.ui.main.lend.LendFragment"
+        android:name="com.app.gorent.ui.activities.main.lend.LendFragment"
         android:label="@string/menu_lend"
         tools:layout="@layout/fragment_lend" />
 
     <fragment
         android:id="@+id/nav_lent_items"
-        android:name="com.app.gorent.ui.main.lent_items_history.LentItemsFragment"
+        android:name="com.app.gorent.ui.activities.main.lent_items_history.LentItemsFragment"
         android:label="@string/menu_lent_items"
         tools:layout="@layout/fragment_lent_items" />
 
     <fragment
         android:id="@+id/nav_credits"
-        android:name="com.app.gorent.ui.main.credits.CreditsFragment"
+        android:name="com.app.gorent.ui.activities.main.credits.CreditsFragment"
         android:label="@string/title_credits"
         tools:layout="@layout/fragment_credits" />
 

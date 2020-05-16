@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.search.SearchFragment">
+    tools:context=".ui.activities.main.search.SearchFragment">
 
     <EditText
         android:hint="@string/prompt_search_item"

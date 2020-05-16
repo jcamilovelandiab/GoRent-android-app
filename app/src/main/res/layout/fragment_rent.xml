@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.rent.RentFragment">
+    tools:context=".ui.activities.main.rent.RentFragment">
 
     <ListView
         android:id="@+id/rent_lv_items"

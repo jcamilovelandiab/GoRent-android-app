@@ -9,17 +9,17 @@ import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.data.repositories.UserRepository;
-import com.app.gorent.ui.auth.login.LoginViewModel;
-import com.app.gorent.ui.auth.signup.SignUpViewModel;
-import com.app.gorent.ui.item_information.ItemInformationViewModel;
-import com.app.gorent.ui.new_item.ItemFormViewModel;
-import com.app.gorent.ui.rent_item_details.RentItemDetailsViewModel;
-import com.app.gorent.ui.main.lend.LendViewModel;
-import com.app.gorent.ui.main.lent_items_history.LentItemsViewModel;
-import com.app.gorent.ui.main.rented_items_history.RentedItemsViewModel;
-import com.app.gorent.ui.main.search.SearchViewModel;
-import com.app.gorent.ui.rental_form.RentalFormViewModel;
-import com.app.gorent.ui.main.rent.RentViewModel;
+import com.app.gorent.ui.activities.auth.login.LoginViewModel;
+import com.app.gorent.ui.activities.auth.signup.SignUpViewModel;
+import com.app.gorent.ui.activities.item_information.ItemInformationViewModel;
+import com.app.gorent.ui.activities.new_item.ItemFormViewModel;
+import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsViewModel;
+import com.app.gorent.ui.activities.main.lend.LendViewModel;
+import com.app.gorent.ui.activities.main.lent_items_history.LentItemsViewModel;
+import com.app.gorent.ui.activities.main.rented_items_history.RentedItemsViewModel;
+import com.app.gorent.ui.activities.main.search.SearchViewModel;
+import com.app.gorent.ui.activities.rental_form.RentalFormViewModel;
+import com.app.gorent.ui.activities.main.rent.RentViewModel;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

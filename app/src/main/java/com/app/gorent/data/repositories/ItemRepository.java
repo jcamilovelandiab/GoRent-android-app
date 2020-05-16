@@ -1,11 +1,12 @@
 package com.app.gorent.data.repositories;
 
-import com.app.gorent.data.model.Category;
+import androidx.lifecycle.MutableLiveData;
+
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.utils.Result;
-
-import java.util.List;
+import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.ItemListQueryResult;
+import com.app.gorent.utils.ItemQueryResult;
 
 public class ItemRepository {
 
@@ -23,28 +24,24 @@ public class ItemRepository {
         return instance;
     }
 
-    public List<Item> getAvailableItems(){
-        return dataSource.getAvailableItems();
+    public void getAvailableItems(MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        dataSource.getAvailableItems(itemListQueryResult);
     }
 
-    public Item getItemById(Long id){
-        return dataSource.getItemById(id);
+    public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
+        dataSource.getItemById(id, itemQueryResult);
     }
 
-    public List<Item> getItemsByName(String name){
-        return dataSource.getItemsByName(name);
+    public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        dataSource.getItemsByName(name, itemListQueryResult);
     }
 
-    public List<Item> getItemsByCategory(String nameCategory){
-        return dataSource.getItemsByCategory(nameCategory);
+    public void getItemsByCategory(String nameCategory, MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        dataSource.getItemsByCategory(nameCategory, itemListQueryResult);
     }
 
-    public List<Item> getItemsOfLoggedUser(){
-        return dataSource.getItemsOfLoggedUser();
-    }
-
-    public Result<String> saveItem(String name, String description, Long price, String feeType, Category category){
-        return dataSource.saveItem(name, description, price, feeType, category);
+    public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
+        dataSource.saveItem(item, saveItemResult);
     }
 
 }

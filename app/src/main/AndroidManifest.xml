@@ -8,18 +8,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.item_information.ItemInformationActivity" />
-        <activity android:name=".ui.new_item.ItemFormActivity" />
-        <activity android:name=".ui.rental_form.RentalFormActivity" />
-        <activity android:name=".ui.rent_item_details.RentItemDetailsActivity" />
+        <activity android:name=".ui.activities.item_information.ItemInformationActivity" />
+        <activity android:name=".ui.activities.new_item.ItemFormActivity" />
+        <activity android:name=".ui.activities.rental_form.RentalFormActivity" />
+        <activity android:name=".ui.activities.rent_item_details.RentItemDetailsActivity" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.activities.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.auth.signup.SignUpActivity"
+            android:name=".ui.activities.auth.signup.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.auth.login.LoginActivity"
+            android:name=".ui.activities.auth.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

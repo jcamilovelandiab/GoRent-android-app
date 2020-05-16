@@ -1,14 +1,14 @@
 package com.app.gorent.data.repositories;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.Result;
 
 import java.util.Date;
-import java.util.List;
 
 public class ItemLendingRepository {
 
@@ -26,20 +26,12 @@ public class ItemLendingRepository {
         return instance;
     }
 
-    public Result<String> rentItemByUser(Date dueDate, Long totalPrice, Item item){
-        return dataSource.rentItemByUser(dueDate, totalPrice,item);
+    public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user, MutableLiveData<BasicResult> rentItemResult){
+        dataSource.rentItemByUser(dueDate, totalPrice,item, user, rentItemResult);
     }
 
-    public Result<String> returnItem(ItemLending itemLending){
-        return dataSource.returnItem(itemLending);
-    }
-
-    public List<ItemLending> getLentItemHistoryOfLoggedUser(){
-        return dataSource.getLentItemHistoryOfLoggedUser();
-    }
-
-    public List<ItemLending> getRentedItemHistoryOfLoggedUser(){
-        return dataSource.getRentedItemHistoryOfLoggedUser();
+    public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnItemResult){
+        dataSource.returnItem(itemLending, returnItemResult);
     }
 
 }

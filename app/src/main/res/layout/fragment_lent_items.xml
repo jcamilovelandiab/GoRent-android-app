@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.lent_items_history.LentItemsFragment"
+    tools:context=".ui.activities.main.lent_items_history.LentItemsFragment"
     android:background="#E4E3E3">
 
     <ListView

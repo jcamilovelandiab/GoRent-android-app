@@ -1,23 +1,31 @@
 package com.app.gorent.data.storage;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.app.gorent.R;
 import com.app.gorent.data.model.Category;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.model.User;
+import com.app.gorent.utils.AuthResult;
+import com.app.gorent.ui.activities.auth.LoggedInUserView;
+import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.CategoryListQueryResult;
+import com.app.gorent.utils.CategoryQueryResult;
+import com.app.gorent.utils.ItemLendingQueryResult;
+import com.app.gorent.utils.ItemListQueryResult;
+import com.app.gorent.utils.ItemQueryResult;
 import com.app.gorent.utils.Result;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.sql.DataSource;
 
 
 /**
@@ -32,7 +40,6 @@ public class DataSourceCache {
     private static Map<Long, Item> itemsMp = new HashMap<>();
     private static Map<String, ItemOwner> itemOwnersMp = new HashMap<>();
     private static Map<String, User> usersMp = new HashMap<>();
-    private static User loggedUser = null;
 
     public static DataSourceCache instance=null;
 
@@ -46,8 +53,8 @@ public class DataSourceCache {
     private DataSourceCache(){
         User user1 = new User("Juan Felipe","juan@mail.com", "juan123");
         User user2 = new User("Juan Camilo","camilo@mail.com", "camilo123");
-        signUp(user1);
-        signUp(user2);
+        usersMp.put(user1.getEmail(), user1);
+        usersMp.put(user2.getEmail(), user2);
         ItemOwner itemOwner1 = new ItemOwner(user1.getEmail(),user1.getFull_name());
         ItemOwner itemOwner2 = new ItemOwner(user2.getEmail(),user2.getFull_name());
         saveItemOwner(itemOwner1);
@@ -57,10 +64,11 @@ public class DataSourceCache {
         Category category2 = new Category("cars", "Luxury cars. Lamborghini");
         Category category3 = new Category("pianos", "Grand piano");
         Category category4 = new Category("laptops", "Lenovo Computers");
-        saveCategory(category1);
-        saveCategory(category2);
-        saveCategory(category3);
-        saveCategory(category4);
+        MutableLiveData<BasicResult> basicResult = new MutableLiveData<>();
+        saveCategory(category1, basicResult);
+        saveCategory(category2, basicResult);
+        saveCategory(category3, basicResult);
+        saveCategory(category4, basicResult);
 
         Item item1 = new Item("Lenovo legion","Legion Y15. RAM 16GB, Almacenamiento 1TB",
                 3000L,"day", category4, itemOwner1);
@@ -70,10 +78,10 @@ public class DataSourceCache {
                 370000L, "week", category2, itemOwner2);
         Item item4 = new Item("Pristine 1927 Steinway M","Piano was built in 1976 and is an exceptional piano which needs nothing.",
                 374869L, "month",category3, itemOwner1);
-        saveItem(item1);
-        saveItem(item2);
-        saveItem(item3);
-        saveItem(item4);
+        saveItem(item1, basicResult);
+        saveItem(item2, basicResult);
+        saveItem(item3, basicResult);
+        saveItem(item4, basicResult);
 
         Calendar c1= Calendar.getInstance();
         c1.add(Calendar.DATE, 30);
@@ -83,57 +91,50 @@ public class DataSourceCache {
         c2.add(Calendar.DATE, 10);
         Date dueDate2=c2.getTime();
 
-        loggedUser = usersMp.get(user2.getEmail());
-        rentItemByUser(dueDate1,10000L, item1);
-        rentItemByUser(dueDate2,15000L, item2);
-        rentItemByUser(dueDate1,20000L, item4);
-        loggedUser = usersMp.get(user1.getEmail());
-        rentItemByUser(dueDate2,15000L,item3);
-        loggedUser = null;
-
+        rentItemByUser(dueDate1,10000L, item1, user2, basicResult);
+        rentItemByUser(dueDate2,15000L, item2,user2, basicResult);
+        rentItemByUser(dueDate1,20000L, item4, user2, basicResult);
+        rentItemByUser(dueDate2,15000L,item3, user1, basicResult);
     }
-    // Users
-    public Result<LoggedInUser> login(String email, String password) {
+    /* -------------------------------------------------------------------------- */
+    /*                                USERS                                */
+    /* -------------------------------------------------------------------------- */
+    public void login(String email, String password, MutableLiveData<AuthResult> authResult) {
         try {
             // TODO: handle loggedInUser authentication
             if(usersMp.containsKey(email) && usersMp.get(email).getPassword().equals(password)){
-                loggedUser = usersMp.get(email);
+                User loggedUser = usersMp.get(email);
                 //String first_name = loggedUser.getFull_name().split(" ")[0];
                 LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
-                return new Result.Success<>(loggedInUser);
+                Session.setLoggedInUser(loggedInUser);
+                authResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
             }
-            return new Result.Error(new IOException("Invalid login"));
+            authResult.setValue(new AuthResult(R.string.login_failed));
         } catch (Exception e) {
-            return new Result.Error(new IOException("Error logging in", e));
+            authResult.setValue(new AuthResult(R.string.error_logging_in));
         }
     }
 
-    public Result<LoggedInUser> signUp(User user){
+    public void signUp(User user, MutableLiveData<AuthResult> authResult){
         if(usersMp.containsKey(user.getEmail())){
-            return new Result.Error(new IOException("Email has been already taken!"));
+            authResult.setValue(new AuthResult(R.string.error_email_already_taken));
+            return;
         }
-        loggedUser = user;
-        loggedUser.setUserId(java.util.UUID.randomUUID().toString());
         usersMp.put(user.getEmail(), user);
+        LoggedInUser loggedInUser = new LoggedInUser(user.getEmail()+"", user.getFull_name()+"");
         //String first_name = loggedUser.getFull_name().split(" ")[0];
-        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
-        return new Result.Success<>(loggedInUser);
+        Session.setLoggedInUser(loggedInUser);
+        authResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
     }
 
     public void logout() {
-        loggedUser = null;
+        //loggedUser = null;
     }
 
-    public User updateUser(User user){
-        if(usersMp.containsKey(user.getEmail())){
-            usersMp.put(user.getEmail(), user);
-            return usersMp.get(user.getEmail());
-        }
-        return null;
-    }
-
-    // Items and ItemLending
-    public List<Item> getAvailableItems(){
+    /* -------------------------------------------------------------------------- */
+    /*                                ITEM                                */
+    /* -------------------------------------------------------------------------- */
+    public void getAvailableItems(MutableLiveData<ItemListQueryResult> itemListQueryResult){
         List<Item> availableItems = new ArrayList<>();
         for (Map.Entry<Long, Item> entryItem: itemsMp.entrySet()) {
             Long itemId = entryItem.getKey();
@@ -149,148 +150,120 @@ public class DataSourceCache {
                 availableItems.add(entryItem.getValue());
             }
         }
-        return availableItems;
+        itemListQueryResult.setValue(new ItemListQueryResult(availableItems));
     }
 
-    public Item getItemById(Long id){
+    public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
         if(itemsMp.containsKey(id)){
-            return itemsMp.get(id);
+            itemQueryResult.setValue(new ItemQueryResult(itemsMp.get(id)));
+        }else{
+            itemQueryResult.setValue(new ItemQueryResult(R.string.error_item_not_found));
         }
-        return null;
     }
 
-    public List<Item> getItemsByName(String name){
+    public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemsQueryResult){
         List<Item> itemList = new ArrayList<>();
         for (Map.Entry<Long,Item> entry: itemsMp.entrySet()) {
             if(entry.getValue().getName().equals(name)){
                 itemList.add(entry.getValue());
             }
         }
-        return itemList;
+        itemsQueryResult.setValue(new ItemListQueryResult(itemList));
     }
 
-    public List<Item> getItemsByCategory(String nameCategory){
+    public void getItemsByCategory(String nameCategory, MutableLiveData<ItemListQueryResult> itemsQueryResult){
         List<Item> itemList = new ArrayList<>();
         for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
             if(entry.getValue().getCategory().getName().equals(nameCategory)){
                 itemList.add(entry.getValue());
             }
         }
-        return itemList;
+        itemsQueryResult.setValue(new ItemListQueryResult(itemList));
     }
 
-    public List<Item> getItemsByEmailOwner(String email){
-        List<Item> itemList = new ArrayList<>();
-        for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
-            if(entry.getValue().getItemOwner().getEmail().equals(email)){
-                itemList.add(entry.getValue());
+    public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemsQueryResult){
+        if(!itemOwnersMp.containsKey(itemOwner.getEmail())){
+            itemsQueryResult.setValue(new ItemListQueryResult(R.string.error_item_owner_doesnt_exist));
+        }else {
+            List<Item> itemList = new ArrayList<>();
+            for (Map.Entry<Long, Item> entry : itemsMp.entrySet()) {
+                if (entry.getValue().getItemOwner().getEmail().equals(itemOwner.getEmail())) {
+                    itemList.add(entry.getValue());
+                }
             }
+            itemsQueryResult.setValue(new ItemListQueryResult(itemList));
         }
-        return itemList;
     }
 
-    public List<Item> getItemsOfLoggedUser(){
-        List<Item> itemList = new ArrayList<>();
-        for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
-            if(entry.getValue().getItemOwner().getEmail().equals(loggedUser.getEmail())){
-                itemList.add(entry.getValue());
+    /* -------------------------------------------------------------------------- */
+    /*                                ITEM LENDING                                */
+    /* -------------------------------------------------------------------------- */
+    public void getListItemLendingByOwner(ItemOwner owner, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+        if(!itemOwnersMp.containsKey(owner.getEmail())) {
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_doesnt_exist));
+        }else {
+            List<ItemLending> itemLendingList = new ArrayList<>();
+            for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
+                if (entry.getValue().getItem().getItemOwner().getEmail().equals(owner.getEmail())) {
+                    itemLendingList.add(entry.getValue());
+                }
             }
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLendingList));
         }
-        return itemList;
     }
 
-    public ItemOwner getItemOwnerById(Long id){
-        if(itemOwnersMp.containsKey(id)){
-            return itemOwnersMp.get(id);
-        }
-        return null;
-    }
+    /* -------------------------------------------------------------------------- */
 
-    public List<ItemLending> getListItemLendingByEmailOwner(String email){
-        if(!itemOwnersMp.containsKey(email)) return null; //the owner does not exist
-        List<ItemLending> itemList = new ArrayList<>();
-        for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
-            if(entry.getValue().getItem().getItemOwner().getEmail().equals(email)){
-                itemList.add(entry.getValue());
+    public void getRentedItemHistoryByRentalUser(User user, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+        if(!usersMp.containsKey(user.getEmail())){
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_doesnt_exist));
+        }else {
+            List<ItemLending> itemLendingList = new ArrayList<>();
+            for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
+                if (entry.getValue().getRenter().getEmail().equals(user.getEmail())) {
+                    itemLendingList.add(entry.getValue());
+                }
             }
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLendingList));
         }
-        return itemList;
     }
 
-    public List<ItemLending> getListItemLendingByEmailRenter(String email){
-        if(!usersMp.containsKey(email)) return null; //the renter does not exist
-        List<ItemLending> listItemLending = new ArrayList<>();
-        for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
-            if(entry.getValue().getRenter().getEmail().equals(email)){
-                listItemLending.add(entry.getValue());
-            }
-        }
-        return listItemLending;
-    }
-
-    public List<ItemLending> getLentItemHistoryOfLoggedUser(){
-        List<ItemLending> itemList = new ArrayList<>();
-        for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
-            if(entry.getValue().getItem().getItemOwner().getEmail().equals(loggedUser.getEmail())){
-                itemList.add(entry.getValue());
-            }
-        }
-        return itemList;
-    }
-
-    public List<ItemLending> getRentedItemHistoryOfLoggedUser(){
-        List<ItemLending> listItemLending = new ArrayList<>();
-        for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
-            if(entry.getValue().getRenter().getEmail().equals(loggedUser.getEmail())){
-                listItemLending.add(entry.getValue());
-            }
-        }
-        return listItemLending;
-    }
-
-    public Result<String> rentItemByUser(Date dueDate, Long totalPrice, Item item){
-        User renter = new User(loggedUser.getFull_name()+"", loggedUser.getEmail()+"");
+    public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user, MutableLiveData<BasicResult> rentalResult){
+        User renter = new User(user.getFull_name()+"", user.getEmail()+"");
         ItemLending itemLending = new ItemLending(new Date(), dueDate,totalPrice,item, renter);
         itemLending.setId(++itemLendingCounter);
         itemLendingMp.put(itemLending.getId(), itemLending);
         if(itemLendingMp.containsKey(itemLending.getId()) && itemLendingMp.get(itemLending.getId())!=null){
-            return new Result.Success<>("Item was successfully rented");
+            rentalResult.setValue(new BasicResult("Item was successfully rented!"));
         }else{
-            return new Result.Error(new IOException("Error renting item"));
+            rentalResult.setValue(new BasicResult(R.string.error_renting_item));
         }
     }
 
-    public Result<String> returnItem(ItemLending itemLending){
+    public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnResult){
         if(itemLendingMp.containsKey(itemLending.getId())){
             ItemLending new_element = itemLendingMp.get(itemLending.getId());
             new_element.setReturnDate(itemLending.getReturnDate());
             itemLendingMp.put(itemLending.getId(), new_element);
-            return new Result.Success<>("Item was successfully returned");
+            returnResult.setValue(new BasicResult("Item was successfully returned!"));
         }else{
-            return new Result.Error(new IOException("Error returning item"));
+            returnResult.setValue(new BasicResult(R.string.error_returning_item));
         }
     }
 
-    public Result<String> saveItem(String name, String description, Long price, String feeType, Category category){
-        ItemOwner itemOwner = new ItemOwner(loggedUser.getEmail(), loggedUser.getFull_name());
-        Item item = new Item(name+"", description+"", price+0L, feeType+"", category,itemOwner);
+    public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
         item.setId(++itemCounter);
         itemsMp.put(item.getId(), item);
-        return new Result.Success<>("Item successfully saved");
+        saveItemResult.setValue(new BasicResult("Item successfully saved"));
     }
 
-    public Result<String> saveItem(Item item){
-        item.setId(++itemCounter);
-        itemsMp.put(item.getId(), item);
-        return new Result.Success<>("Item successfully saved");
-    }
-
-    public Item updateItem(Item item){
+    public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
         if(itemsMp.containsKey(item.getId())){
             itemsMp.put(item.getId(), item);
-            return itemsMp.get(item.getId());
+            updateItemResult.setValue(new BasicResult("Item successfully updated"));
+        }else{
+            updateItemResult.setValue(new BasicResult(R.string.error_updating_item));
         }
-        return null;
     }
 
     // ItemOwner
@@ -307,27 +280,28 @@ public class DataSourceCache {
     }
 
     //Category
-    private Category saveCategory(Category category){
+    private void saveCategory(Category category, MutableLiveData<BasicResult> saveCategoryResult){
         category.setId(++categoryCounter);
         categoriesMp.put(category.getId(), category);
-        return categoriesMp.get(category.getId());
+        saveCategoryResult.setValue(new BasicResult("Category successfully saved"));
     }
 
-    public List<String> getNameCategories(){
-        List<String> nameCategoryList = new ArrayList<>();
+    public void getCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
+        List<Category> categoryList = new ArrayList<>();
         for(Map.Entry<Long, Category> entry: categoriesMp.entrySet()){
-            nameCategoryList.add(entry.getValue().getName());
+            categoryList.add(entry.getValue());
         }
-        return nameCategoryList;
+        categoryListQueryResult.setValue(new CategoryListQueryResult(categoryList));
     }
 
-    public Category getCategoryByName(String nameCategory){
+    public void getCategoryByName(String nameCategory, MutableLiveData<CategoryQueryResult> categoryQueryResult){
         for (Map.Entry<Long, Category> entry: categoriesMp.entrySet()){
             if(entry.getValue().getName().equals(nameCategory)){
-                return entry.getValue();
+                categoryQueryResult.setValue(new CategoryQueryResult(entry.getValue()));
+                return;
             }
         }
-        return null;
+        categoryQueryResult.setValue(new CategoryQueryResult(R.string.error_category_not_found));
     }
 
 }

@@ -43,7 +43,10 @@
     <string name="invalid_item_category">Not a valid category</string>
 
     <string name="login_failed">"Login failed"</string>
+    <string name="error_logging_in">Error logging in</string>
+    <string name="error_email_already_taken">Whoops!!. Email has been already taken!</string>
     <string name="sign_up_failed">Sign up failed</string>
+    <string name="error_signing_up">Error signing up</string>
     <string name="server_error_message">Error connecting to the server. Please try again</string>
     <string name="rental_failed">Error trying to rent the item. Please try again</string>
 
@@ -91,7 +94,7 @@
     <string name="professor_label">Profesor</string>
     <string name="profesor">M. en C. Rocio Elizabeth Pulido Alba</string>
     <string name="major_label">Carrera:</string>
-    <string name="major">Ingeniería en Sistemas Computacionales</string>
+    <string name="major">TICs e Ingeniería en Sistemas Computacionales</string>
     <string name="class_name">Desarrollo de Aplicaciones Móviles</string>
     <string name="class_label">Materia:</string>
     <string name="semester">Semestre: Enero - Junio</string>
@@ -102,4 +105,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_item_not_found">Item not found</string>
+    <string name="error_item_owner_doesnt_exist">Item owner doesn\'t exist</string>
+    <string name="error_renting_item">An error ocurred while renting item. Please try again</string>
+    <string name="error_returning_item">An error ocurred while returning item</string>
+    <string name="error_updating_item">An error occurred while updating item</string>
+    <string name="error_saving_item">An error occurred while saving item</string>
+    <string name="error_category_not_found">Category not found</string>
 </resources>

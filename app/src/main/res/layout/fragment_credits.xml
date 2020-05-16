@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.credits.CreditsFragment">
+    tools:context=".ui.activities.main.credits.CreditsFragment">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,13 +35,22 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/proyecto_final"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Proyecto Final"
+                    android:textSize="20sp"
+                    android:textStyle="normal|bold" />
+
+                <TextView
                     android:id="@+id/creditos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/title_credits"
                     android:textColor="#DF0A0A"
-                    android:textSize="36sp"
+                    android:textSize="24sp"
                     android:textStyle="normal|bold" />
 
             </LinearLayout>
