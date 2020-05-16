@@ -198,7 +198,7 @@ public class DataSourceCache {
     /* -------------------------------------------------------------------------- */
     /*                                ITEM LENDING                                */
     /* -------------------------------------------------------------------------- */
-    public void getListItemLendingByOwner(ItemOwner owner, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+    public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
         if(!itemOwnersMp.containsKey(owner.getEmail())) {
             itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_doesnt_exist));
         }else {
@@ -214,7 +214,7 @@ public class DataSourceCache {
 
     /* -------------------------------------------------------------------------- */
 
-    public void getRentedItemHistoryByRentalUser(User user, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+    public void getItemLendingHistoryByRentalUser(User user, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
         if(!usersMp.containsKey(user.getEmail())){
             itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_doesnt_exist));
         }else {
@@ -268,13 +268,13 @@ public class DataSourceCache {
 
     // ItemOwner
     public ItemOwner saveItemOwner(ItemOwner itemOwner){
-        itemOwnersMp.put(itemOwner.getUserId(), itemOwner);
-        return itemOwnersMp.get(itemOwner.getUserId());
+        itemOwnersMp.put(itemOwner.getEmail(), itemOwner);
+        return itemOwnersMp.get(itemOwner.getEmail());
     }
 
     public Item updateItemOwner(ItemOwner itemOwner){
-        if(itemOwnersMp.containsKey(itemOwner.getUserId())){
-            itemOwnersMp.put(itemOwner.getUserId(), itemOwner);
+        if(itemOwnersMp.containsKey(itemOwner.getEmail())){
+            itemOwnersMp.put(itemOwner.getEmail(), itemOwner);
         }
         return null;
     }

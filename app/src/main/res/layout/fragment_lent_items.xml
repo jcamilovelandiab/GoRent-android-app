@@ -7,10 +7,25 @@
     tools:context=".ui.activities.main.lent_items_history.LentItemsFragment"
     android:background="#E4E3E3">
 
-    <ListView
-        android:id="@+id/lent_items_lv_item_lending_list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lent_items_rv_item_lending_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="?attr/actionBarSize">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/lent_items_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/lent_items_rv_item_lending_list"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

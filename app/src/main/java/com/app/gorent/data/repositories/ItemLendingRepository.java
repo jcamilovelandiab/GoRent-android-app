@@ -4,9 +4,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
+import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.ItemLendingQueryResult;
 
 import java.util.Date;
 
@@ -32,6 +34,14 @@ public class ItemLendingRepository {
 
     public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnItemResult){
         dataSource.returnItem(itemLending, returnItemResult);
+    }
+
+    public void getItemLendingHistoryByOwner(ItemOwner itemOwner, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+        dataSource.getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
+    }
+
+    public void getItemLendingHistoryByRentalUser(User rentalUser, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+        dataSource.getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
     }
 
 }

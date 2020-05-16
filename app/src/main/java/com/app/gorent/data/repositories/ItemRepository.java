@@ -3,6 +3,7 @@ package com.app.gorent.data.repositories;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.Item;
+import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.ItemListQueryResult;
@@ -42,6 +43,10 @@ public class ItemRepository {
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
         dataSource.saveItem(item, saveItemResult);
+    }
+
+    public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        dataSource.getItemsByOwner(itemOwner, itemListQueryResult);
     }
 
 }

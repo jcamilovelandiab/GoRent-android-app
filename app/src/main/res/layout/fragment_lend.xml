@@ -12,6 +12,17 @@
         android:layout_height="wrap_content">
     </ListView>
 
+    <ProgressBar
+        android:id="@+id/lend_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/lend_item_my_item_list"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_gravity ="center"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_bar_style"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/lend_item_fab_add"
         android:layout_width="wrap_content"
