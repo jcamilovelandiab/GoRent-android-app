@@ -69,13 +69,13 @@ public class DataSourceCache {
         saveCategory(category4, basicResult);
 
         Item item1 = new Item("Lenovo legion","Legion Y15. RAM 16GB, Almacenamiento 1TB",
-                3000L,"day", category4, itemOwner1);
+                3000L,"Daily fee", category4, itemOwner1);
         Item item2 = new Item("Rest house","Palm Beach Gardens UT, United States",
-                10000000L, "month",category1, itemOwner1);
-        Item item3 = new Item("Lamborghini Gallardo Spyder","Lamborghini Gallardo Lp-560-4 Mod 2013\n",
-                370000L, "week", category2, itemOwner2);
+                10000000L, "Monthly fee",category1, itemOwner1);
+        Item item3 = new Item("Lamborghini Gallardo Spyder","Lamborghini Gallardo Lp-560-4 Mod 2013",
+                370000L, "Weekly fee", category2, itemOwner2);
         Item item4 = new Item("Pristine 1927 Steinway M","Piano was built in 1976 and is an exceptional piano which needs nothing.",
-                374869L, "month",category3, itemOwner1);
+                374869L, "Monthly fee",category3, itemOwner1);
         saveItem(item1, basicResult);
         saveItem(item2, basicResult);
         saveItem(item3, basicResult);
@@ -261,7 +261,7 @@ public class DataSourceCache {
             itemsMp.put(item.getId(), item);
             updateItemResult.setValue(new BasicResult("Item successfully updated"));
         }else{
-            updateItemResult.setValue(new BasicResult(R.string.error_updating_item));
+            updateItemResult.setValue(new BasicResult(R.string.error_item_not_found));
         }
     }
 
@@ -313,5 +313,23 @@ public class DataSourceCache {
             }
         }
         itemListQueryResult.setValue(new ItemListQueryResult(itemList));
+    }
+
+    public void deleteItem(Long itemId, MutableLiveData<BasicResult> deleteItemResult) {
+        if(itemsMp.containsKey(itemId)){
+            boolean hasHistory = false;
+            for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
+                if(entry.getValue().getItem().getId().equals(itemId)){
+                    hasHistory = true; break;
+                }
+            }
+            if(hasHistory){
+                deleteItemResult.setValue(new BasicResult(R.string.error_item_has_history));
+            }else{
+                deleteItemResult.setValue(new BasicResult("Item successfully deleted"));
+            }
+        }else{
+            deleteItemResult.setValue(new BasicResult(R.string.error_item_not_found));
+        }
     }
 }

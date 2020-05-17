@@ -25,7 +25,7 @@ public class CategoryRepository {
         return instance;
     }
 
-    public void getNameCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
+    public void getCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
         dataSourceCache.getCategories(categoryListQueryResult);
     }
 

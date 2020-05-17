@@ -8,6 +8,7 @@
     <string-array name="fee_types">
         <item>Select fee type</item>
         <item>Daily fee</item>
+        <item>Weekly fee</item>
         <item>Monthly fee</item>
     </string-array>
 

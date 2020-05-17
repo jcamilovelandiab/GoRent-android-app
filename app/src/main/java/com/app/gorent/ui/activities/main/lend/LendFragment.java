@@ -21,7 +21,7 @@ import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
 import com.app.gorent.ui.activities.item_information.ItemInformationActivity;
-import com.app.gorent.ui.activities.new_item.ItemFormActivity;
+import com.app.gorent.ui.activities.item_form.ItemFormActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.ItemListQueryResult;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -95,4 +95,9 @@ public class LendFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        lendViewModel.findMyItems();
+        super.onResume();
+    }
 }

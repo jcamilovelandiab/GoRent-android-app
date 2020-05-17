@@ -1,4 +1,4 @@
-package com.app.gorent.ui.activities.new_item;
+package com.app.gorent.ui.activities.item_form;
 
 import androidx.annotation.Nullable;
 

@@ -48,4 +48,10 @@ public class Validator {
         return string.matches(regex);
     }
 
+    public static boolean isStringValid(String description){
+        if(description.length()<5) return false;
+        String regex = "^[\\p{L} 0-9]+[\\p{L} \n 0-9,#;¿=?_()/%!&:$.'-]*$";
+        return description.matches(regex);
+    }
+
 }

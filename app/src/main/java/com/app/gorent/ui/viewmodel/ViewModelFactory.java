@@ -12,7 +12,7 @@ import com.app.gorent.data.repositories.UserRepository;
 import com.app.gorent.ui.activities.auth.login.LoginViewModel;
 import com.app.gorent.ui.activities.auth.signup.SignUpViewModel;
 import com.app.gorent.ui.activities.item_information.ItemInformationViewModel;
-import com.app.gorent.ui.activities.new_item.ItemFormViewModel;
+import com.app.gorent.ui.activities.item_form.ItemFormViewModel;
 import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsViewModel;
 import com.app.gorent.ui.activities.main.lend.LendViewModel;
 import com.app.gorent.ui.activities.main.lent_items_history.LentItemsViewModel;
@@ -52,7 +52,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         } else if(modelClass.isAssignableFrom(LendViewModel.class)){
             return (T) new LendViewModel(ItemRepository.getInstance(dataSourceCache));
         }else if(modelClass.isAssignableFrom(ItemInformationViewModel.class)){
-            return (T) new ItemInformationViewModel(ItemRepository.getInstance(dataSourceCache));
+            return (T) new ItemInformationViewModel(ItemRepository.getInstance(dataSourceCache),
+                    CategoryRepository.getInstance(dataSourceCache));
         }else if(modelClass.isAssignableFrom(ItemFormViewModel.class)){
             return (T) new ItemFormViewModel(ItemRepository.getInstance(dataSourceCache),
                     CategoryRepository.getInstance(dataSourceCache));

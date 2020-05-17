@@ -19,12 +19,17 @@ public class LendViewModel extends ViewModel {
 
     public LendViewModel(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
-        ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
-        itemRepository.getItemsByOwner(itemOwner, itemListQueryResult);
+        findMyItems();
     }
 
     public MutableLiveData<ItemListQueryResult> getItemListQueryResult() {
         return itemListQueryResult;
     }
+
+    public void findMyItems(){
+        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
+        itemRepository.getItemsByOwner(itemOwner, itemListQueryResult);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.app.gorent.ui.activities.new_item;
+package com.app.gorent.ui.activities.item_form;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,13 +9,11 @@ import com.app.gorent.data.model.Category;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
-import com.app.gorent.data.model.User;
 import com.app.gorent.data.repositories.CategoryRepository;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.storage.Session;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.CategoryListQueryResult;
-import com.app.gorent.utils.Result;
 import com.app.gorent.utils.Validator;
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class ItemFormViewModel extends ViewModel {
     public ItemFormViewModel(ItemRepository itemRepository, CategoryRepository categoryRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
-        this.categoryRepository.getNameCategories(categoryListQueryResult);
+        this.categoryRepository.getCategories(categoryListQueryResult);
     }
 
     public LiveData<ItemFormState> getItemFormState() {
@@ -52,7 +50,7 @@ public class ItemFormViewModel extends ViewModel {
             itemFormState.setValue(new ItemFormState(R.string.invalid_item_name,
                     null, null,
                     null, null));
-        }else if(!Validator.isDescriptionValid(description)){
+        }else if(!Validator.isStringValid(description)){
             itemFormState.setValue(new ItemFormState(null,
                     R.string.invalid_item_description,
                     null, null, null));

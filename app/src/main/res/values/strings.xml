@@ -109,5 +109,6 @@
     <string name="student2">Juan Jose Hernandez Arreola</string>
     <string name="student3">Arantza Reveles Nieto</string>
     <string name="label_rental_information">Rental information</string>
+    <string name="error_item_has_history">The item cannot be deleted because it has a lending history</string>
 
 </resources>
