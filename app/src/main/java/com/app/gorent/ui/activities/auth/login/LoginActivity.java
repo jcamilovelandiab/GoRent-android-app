@@ -86,9 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel.getLoginResult().observe(this, new Observer<AuthResult>() {
             @Override
             public void onChanged(@Nullable AuthResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
+                if (loginResult == null) return;
                 loadingProgressBar.setVisibility(View.GONE);
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());

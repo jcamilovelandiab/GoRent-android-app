@@ -106,8 +106,9 @@ public class DataSourceCache {
                 LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
                 Session.setLoggedInUser(loggedInUser);
                 authResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
+            }else{
+                authResult.setValue(new AuthResult(R.string.login_failed));
             }
-            authResult.setValue(new AuthResult(R.string.login_failed));
         } catch (Exception e) {
             authResult.setValue(new AuthResult(R.string.error_logging_in));
         }
