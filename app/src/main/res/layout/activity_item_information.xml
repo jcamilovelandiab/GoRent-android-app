@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/create_item_form_iv_picture"
+            android:id="@+id/item_info_iv_item_picture"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:src="@drawable/camera"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_item_form_name"
+                android:id="@+id/item_info_et_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_item_name"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_item_form_description"
+                android:id="@+id/item_info_et_item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_item_description"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/create_item_form_price"
+                android:id="@+id/item_info_et_item_price"
                 android:focusable="false"
                 android:enabled="false"
                 android:layout_width="match_parent"
@@ -66,14 +66,14 @@
 
         <Spinner
             android:focusable="false"
-            android:id="@+id/create_item_form_category"
+            android:id="@+id/item_info_sp_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:entries="@array/categories" />
 
         <LinearLayout
-            android:id="@+id/item_information_layout_update_buttons"
+            android:id="@+id/item_info_layout_update_buttons"
             android:visibility="gone"
             android:layout_margin="20dp"
             android:orientation="horizontal"
@@ -84,7 +84,7 @@
                 android:layout_margin="5dp"
                 android:enabled="false"
                 android:text="@string/action_update"
-                android:id="@+id/item_information_btn_update"
+                android:id="@+id/item_info_btn_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_round"
@@ -95,7 +95,7 @@
                 android:layout_margin="5dp"
                 android:enabled="false"
                 android:text="@string/action_cancel"
-                android:id="@+id/item_information_btn_cancel"
+                android:id="@+id/item_info_btn_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/white_button_round"
@@ -106,5 +106,18 @@
 
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/item_info_pg_loading"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:progressDrawable="@drawable/progress_bar_style"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
