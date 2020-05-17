@@ -18,14 +18,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
+import com.app.gorent.data.model.Category;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
+import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.CategoryListQueryResult;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemFormActivity extends AppCompatActivity {
 
@@ -35,6 +40,7 @@ public class ItemFormActivity extends AppCompatActivity {
     Spinner sp_category, sp_fee_type;
     String category="", feeType="", picture_path="", current_picture_path="";
     Button btn_save;
+    ProgressBar pg_loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +52,62 @@ public class ItemFormActivity extends AppCompatActivity {
         itemFormViewModel = ViewModelProviders.of(this,new ViewModelFactory()).get(ItemFormViewModel.class);
 
         connectModelWithView();
-        configureSpCategory();
         configureSpFeeType();
         configureTextWatchers();
         configureItemFormStateObserver();
+        configureItemFormResultObserver();
+        configureCategoriesObserver();
         configureBtnSave();
+    }
+
+    private void connectModelWithView() {
+        iv_item_picture = findViewById(R.id.create_item_form_iv_picture);
+        et_item_name = findViewById(R.id.create_item_form_et_name);
+        et_item_description = findViewById(R.id.create_item_form_et_description);
+        et_item_price = findViewById(R.id.create_item_form_et_price);
+        sp_category = findViewById(R.id.create_item_form_sp_category);
+        sp_fee_type = findViewById(R.id.create_item_form_sp_fee_type);
+        btn_save = findViewById(R.id.create_item_form_btn_save);
+        pg_loading = findViewById(R.id.create_item_form_pg_loading);
     }
 
     private void configureBtnSave() {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pg_loading.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 
+    private void configureCategoriesObserver(){
+        itemFormViewModel.getCategoryListQueryResult().observe(this, new Observer<CategoryListQueryResult>() {
+            @Override
+            public void onChanged(CategoryListQueryResult categoryListQueryResult) {
+                if(categoryListQueryResult==null) return;
+                pg_loading.setVisibility(View.GONE);
+                if(categoryListQueryResult.getError()!=null){
+                    showErrorMessage(getString(categoryListQueryResult.getError()));
+                }
+                if(categoryListQueryResult.getCategoryList()!=null){
+                    configureSpCategory(categoryListQueryResult.getCategoryList());
+                }
+            }
+        });
+    }
+
+    private void configureItemFormResultObserver(){
+        itemFormViewModel.getItemFormResult().observe(this, new Observer<BasicResult>() {
+            @Override
+            public void onChanged(BasicResult basicResult) {
+                if(basicResult==null) return;
+                pg_loading.setVisibility(View.GONE);
+                if(basicResult.getError()!=null){
+                    showErrorMessage(getString(basicResult.getError()));
+                }
+                if(basicResult.getSuccess()!=null){
+                    showMessage(basicResult.getSuccess());
+                }
             }
         });
     }
@@ -88,25 +138,16 @@ public class ItemFormActivity extends AppCompatActivity {
         });
     }
 
-    private void connectModelWithView() {
-        iv_item_picture = findViewById(R.id.create_item_form_iv_picture);
-        et_item_name = findViewById(R.id.create_item_form_et_name);
-        et_item_description = findViewById(R.id.create_item_form_et_description);
-        et_item_price = findViewById(R.id.create_item_form_et_price);
-        sp_category = findViewById(R.id.create_item_form_sp_category);
-        sp_fee_type = findViewById(R.id.create_item_form_sp_fee_type);
-        btn_save = findViewById(R.id.create_item_form_btn_save);
-    }
-
-    private void configureSpCategory() {
+    private void configureSpCategory(List<Category> categories) {
         ArrayList<String> nameCategories = new ArrayList<>();
         nameCategories.add("Select a category");
-        nameCategories.addAll(itemFormViewModel.getCategories());
+        for(Category c: categories){
+            nameCategories.add(c.getName());
+        }
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, nameCategories);
         sp_category.setAdapter(categoryAdapter);
         categoryAdapter.notifyDataSetChanged();
         sp_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position!=0){
@@ -115,14 +156,12 @@ public class ItemFormActivity extends AppCompatActivity {
                     itemFormViewModel.dataChanged(et_item_name.getText().toString()+"",
                             et_item_description.getText().toString()+"",
                             et_item_price.getText().toString()+"",
-                            feeType, category);
+                            feeType+"", category+"");
                 }
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -137,13 +176,12 @@ public class ItemFormActivity extends AppCompatActivity {
                     itemFormViewModel.dataChanged(et_item_name.getText().toString()+"",
                             et_item_description.getText().toString()+"",
                             et_item_price.getText().toString()+"",
-                            feeType, category);
+                            feeType+"", category+"");
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
 
         });
@@ -160,12 +198,10 @@ public class ItemFormActivity extends AppCompatActivity {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
@@ -173,7 +209,7 @@ public class ItemFormActivity extends AppCompatActivity {
                 itemFormViewModel.dataChanged(et_item_name.getText().toString()+"",
                                             et_item_description.getText().toString()+"",
                                                         et_item_price.getText().toString()+"",
-                                                    feeType, category);
+                                                    feeType+"", category+"");
             }
         };
         et_item_name.addTextChangedListener(textWatcher);

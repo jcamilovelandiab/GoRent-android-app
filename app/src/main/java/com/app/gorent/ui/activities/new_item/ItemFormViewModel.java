@@ -6,9 +6,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.Category;
+import com.app.gorent.data.model.Item;
+import com.app.gorent.data.model.ItemOwner;
+import com.app.gorent.data.model.LoggedInUser;
+import com.app.gorent.data.model.User;
 import com.app.gorent.data.repositories.CategoryRepository;
 import com.app.gorent.data.repositories.ItemRepository;
+import com.app.gorent.data.storage.Session;
 import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.CategoryListQueryResult;
 import com.app.gorent.utils.Result;
 import com.app.gorent.utils.Validator;
 
@@ -18,18 +24,15 @@ public class ItemFormViewModel extends ViewModel {
 
     private MutableLiveData<ItemFormState> itemFormState = new MutableLiveData<>();
     private MutableLiveData<BasicResult> itemFormResult = new MutableLiveData<>();
+    private MutableLiveData<CategoryListQueryResult> categoryListQueryResult = new MutableLiveData<>();
+
     private ItemRepository itemRepository;
     private CategoryRepository categoryRepository;
-    private Category category;
 
     public ItemFormViewModel(ItemRepository itemRepository, CategoryRepository categoryRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
-    }
-
-    List<String> getCategories(){
-        List<String> nameCategoryList =  categoryRepository.getNameCategories();
-        return nameCategoryList;
+        this.categoryRepository.getNameCategories(categoryListQueryResult);
     }
 
     public LiveData<ItemFormState> getItemFormState() {
@@ -38,6 +41,10 @@ public class ItemFormViewModel extends ViewModel {
 
     public LiveData<BasicResult> getItemFormResult() {
         return itemFormResult;
+    }
+
+    public MutableLiveData<CategoryListQueryResult> getCategoryListQueryResult() {
+        return categoryListQueryResult;
     }
 
     public void dataChanged(String name, String description, String price, String feeType, String category){
@@ -73,14 +80,23 @@ public class ItemFormViewModel extends ViewModel {
     }
 
     public void saveItem(String name, String description, String price, String feeType, String nameCategory){
-        category = categoryRepository.getCategoryByName(nameCategory);
-        Result result = itemRepository.saveItem(name+"", description+"", Long.parseLong(price), feeType+"", category);
-        if(result instanceof Result.Success){
-            itemFormResult.setValue(new BasicResult("Item was created successfully"));
-        }else{
-            itemFormResult.setValue(new BasicResult(R.string.item_creation_failed));
-        }
+        Category category = findCategoryByName(nameCategory);
+        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        ItemOwner itemOwner = new ItemOwner(loggedInUser.getFull_name()+"",loggedInUser.getEmail()+"");
+        Item item = new Item(name+"", description+"", Long.parseLong(price),feeType+"", category, itemOwner);
+        itemRepository.saveItem(item, itemFormResult);
     }
 
+    private Category findCategoryByName(String name){
+        assert(categoryListQueryResult.getValue()!=null);
+        List<Category> categories = categoryListQueryResult.getValue().getCategoryList();
+        assert categories != null;
+        for(Category c: categories){
+            if(c.getName().equals(name)){
+                return c;
+            }
+        }
+        return null;
+    }
 
 }
