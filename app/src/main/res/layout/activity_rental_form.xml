@@ -18,7 +18,7 @@
 
         <TextView
             android:layout_marginTop="20dp"
-            android:text="Rental information"
+            android:text="@string/label_rental_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -125,5 +125,18 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/rental_form_pg_loading"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:progressDrawable="@drawable/progress_bar_style"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,10 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
+import com.app.gorent.data.model.LoggedInUser;
+import com.app.gorent.data.model.User;
 import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.repositories.UserRepository;
+import com.app.gorent.data.storage.Session;
 import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.ItemQueryResult;
 import com.app.gorent.utils.Result;
 
 import java.util.Date;
@@ -18,16 +22,13 @@ public class RentalFormViewModel extends ViewModel {
 
     private ItemRepository itemRepository;
     private ItemLendingRepository itemLendingRepository;
-    private UserRepository userRepository;
     private MutableLiveData<BasicResult> rentalResult = new MutableLiveData<>();
     private MutableLiveData<RentalFormState> rentalFormState = new MutableLiveData<>();
-    private Item item;
+    private MutableLiveData<ItemQueryResult> itemQueryResult = new MutableLiveData<>();
 
-    public RentalFormViewModel(ItemRepository itemRepository, ItemLendingRepository itemLendingRepository,
-                               UserRepository userRepository) {
+    public RentalFormViewModel(ItemRepository itemRepository, ItemLendingRepository itemLendingRepository) {
         this.itemRepository = itemRepository;
         this.itemLendingRepository = itemLendingRepository;
-        this.userRepository = userRepository;
     }
 
     public LiveData<BasicResult> getRentalResult() {
@@ -38,23 +39,19 @@ public class RentalFormViewModel extends ViewModel {
         return rentalFormState;
     }
 
-    public Item retrieveItemById(Long id){
-        this.item = itemRepository.getItemById(id);
-        return item;
+    public MutableLiveData<ItemQueryResult> getItemQueryResult() {
+        return itemQueryResult;
     }
 
-    public Item getItem(){
-        return item;
+    public void retrieveItemById(Long itemId){
+        itemRepository.getItemById(itemId, itemQueryResult);
     }
 
     public void rentItem(Date dueDate, Long totalPrice){
-        Result<String> result = itemLendingRepository.rentItemByUser(dueDate, totalPrice, item);
-        if(result instanceof Result.Success){
-            String data = (String) ((Result.Success) result).getData();
-            rentalResult.setValue(new BasicResult(data));
-        }else{
-            rentalResult.setValue(new BasicResult(R.string.rental_failed));
-        }
+        Item item = itemQueryResult.getValue().getItem();
+        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        User rentalUser = new User(loggedInUser.getFull_name()+"",loggedInUser.getEmail()+"");
+        itemLendingRepository.rentItemByUser(dueDate, totalPrice, item, rentalUser, rentalResult);
     }
 
     public void rentalFormDataChanged(Date currentDate, Date dueDate, Long totalPrice){
@@ -72,6 +69,5 @@ public class RentalFormViewModel extends ViewModel {
             return false;
         }
     }
-
 
 }

@@ -108,5 +108,6 @@
     <string name="ciclo">Ciclo escolar 2020</string>
     <string name="student2">Juan Jose Hernandez Arreola</string>
     <string name="student3">Arantza Reveles Nieto</string>
+    <string name="label_rental_information">Rental information</string>
 
 </resources>

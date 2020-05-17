@@ -17,12 +17,15 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
+import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.ItemQueryResult;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,6 +42,7 @@ public class RentalFormActivity extends AppCompatActivity {
     Date currentDate, dueDate;
     Long totalPrice;
     Bundle bundle;
+    ProgressBar pg_loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +54,11 @@ public class RentalFormActivity extends AppCompatActivity {
 
         bundle = getIntent().getExtras();
         rentalFormViewModel.retrieveItemById(bundle.getLong("itemId"));
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_rent_form);
-
         connectModelWithView();
-        configureBtnAccept();
-        configureBtnCancel();
-        configureCurrentDate();
-        configureDueDate();
-        configureTextWatchers();
-        configureRentalResultObserver();
-
-        configureRentalFormStateObserver();
+        configureItemQueryObserver();
     }
 
     @Override
@@ -79,6 +76,7 @@ public class RentalFormActivity extends AppCompatActivity {
         et_current_date = findViewById(R.id.rental_form_et_current_date);
         tv_total_price = findViewById(R.id.rental_form_tv_total_price);
         layout_rent_form = findViewById(R.id.rental_form_layout_rent_form);
+        pg_loading = findViewById(R.id.rental_form_pg_loading);
     }
 
     private void configureBtnAccept(){
@@ -105,16 +103,38 @@ public class RentalFormActivity extends AppCompatActivity {
         tv_total_price.setText("Total price: $0");
     }
 
+    private void configureItemQueryObserver(){
+        rentalFormViewModel.getItemQueryResult().observe(this, new Observer<ItemQueryResult>() {
+            @Override
+            public void onChanged(ItemQueryResult itemQueryResult) {
+                if(itemQueryResult==null) return;
+                pg_loading.setVisibility(View.GONE);
+                if(itemQueryResult.getError()!=null){
+                    showErrorMsg(itemQueryResult.getError());
+                }
+                if(itemQueryResult.getItem()!=null){
+                    configureBtnAccept();
+                    configureBtnCancel();
+                    configureCurrentDate();
+                    configureDueDate();
+                    configureTextWatchers();
+                    configureRentalResultObserver();
+                    configureRentalFormStateObserver();
+                }
+            }
+        });
+    }
+
     private void configureRentalResultObserver() {
         rentalFormViewModel.getRentalResult().observe(this, new Observer<BasicResult>() {
             @Override
             public void onChanged(BasicResult basicResult) {
                 if(basicResult==null) return;
                 if(basicResult.getError()!=null){
-                    showRentalFailed(basicResult.getError());
+                    showErrorMsg(basicResult.getError());
                 }
                 if(basicResult.getSuccess()!=null){
-                    showRentalSuccess(basicResult.getSuccess());
+                    showSuccessMsg(basicResult.getSuccess());
                     cleanFields();
                 }
             }
@@ -141,7 +161,7 @@ public class RentalFormActivity extends AppCompatActivity {
     private void configureTotalPrice(){
         long diff = currentDate.getTime() - dueDate.getTime();
         long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-        totalPrice = rentalFormViewModel.getItem().getPrice()*Long.valueOf(days);
+        totalPrice = rentalFormViewModel.getItemQueryResult().getValue().getItem().getPrice()*Long.valueOf(days);
         tv_total_price.setText("Total price: $"+totalPrice);
     }
 
@@ -191,7 +211,7 @@ public class RentalFormActivity extends AppCompatActivity {
         et_delivery_date.addTextChangedListener(afterTextChangedListener);
     }
 
-    private void showRentalFailed(@StringRes final Integer errorString) {
+    private void showErrorMsg(@StringRes final Integer errorString) {
         runOnUiThread(new Runnable() {
             public void run() {
                 Toast toast = Toast.makeText(RentalFormActivity.this, errorString, Toast.LENGTH_SHORT);
@@ -206,7 +226,7 @@ public class RentalFormActivity extends AppCompatActivity {
         });
     }
 
-    private void showRentalSuccess(final String successString) {
+    private void showSuccessMsg(final String successString) {
         runOnUiThread(new Runnable() {
             public void run() {
                 Toast toast = Toast.makeText(RentalFormActivity.this, successString, Toast.LENGTH_SHORT);

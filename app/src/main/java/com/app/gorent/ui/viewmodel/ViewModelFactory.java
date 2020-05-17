@@ -42,8 +42,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new RentItemDetailsViewModel(ItemRepository.getInstance(dataSourceCache));
         } else if (modelClass.isAssignableFrom(RentalFormViewModel.class)){
             return (T) new RentalFormViewModel(ItemRepository.getInstance(dataSourceCache),
-                    ItemLendingRepository.getInstance(dataSourceCache),
-                    UserRepository.getInstance(dataSourceCache));
+                    ItemLendingRepository.getInstance(dataSourceCache));
         } else if(modelClass.isAssignableFrom(LentItemsViewModel.class)){
             return (T) new LentItemsViewModel(ItemLendingRepository.getInstance(dataSourceCache));
         }  else if(modelClass.isAssignableFrom(RentedItemsViewModel.class)){

@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +30,13 @@ public class RentItemDetailsActivity extends AppCompatActivity {
     TextView tv_item_information;
     ImageView iv_item_picture;
     Button btn_rent;
+    ProgressBar pg_loading;
     Long itemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_details);
+        setContentView(R.layout.activity_rent_item_details);
         rentItemDetailsViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(RentItemDetailsViewModel.class);
 
         connectViewWithModel();
@@ -54,9 +56,10 @@ public class RentItemDetailsActivity extends AppCompatActivity {
     }
 
     private void connectViewWithModel(){
-        iv_item_picture = findViewById(R.id.item_info_iv_item_picture);
-        tv_item_information = findViewById(R.id.item_info_tv_item_information);
-        btn_rent = findViewById(R.id.item_info_btn_rent);
+        iv_item_picture = findViewById(R.id.rent_item_details_iv_item_picture);
+        tv_item_information = findViewById(R.id.rent_item_details_tv_item_information);
+        btn_rent = findViewById(R.id.rent_item_details_btn_rent);
+        pg_loading = findViewById(R.id.rent_item_details_pg_loading);
     }
 
     private void configureItemObserver() {
@@ -64,7 +67,7 @@ public class RentItemDetailsActivity extends AppCompatActivity {
             @Override
             public void onChanged(ItemQueryResult itemQueryResult) {
                 if(itemQueryResult==null) return;
-
+                pg_loading.setVisibility(View.GONE);
                 if(itemQueryResult.getError()!=null){
                     showErrorMessage(getString(itemQueryResult.getError()));
                 }
