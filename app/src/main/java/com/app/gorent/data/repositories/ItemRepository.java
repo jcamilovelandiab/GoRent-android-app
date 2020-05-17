@@ -49,4 +49,8 @@ public class ItemRepository {
         dataSource.getItemsByOwner(itemOwner, itemListQueryResult);
     }
 
+    public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        dataSource.getItemsByNameOrCategory(search_text, itemListQueryResult);
+    }
+
 }

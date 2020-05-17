@@ -36,7 +36,7 @@ public class RentedItemsFragment extends Fragment {
                 ViewModelProviders.of(this, new ViewModelFactory()).get(RentedItemsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_rented_items, container, false);
         lv_item_lending_list = root.findViewById(R.id.rented_items_lv_item_lending_list);
-        pg_loading = root.findViewById(R.id.rented_items__pg_loading);
+        pg_loading = root.findViewById(R.id.rented_items_pg_loading);
         prepareItemLendingHistoryObserver();
         return root;
     }

@@ -302,4 +302,15 @@ public class DataSourceCache {
         categoryQueryResult.setValue(new CategoryQueryResult(R.string.error_category_not_found));
     }
 
+    public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult) {
+        search_text = search_text.toLowerCase();
+        List<Item> itemList = new ArrayList<>();
+        for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
+            if(entry.getValue().getName().toLowerCase().equals(search_text) ||
+                entry.getValue().getCategory().getName().toLowerCase().equals(search_text)){
+                itemList.add(entry.getValue());
+            }
+        }
+        itemListQueryResult.setValue(new ItemListQueryResult(itemList));
+    }
 }

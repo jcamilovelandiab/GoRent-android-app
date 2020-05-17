@@ -14,7 +14,7 @@
     </ListView>
 
     <ProgressBar
-        android:id="@+id/rented_items__pg_loading"
+        android:id="@+id/rented_items_pg_loading"
         app:layout_constraintTop_toBottomOf="@id/rented_items_lv_item_lending_list"
         android:layout_width="match_parent"
         android:foregroundGravity="center_horizontal"
