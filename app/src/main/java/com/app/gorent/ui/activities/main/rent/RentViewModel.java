@@ -1,29 +1,25 @@
 package com.app.gorent.ui.activities.main.rent;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.repositories.ItemRepository;
+import com.app.gorent.utils.ItemListQueryResult;
 
 import java.util.List;
 
 public class RentViewModel extends ViewModel {
 
-    //private MutableLiveData<List<Item>> availableItems;
+    private MutableLiveData<ItemListQueryResult> availableItems = new MutableLiveData<>();
     private ItemRepository itemRepository;
-    private List<Item> itemList;
 
     public RentViewModel(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
-        this.itemList = itemRepository.getAvailableItems();
+        this.itemRepository.getAvailableItems(availableItems);
     }
 
-    /*public LiveData<List<Item>> getAvailableItems(){
+    public MutableLiveData<ItemListQueryResult> getAvailableItems() {
         return availableItems;
-    }*/
-
-    public List<Item> getItemList(){
-        return itemList;
     }
-
 }

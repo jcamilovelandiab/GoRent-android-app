@@ -17,9 +17,7 @@ import com.app.gorent.utils.CategoryQueryResult;
 import com.app.gorent.utils.ItemLendingQueryResult;
 import com.app.gorent.utils.ItemListQueryResult;
 import com.app.gorent.utils.ItemQueryResult;
-import com.app.gorent.utils.Result;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -183,7 +181,7 @@ public class DataSourceCache {
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemsQueryResult){
         if(!itemOwnersMp.containsKey(itemOwner.getEmail())){
-            itemsQueryResult.setValue(new ItemListQueryResult(R.string.error_item_owner_doesnt_exist));
+            itemsQueryResult.setValue(new ItemListQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<Item> itemList = new ArrayList<>();
             for (Map.Entry<Long, Item> entry : itemsMp.entrySet()) {
@@ -200,7 +198,7 @@ public class DataSourceCache {
     /* -------------------------------------------------------------------------- */
     public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
         if(!itemOwnersMp.containsKey(owner.getEmail())) {
-            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_doesnt_exist));
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<ItemLending> itemLendingList = new ArrayList<>();
             for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
@@ -216,7 +214,7 @@ public class DataSourceCache {
 
     public void getItemLendingHistoryByRentalUser(User user, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
         if(!usersMp.containsKey(user.getEmail())){
-            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_doesnt_exist));
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<ItemLending> itemLendingList = new ArrayList<>();
             for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {

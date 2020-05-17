@@ -43,12 +43,19 @@
     <string name="invalid_item_category">Not a valid category</string>
 
     <string name="login_failed">"Login failed"</string>
-    <string name="error_logging_in">Error logging in</string>
-    <string name="error_email_already_taken">Whoops!!. Email has been already taken!</string>
     <string name="sign_up_failed">Sign up failed</string>
     <string name="error_signing_up">Error signing up</string>
     <string name="server_error_message">Error connecting to the server. Please try again</string>
     <string name="rental_failed">Error trying to rent the item. Please try again</string>
+    <string name="error_logging_in">Error logging in</string>
+    <string name="error_email_already_taken">Whoops!!. Email has been already taken!</string>
+    <string name="error_item_not_found">Item not found</string>
+    <string name="error_item_owner_not_found">Item owner not found</string>
+    <string name="error_category_not_found">Category not found</string>
+    <string name="error_renting_item">An error occurred while renting item. Please try later</string>
+    <string name="error_returning_item">An error occurred while returning item. Please try later</string>
+    <string name="error_updating_item">An error occurred while updating item</string>
+    <string name="error_saving_item">An error occurred while saving item</string>
 
     <string name="item_creation_failed">Item creation failed. Try again</string>
     <!-- Strings related to Drawer Activity -->
@@ -67,10 +74,13 @@
     <string name="menu_search">Search</string>
     <string name="menu_rent">Rent</string>
     <string name="menu_rented_items">Rented Items History</string>
-    <string name="menu_lend">Lend</string>
+    <string name="menu_lend">My stuff</string>
     <string name="menu_lent_items">Lent Items History</string>
     <string name="menu_account">My account</string>
     <string name="menu_help">Help</string>
+    <string name="title_new_item_form">Publish your item</string>
+    <string name="title_item_information">Item</string>
+    <string name="title_edit_item">Edit item</string>
 
     <!-- Shared preferences -->
     <string name="preference_file_key">preferences-file</string>
@@ -81,10 +91,6 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="title_new_item_form">Publish your item</string>
-    <string name="title_item_information">Item</string>
-    <string name="title_edit_item">Edit item</string>
 
     <!-- credits -->
     <string name="university">Instituto Tecnológico de Toluca</string>
@@ -103,13 +109,4 @@
     <string name="student2">Juan Jose Hernandez Arreola</string>
     <string name="student3">Arantza Reveles Nieto</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="error_item_not_found">Item not found</string>
-    <string name="error_item_owner_doesnt_exist">Item owner doesn\'t exist</string>
-    <string name="error_renting_item">An error ocurred while renting item. Please try again</string>
-    <string name="error_returning_item">An error ocurred while returning item</string>
-    <string name="error_updating_item">An error occurred while updating item</string>
-    <string name="error_saving_item">An error occurred while saving item</string>
-    <string name="error_category_not_found">Category not found</string>
 </resources>

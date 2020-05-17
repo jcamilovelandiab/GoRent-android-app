@@ -44,7 +44,6 @@ public class LendFragment extends Fragment {
         connectModelWithView(root);
         configureListItemResultObserver();
         configureAddButton();
-        configureClickableItems();
         return root;
     }
 
@@ -82,13 +81,15 @@ public class LendFragment extends Fragment {
             public void onChanged(ItemListQueryResult itemListQueryResult) {
                 if(itemListQueryResult == null) return;
                 pg_loading.setVisibility(View.GONE);
-                if(itemListQueryResult.getError()==null){
+                if(itemListQueryResult.getError()!=null){
+                    Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
+                }
+                if(itemListQueryResult.getItems()!=null){
                     ItemListAdapter itemListAdapter = new ItemListAdapter(getActivity(),
                             (ArrayList<Item>) itemListQueryResult.getItems());
                     lv_items.setAdapter(itemListAdapter);
                     itemListAdapter.notifyDataSetChanged();
-                }else{
-                    Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
+                    configureClickableItems();
                 }
             }
         });

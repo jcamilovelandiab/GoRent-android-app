@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.app.gorent.R;
@@ -17,6 +19,7 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
 import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
+import com.app.gorent.utils.ItemListQueryResult;
 
 import java.util.ArrayList;
 
@@ -32,15 +35,26 @@ public class RentFragment extends Fragment {
                 ViewModelProviders.of(this, new ViewModelFactory()).get(RentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_rent, container, false);
         lv_items = root.findViewById(R.id.rent_lv_items);
-        retrieveAvailableItems();
-        configureClickableItems();
+        prepareAvailableItemsObservable();
         return root;
     }
 
-    private void retrieveAvailableItems(){
-        itemListAdapter = new ItemListAdapter(getActivity(), (ArrayList<Item>) rentViewModel.getItemList());
-        lv_items.setAdapter(itemListAdapter);
-        itemListAdapter.notifyDataSetChanged();
+    private void prepareAvailableItemsObservable(){
+        rentViewModel.getAvailableItems().observe(getViewLifecycleOwner(), new Observer<ItemListQueryResult>() {
+            @Override
+            public void onChanged(ItemListQueryResult itemListQueryResult) {
+                if(itemListQueryResult==null) return;
+                if(itemListQueryResult.getError()!=null){
+                    Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
+                }
+                if(itemListQueryResult.getItems()!=null){
+                    itemListAdapter = new ItemListAdapter(getActivity(), (ArrayList<Item>) itemListQueryResult.getItems());
+                    lv_items.setAdapter(itemListAdapter);
+                    itemListAdapter.notifyDataSetChanged();
+                    configureClickableItems();
+                }
+            }
+        });
     }
 
     private void configureClickableItems(){
