@@ -12,4 +12,19 @@
         android:layout_height="match_parent">
     </ListView>
 
+
+    <ProgressBar
+        android:id="@+id/rent_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/rent_lv_items"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:progressDrawable="@drawable/progress_bar_style"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

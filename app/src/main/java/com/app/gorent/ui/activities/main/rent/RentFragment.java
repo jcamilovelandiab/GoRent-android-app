@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class RentFragment extends Fragment {
     RentViewModel rentViewModel;
     ListView lv_items;
     ItemListAdapter itemListAdapter;
+    ProgressBar pg_loading;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class RentFragment extends Fragment {
                 ViewModelProviders.of(this, new ViewModelFactory()).get(RentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_rent, container, false);
         lv_items = root.findViewById(R.id.rent_lv_items);
+        pg_loading = root.findViewById(R.id.rent_pg_loading);
         prepareAvailableItemsObservable();
         return root;
     }
@@ -44,6 +47,7 @@ public class RentFragment extends Fragment {
             @Override
             public void onChanged(ItemListQueryResult itemListQueryResult) {
                 if(itemListQueryResult==null) return;
+                pg_loading.setVisibility(View.GONE);
                 if(itemListQueryResult.getError()!=null){
                     Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
                 }
