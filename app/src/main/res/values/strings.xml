@@ -1,4 +1,5 @@
 <resources>
+    <string name="authority_package">com.app.gorent</string>
     <string name="app_name">GoRent</string>
 
     <!-- Strings related to fields-->

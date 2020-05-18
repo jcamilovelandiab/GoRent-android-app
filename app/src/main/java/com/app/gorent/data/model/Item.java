@@ -20,6 +20,18 @@ public class Item {
         this.itemOwner = itemOwner;
     }
 
+    public Item(String name, String description, Long price, String feeType,
+                Category category, ItemOwner itemOwner, String image_path) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.feeType = feeType;
+        this.category = category;
+        this.itemOwner = itemOwner;
+        this.image_path = image_path;
+    }
+
+
     public Item(Long id, String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
         this.id = id;
         this.name = name;

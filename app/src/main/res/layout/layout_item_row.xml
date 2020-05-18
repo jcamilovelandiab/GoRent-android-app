@@ -4,12 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="15dp">
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/item_row_layout_iv_image"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:maxHeight="200dp"
+        android:scaleType="centerCrop"
+        android:maxWidth="200dp"
+        android:adjustViewBounds="true"
         android:src="@drawable/cars"
         />
     

@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -37,6 +38,7 @@ import com.app.gorent.ui.activities.item_form.ItemFormState;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.CategoryListQueryResult;
+import com.app.gorent.utils.ImageUtils;
 import com.app.gorent.utils.ItemQueryResult;
 
 import java.util.ArrayList;
@@ -200,6 +202,7 @@ public class ItemInformationActivity extends AppCompatActivity {
                     configureTextWatchers();
                     prepareUpdateResultObserver();
                     prepareDeleteResultObserver();
+                    loadImage(item);
                 }
             }
         });
@@ -383,6 +386,28 @@ public class ItemInformationActivity extends AppCompatActivity {
                 toast.show();
             }
         });
+    }
+
+    public void loadImage(Item item){
+        boolean hasImage = false;
+        if(item.getImage_path()!=null){
+            Uri photoUri = ImageUtils.loadImage(this, item.getImage_path());
+            if(photoUri!=null){
+                iv_item_picture.setImageURI(photoUri);
+                hasImage = true;
+            }
+        }
+        if(!hasImage){
+            if(item.getCategory().getName().toLowerCase().equals("houses")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.houses));
+            }else if(item.getCategory().getName().toLowerCase().equals("cars")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.cars));
+            }else if(item.getCategory().getName().toLowerCase().equals("pianos")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.pianos));
+            }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.laptops));
+            }
+        }
     }
 
 }

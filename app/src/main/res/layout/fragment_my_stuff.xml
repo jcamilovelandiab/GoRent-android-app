@@ -9,8 +9,7 @@
     <ListView
         android:id="@+id/lend_item_my_item_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content"/>
 
     <ProgressBar
         android:id="@+id/lend_pg_loading"

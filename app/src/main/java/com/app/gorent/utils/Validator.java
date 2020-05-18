@@ -31,7 +31,7 @@ public class Validator {
     }
 
     public static boolean isItemNameValid(String name){
-        if(name.length()<5) return false;
+        if(name.length()<4) return false;
         // \\p{L} is a Unicode Character Property that matches any kind of letter from any language
         String regex = "^[\\p{L}]+[\\p{L} 0-9,.'-]*$";
         return name.matches(regex);

@@ -77,11 +77,12 @@ public class ItemFormViewModel extends ViewModel {
         return true;
     }
 
-    public void saveItem(String name, String description, String price, String feeType, String nameCategory){
+    public void saveItem(String name, String description, String price, String feeType, String nameCategory, String path_image){
         Category category = findCategoryByName(nameCategory);
         LoggedInUser loggedInUser = Session.getLoggedInUser();
-        ItemOwner itemOwner = new ItemOwner(loggedInUser.getFull_name()+"",loggedInUser.getEmail()+"");
-        Item item = new Item(name+"", description+"", Long.parseLong(price),feeType+"", category, itemOwner);
+        ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"",loggedInUser.getFull_name()+"");
+        Item item = new Item(name+"", description+"",
+                Long.parseLong(price),feeType+"", category, itemOwner, path_image);
         itemRepository.saveItem(item, itemFormResult);
     }
 

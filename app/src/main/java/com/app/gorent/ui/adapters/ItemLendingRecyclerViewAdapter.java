@@ -1,7 +1,9 @@
 package com.app.gorent.ui.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.ItemLending;
+import com.app.gorent.utils.ImageUtils;
 
+import java.io.File;
 import java.util.List;
 
 public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLendingRecyclerViewAdapter.ItemLendingViewHolder>{
@@ -80,16 +85,25 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             }
             tv_item_lending_return_date.setText("Return date: "+returnDateStr);
             tv_item_lending_total_price.setText("Total fee: "+itemLending.getTotalPrice().toString());
-            if(itemLending.getItem().getCategory().getName().toLowerCase().equals("houses")){
-                iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.houses));
-            }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("cars")){
-                iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.cars));
-            }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("pianos")){
-                iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.pianos));
-            }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("laptops")){
-                iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.laptops));
+            boolean hasImage = false;
+            if(itemLending.getItem().getImage_path()!=null){
+                Uri photoUri = ImageUtils.loadImage(context, itemLending.getItem().getImage_path());
+                if(photoUri!=null){
+                    iv_image.setImageURI(photoUri);
+                    hasImage = true;
+                }
             }
-
+            if(!hasImage){
+                if(itemLending.getItem().getCategory().getName().toLowerCase().equals("houses")){
+                    iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.houses));
+                }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("cars")){
+                    iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.cars));
+                }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("pianos")){
+                    iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.pianos));
+                }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("laptops")){
+                    iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.laptops));
+                }
+            }
             tv_item_lending_row_tv_owner.setText(itemLending.getItem().getItemOwner().getFull_name());
             ib_more.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -97,9 +111,9 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
                     listener.onMoreItemLendingClicked(itemLending);
                 }
             });
-
         }
-
     }
+
+
 
 }

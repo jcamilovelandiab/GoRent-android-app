@@ -19,7 +19,6 @@ public class LendViewModel extends ViewModel {
 
     public LendViewModel(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
-        findMyItems();
     }
 
     public MutableLiveData<ItemListQueryResult> getItemListQueryResult() {
