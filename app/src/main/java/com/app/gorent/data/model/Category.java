@@ -40,8 +40,9 @@ public class Category {
 
     @Override
     public String toString() {
-        return "-Category" + "\r\n" +
+        /*return "-Category" + "\r\n" +
                 "Name: " + name + "\r\n" +
-                "Description: " + description;
+                "Description: " + description;*/
+        return "-Category: "+name;
     }
 }

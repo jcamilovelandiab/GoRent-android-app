@@ -182,7 +182,7 @@ public class ItemInformationActivity extends AppCompatActivity {
                     et_item_name.setText(item.getName());
                     et_item_description.setText(item.getDescription());
                     et_item_price.setText(item.getPrice().toString());
-                    //...... image, category....
+                    //...... image, category, fee type....
                     for(int i=0; i<categoryAdapter.getCount(); i++){
                         if(categoryAdapter.getItem(i).equals(item.getCategory().getName())){
                             sp_category.setSelection(i);
@@ -200,7 +200,6 @@ public class ItemInformationActivity extends AppCompatActivity {
                     configureTextWatchers();
                     prepareUpdateResultObserver();
                     prepareDeleteResultObserver();
-                    btn_update.setEnabled(false);
                 }
             }
         });

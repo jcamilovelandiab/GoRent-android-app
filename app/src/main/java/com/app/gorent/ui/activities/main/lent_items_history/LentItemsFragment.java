@@ -23,8 +23,6 @@ import com.app.gorent.ui.adapters.RecyclerViewClickListener;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.ItemLendingQueryResult;
 
-import java.util.ArrayList;
-
 public class LentItemsFragment extends Fragment {
 
     private LentItemsViewModel lentItemsViewModel;
@@ -36,7 +34,7 @@ public class LentItemsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         lentItemsViewModel =
                 ViewModelProviders.of(this, new ViewModelFactory()).get(LentItemsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_lent_items, container, false);
+        View root = inflater.inflate(R.layout.fragment_lending_history, container, false);
         connectModelWithView(root);
         prepareItemLendingObserver();
         return root;
@@ -54,6 +52,7 @@ public class LentItemsFragment extends Fragment {
             @Override
             public void onChanged(ItemLendingQueryResult itemLendingQueryResult) {
                 if(itemLendingQueryResult==null) return;
+                pg_loading.setVisibility(View.GONE);
                 if(itemLendingQueryResult.getItemLendingList()!=null){
                     RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
                             itemLendingQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
@@ -64,7 +63,6 @@ public class LentItemsFragment extends Fragment {
                     });
                     rv_item_lending_list.setAdapter(adapter_item_lending_list);
                     adapter_item_lending_list.notifyDataSetChanged();
-                    pg_loading.setVisibility(View.GONE);
                 }
                 if(itemLendingQueryResult.getError()!=null){
                     Toast.makeText(getContext(), itemLendingQueryResult.getError(), Toast.LENGTH_SHORT).show();

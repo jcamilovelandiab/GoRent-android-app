@@ -4,18 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.main.rented_items_history.RentedItemsFragment"
-    android:background="#E4E3E3">
+    tools:context=".ui.activities.main.rented_items_history.RentedItemsFragment">
 
-    <ListView
-        android:id="@+id/rented_items_lv_item_lending_list"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rented_items_rv_item_lending_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
     <ProgressBar
         android:id="@+id/rented_items_pg_loading"
-        app:layout_constraintTop_toBottomOf="@id/rented_items_lv_item_lending_list"
         android:layout_width="match_parent"
         android:foregroundGravity="center_horizontal"
         android:layout_height="wrap_content"

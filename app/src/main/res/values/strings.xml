@@ -73,9 +73,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_search">Search</string>
     <string name="menu_rent">Rent</string>
-    <string name="menu_rented_items">Rented Items History</string>
+    <string name="menu_rented_items">Renting history</string>
     <string name="menu_lend">My stuff</string>
-    <string name="menu_lent_items">Lent Items History</string>
+    <string name="menu_lent_items">Lending history</string>
     <string name="menu_account">My account</string>
     <string name="menu_help">Help</string>
     <string name="title_new_item_form">Publish your item</string>

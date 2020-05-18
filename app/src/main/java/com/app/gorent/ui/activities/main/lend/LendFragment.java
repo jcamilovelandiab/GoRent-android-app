@@ -38,7 +38,7 @@ public class LendFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root =  inflater.inflate(R.layout.fragment_lend, container, false);
+        View root =  inflater.inflate(R.layout.fragment_my_stuff, container, false);
         lendViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(LendViewModel.class);
 
         connectModelWithView(root);

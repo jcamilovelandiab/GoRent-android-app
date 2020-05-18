@@ -61,7 +61,7 @@ public class DataSourceCache {
         Category category1 = new Category("houses", "Luxury houses");
         Category category2 = new Category("cars", "Luxury cars. Lamborghini");
         Category category3 = new Category("pianos", "Grand piano");
-        Category category4 = new Category("laptops", "Lenovo Computers");
+        Category category4 = new Category("laptops", "High-quality Computers");
         MutableLiveData<BasicResult> basicResult = new MutableLiveData<>();
         saveCategory(category1, basicResult);
         saveCategory(category2, basicResult);

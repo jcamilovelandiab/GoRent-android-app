@@ -40,7 +40,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
     @Override
     public void onBindViewHolder(@NonNull ItemLendingViewHolder holder, int position) {
         ItemLending itemLending= itemLendingList.get(position);
-        holder.bind(itemLending,listener);
+        holder.bind(itemLending, listener);
     }
 
     @Override
@@ -66,6 +66,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             tv_item_lending_total_price = itemView.findViewById(R.id.item_lending_row_tv_total_price);
             iv_image = itemView.findViewById(R.id.item_lending_row_iv_item_picture);
             tv_item_lending_row_tv_owner = itemView.findViewById(R.id.item_lending_row_tv_owner);
+            ib_more = itemView.findViewById(R.id.item_lending_row_iv_item_ib_more);
         }
 
         public void bind(final ItemLending itemLending, final RecyclerViewClickListener listener){
@@ -73,7 +74,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             tv_item_description.setText(itemLending.getItem().getDescription());
             tv_item_lending_rent_date.setText("Rent date: "+itemLending.getLendingDate().toString());
             tv_item_lending_due_date.setText("Due date: "+itemLending.getDueDate().toString());
-            String returnDateStr = "Item has not yet returned.";
+            String returnDateStr = "Item has not returned yet.";
             if(itemLending.getReturnDate()!=null){
                 returnDateStr = itemLending.getReturnDate().toString();
             }
