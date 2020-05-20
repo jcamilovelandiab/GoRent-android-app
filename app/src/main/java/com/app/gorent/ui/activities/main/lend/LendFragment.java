@@ -100,4 +100,5 @@ public class LendFragment extends Fragment {
         lendViewModel.findMyItems();
         super.onResume();
     }
+
 }

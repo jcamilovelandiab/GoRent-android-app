@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
-        android:layout_gravity="center">
+        android:layout_gravity="center_vertical"
+        >
         <TextView
             android:id="@+id/item_row_layout_tv_name"
             android:layout_width="match_parent"

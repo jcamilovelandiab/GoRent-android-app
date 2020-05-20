@@ -257,7 +257,7 @@ public class ItemFormActivity extends AppCompatActivity {
                 text.setTextColor(Color.WHITE);
                 toast.show();
             }
-        }, 2500);
+        }, 2000);
     }
 
     private void showMessage(final String msg){

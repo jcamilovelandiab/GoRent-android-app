@@ -32,7 +32,8 @@ public class Item {
     }
 
 
-    public Item(Long id, String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
+    public Item(Long id, String name, String description, Long price, String feeType,
+                Category category, ItemOwner itemOwner, String image_path) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -40,6 +41,7 @@ public class Item {
         this.feeType = feeType;
         this.category = category;
         this.itemOwner = itemOwner;
+        this.image_path = image_path;
     }
 
     public Long getId() {

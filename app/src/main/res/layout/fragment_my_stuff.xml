@@ -9,7 +9,8 @@
     <ListView
         android:id="@+id/lend_item_my_item_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"/>
 
     <ProgressBar
         android:id="@+id/lend_pg_loading"

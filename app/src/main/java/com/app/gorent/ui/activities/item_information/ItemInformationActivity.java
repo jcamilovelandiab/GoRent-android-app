@@ -2,17 +2,25 @@ package com.app.gorent.ui.activities.item_information;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -41,8 +49,12 @@ import com.app.gorent.utils.CategoryListQueryResult;
 import com.app.gorent.utils.ImageUtils;
 import com.app.gorent.utils.ItemQueryResult;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class ItemInformationActivity extends AppCompatActivity {
@@ -54,7 +66,7 @@ public class ItemInformationActivity extends AppCompatActivity {
     Spinner sp_category, sp_fee_type;
     Button btn_update, btn_cancel;
     ProgressBar pg_loading;
-    String category, feeType, picture_path;
+    String category, feeType, picture_path, current_picture_path;
     ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> feeTypeAdapter;
 
@@ -62,6 +74,8 @@ public class ItemInformationActivity extends AppCompatActivity {
     boolean updateMode = false;
 
     Bundle bundle;
+    Uri picture_uri;
+    private static final int REQUEST_TAKE_PHOTO=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +217,9 @@ public class ItemInformationActivity extends AppCompatActivity {
                     prepareUpdateResultObserver();
                     prepareDeleteResultObserver();
                     loadImage(item);
+                    picture_path = item.getImage_path();
+                    configureTakePicture();
+                    configureBtnUpdate();
                 }
             }
         });
@@ -239,11 +256,11 @@ public class ItemInformationActivity extends AppCompatActivity {
                     et_item_price.setError(getString(itemFormState.getPriceError()));
                 }
                 if(itemFormState.isDataValid()){
-                    /*if(picture_path.isEmpty()){
+                    if(picture_path.isEmpty()){
                         showErrorMessage("Click on the camera and add a photo of the item to complete the registration.");
-                    }else{*/
+                    }else{
                         btn_update.setEnabled(itemFormState.isDataValid());
-                    //}
+                    }
                 }
             }
         });
@@ -254,6 +271,7 @@ public class ItemInformationActivity extends AppCompatActivity {
             @Override
             public void onChanged(BasicResult updateItemResult) {
                 if(updateItemResult == null) return;
+                deactivateUpdate();
                 if(updateItemResult.getError()!=null){
                     showErrorMessage(getString(updateItemResult.getError()));
                 }
@@ -295,7 +313,7 @@ public class ItemInformationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position!=0){
                     category = parent.getItemAtPosition(position).toString();
-                    showMessage("Selected category: "+category);
+                    if(updateMode) showMessage("Selected category: "+category);
                     itemInformationViewModel.dataChanged(et_item_name.getText().toString()+"",
                             et_item_description.getText().toString()+"",
                             et_item_price.getText().toString()+"",
@@ -319,7 +337,7 @@ public class ItemInformationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position!=0){
                     feeType = parent.getItemAtPosition(position).toString();
-                    showMessage("Selected fee type: "+feeType);
+                    if(updateMode) showMessage("Selected fee type: "+feeType);
                     itemInformationViewModel.dataChanged(et_item_name.getText().toString()+"",
                             et_item_description.getText().toString()+"",
                             et_item_price.getText().toString()+"",
@@ -353,6 +371,18 @@ public class ItemInformationActivity extends AppCompatActivity {
         et_item_name.addTextChangedListener(textWatcher);
         et_item_description.addTextChangedListener(textWatcher);
         et_item_price.addTextChangedListener(textWatcher);
+    }
+
+    private void configureBtnUpdate(){
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemInformationViewModel.updateItem(et_item_name.getText().toString()+"",
+                        et_item_description.getText().toString()+"",
+                        et_item_price.getText().toString()+"",
+                        feeType+"", category+"", picture_path+"");
+            }
+        });
     }
 
     private void showErrorMessage(final String errorMsg){
@@ -406,6 +436,86 @@ public class ItemInformationActivity extends AppCompatActivity {
                 iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.pianos));
             }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
                 iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.laptops));
+            }
+        }
+    }
+
+    private void configureTakePicture(){
+        askPermissions();
+        iv_item_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // It found the activity that generated the picture
+                if(takePictureIntent.resolveActivity(getApplicationContext().getPackageManager())!=null){
+                    File file_picture = null;
+                    try {
+                        file_picture = createImageFile();
+                    } catch (IOException ex){
+                        Toast.makeText(getBaseContext(), "An error was occurred while generating the file",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    //Check that the image file was successfully created
+                    if(file_picture != null){
+                        String authority = getString(R.string.authority_package);
+                        picture_uri = FileProvider.getUriForFile(ItemInformationActivity.this,authority+"",file_picture);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, picture_uri);
+                        startActivityForResult(takePictureIntent,REQUEST_TAKE_PHOTO);
+                    }
+                }
+            }
+        });
+    }
+
+    //Create an image file
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        current_picture_path = image.getAbsolutePath();
+        return image;
+    }
+
+    private void askPermissions(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[] {
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    REQUEST_TAKE_PHOTO);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            iv_item_picture.setImageURI(picture_uri);
+            picture_path = current_picture_path;
+            itemInformationViewModel.dataChanged(et_item_name.getText().toString()+"",
+                    et_item_description.getText().toString()+"",
+                    et_item_price.getText().toString()+"",
+                    feeType+"", category+"");
+            Toast.makeText(this, "Picture was successfully saved in " + picture_path, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
     }

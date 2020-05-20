@@ -93,12 +93,13 @@ public class ItemInformationViewModel extends ViewModel {
         return true;
     }
 
-    private void updateItem(String name, String description, String price, String feeType, String nameCategory){
+    public void updateItem(String name, String description, String price, String feeType,
+                            String nameCategory, String image_path){
         Category category = findCategoryByName(nameCategory);
         LoggedInUser loggedInUser = Session.getLoggedInUser();
         ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
         Item item = new Item(itemQueryResult.getValue().getItem().getId(), name+"", description+"",
-                Long.parseLong(price), feeType+"", category, itemOwner);
+                Long.parseLong(price), feeType+"", category, itemOwner, image_path+"");
         itemRepository.updateItem(item, updateItemResult);
     }
 
