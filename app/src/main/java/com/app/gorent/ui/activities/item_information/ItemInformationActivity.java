@@ -66,7 +66,7 @@ public class ItemInformationActivity extends AppCompatActivity {
     Spinner sp_category, sp_fee_type;
     Button btn_update, btn_cancel;
     ProgressBar pg_loading;
-    String category, feeType, picture_path, current_picture_path;
+    String category, feeType, picture_path="", current_picture_path="";
     ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> feeTypeAdapter;
 
@@ -217,7 +217,7 @@ public class ItemInformationActivity extends AppCompatActivity {
                     prepareUpdateResultObserver();
                     prepareDeleteResultObserver();
                     loadImage(item);
-                    picture_path = item.getImage_path();
+                    picture_path = (item.getImage_path()!=null)?item.getImage_path(): picture_path;
                     configureTakePicture();
                     configureBtnUpdate();
                 }
@@ -255,8 +255,8 @@ public class ItemInformationActivity extends AppCompatActivity {
                 if(itemFormState.getPriceError()!=null){
                     et_item_price.setError(getString(itemFormState.getPriceError()));
                 }
-                if(itemFormState.isDataValid()){
-                    if(picture_path.isEmpty()){
+                if(itemFormState.isDataValid() && updateMode){
+                    if(picture_path == null || picture_path.isEmpty()){
                         showErrorMessage("Click on the camera and add a photo of the item to complete the registration.");
                     }else{
                         btn_update.setEnabled(itemFormState.isDataValid());

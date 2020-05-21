@@ -92,7 +92,7 @@ public class DataSourceCache {
         rentItemByUser(dueDate1,10000L, item1, user2, basicResult);
         rentItemByUser(dueDate2,15000L, item2,user2, basicResult);
         rentItemByUser(dueDate1,20000L, item4, user2, basicResult);
-        rentItemByUser(dueDate2,15000L,item3, user1, basicResult);
+        //rentItemByUser(dueDate2,15000L,item3, user1, basicResult);
     }
     /* -------------------------------------------------------------------------- */
     /*                                USERS                                */
@@ -326,6 +326,7 @@ public class DataSourceCache {
             if(hasHistory){
                 deleteItemResult.setValue(new BasicResult(R.string.error_item_has_history));
             }else{
+                itemsMp.remove(itemId);
                 deleteItemResult.setValue(new BasicResult("Item successfully deleted"));
             }
         }else{
