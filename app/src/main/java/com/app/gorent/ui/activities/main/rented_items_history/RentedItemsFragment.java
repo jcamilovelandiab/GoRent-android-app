@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.ItemLending;
+import com.app.gorent.ui.activities.return_item.ReturnItemActivity;
 import com.app.gorent.ui.adapters.ItemLendingListAdapter;
 import com.app.gorent.ui.adapters.ItemLendingRecyclerViewAdapter;
 import com.app.gorent.ui.adapters.RecyclerViewClickListener;
@@ -102,7 +105,9 @@ public class RentedItemsFragment extends Fragment {
     }
 
     private void returnItem(ItemLending itemLending){
-
+        Intent intent = new Intent(getActivity(), ReturnItemActivity.class);
+        intent.putExtra("itemLending", (Parcelable) itemLending);
+        startActivity(intent);
     }
 
     private void contactOwner(ItemLending itemLending){
@@ -113,4 +118,10 @@ public class RentedItemsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        pg_loading.setVisibility(View.VISIBLE);
+        rentedItemsViewModel.getItemLendingHistory();
+        super.onResume();
+    }
 }

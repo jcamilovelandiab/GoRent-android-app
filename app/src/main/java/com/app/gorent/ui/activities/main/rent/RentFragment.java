@@ -73,4 +73,10 @@ public class RentFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        pg_loading.setVisibility(View.VISIBLE);
+        rentViewModel.retrieveAvailableItems();
+        super.onResume();
+    }
 }

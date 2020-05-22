@@ -21,6 +21,8 @@
                 android:id="@+id/rent_item_details_iv_item_picture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxHeight="500dp"
                 android:layout_gravity="center"
                 android:background="#000000"
                 android:padding="1dp">

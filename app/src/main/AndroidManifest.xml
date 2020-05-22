@@ -8,6 +8,7 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.activities.return_item.ReturnItemActivity"></activity>
         <activity android:name=".ui.activities.item_information.ItemInformationActivity" />
         <activity android:name=".ui.activities.item_form.ItemFormActivity" />
         <activity android:name=".ui.activities.rental_form.RentalFormActivity" />
@@ -38,7 +40,6 @@
             </intent-filter>
         </activity>
 
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.app.gorent"
@@ -48,6 +49,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCd9355hf9hK9UUrjYo6rwzg28Uk9xDZ3Y" />
     </application>
 
 </manifest>

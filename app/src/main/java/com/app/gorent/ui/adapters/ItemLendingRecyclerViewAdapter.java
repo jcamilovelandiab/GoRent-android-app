@@ -57,7 +57,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
 
         TextView tv_item_name, tv_item_description, tv_item_lending_rent_date,
                 tv_item_lending_due_date, tv_item_lending_return_date, tv_item_lending_total_price,
-                tv_item_lending_row_tv_owner;
+                tv_item_lending_tv_owner, tv_item_lending_delivery_address;
         ImageView iv_image;
         ImageButton ib_more;
 
@@ -70,7 +70,8 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             tv_item_lending_return_date = itemView.findViewById(R.id.item_lending_row_tv_return_date);
             tv_item_lending_total_price = itemView.findViewById(R.id.item_lending_row_tv_total_price);
             iv_image = itemView.findViewById(R.id.item_lending_row_iv_item_picture);
-            tv_item_lending_row_tv_owner = itemView.findViewById(R.id.item_lending_row_tv_owner);
+            tv_item_lending_tv_owner = itemView.findViewById(R.id.item_lending_row_tv_owner);
+            tv_item_lending_delivery_address = itemView.findViewById(R.id.item_lending_row_tv_delivery_address);
             ib_more = itemView.findViewById(R.id.item_lending_row_iv_item_ib_more);
         }
 
@@ -85,6 +86,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             }
             tv_item_lending_return_date.setText("Return date: "+returnDateStr);
             tv_item_lending_total_price.setText("Total fee: "+itemLending.getTotalPrice().toString());
+            tv_item_lending_delivery_address.setText("Delivery address: "+itemLending.getDelivery_address());
             boolean hasImage = false;
             if(itemLending.getItem().getImage_path()!=null){
                 Uri photoUri = ImageUtils.loadImage(context, itemLending.getItem().getImage_path());
@@ -104,7 +106,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
                     iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.laptops));
                 }
             }
-            tv_item_lending_row_tv_owner.setText(itemLending.getItem().getItemOwner().getFull_name());
+            tv_item_lending_tv_owner.setText(itemLending.getItem().getItemOwner().getFull_name());
             ib_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

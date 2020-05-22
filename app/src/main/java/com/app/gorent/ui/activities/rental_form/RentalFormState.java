@@ -6,10 +6,13 @@ public class RentalFormState {
 
     @Nullable
     private Integer dueDateError;
+    @Nullable
+    private Integer addressError;
     private boolean isDataValid;
 
-    public RentalFormState(@Nullable Integer dueDateError) {
+    public RentalFormState(@Nullable Integer dueDateError, @Nullable Integer addressError) {
         this.dueDateError = dueDateError;
+        this.addressError = addressError;
         this.isDataValid = false;
     }
 
@@ -22,7 +25,13 @@ public class RentalFormState {
         return dueDateError;
     }
 
+    @Nullable
+    public Integer getAddressError() {
+        return addressError;
+    }
+
     public boolean isDataValid() {
         return isDataValid;
     }
+
 }

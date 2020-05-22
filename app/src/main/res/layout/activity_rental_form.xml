@@ -6,125 +6,150 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.rental_form.RentalFormActivity">
 
-    <LinearLayout
-        android:layout_marginTop="50dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/rental_form_layout_rent_form"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:text="@string/label_rental_information"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/rental_form_et_current_date"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="text"
-                android:enabled="false"
-                android:focusable="false"
-                android:clickable="false"
-                android:hint="@string/prompt_current_date"/>
-        </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_margin="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/rental_form_layout_rent_form"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/rental_form_et_delivery_date"
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="@string/prompt_return_date"
-                android:inputType="date" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/rental_form_btn_delivery_date"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_marginTop="20dp"
+                android:text="@string/label_rental_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rental_form_et_current_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:hint="@string/prompt_current_date"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rental_form_til_delivery_date">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/rental_form_et_delivery_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="@string/prompt_return_date"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/rental_form_btn_delivery_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/ic_menu_my_calendar" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:id="@+id/rental_form_tv_total_price"
+                android:text="Total: $0"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:drawable/ic_menu_my_calendar" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack">
+            </TextView>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:text="Delivery Location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rental_form_et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPostalAddress"
+                    android:hint="@string/prompt_address"
+                    android:imeOptions="actionDone"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/rental_form_layout_map">
+                <com.google.android.gms.maps.MapView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rental_form_mv_map"
+                    />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/rental_form_btn_rent"
+                    android:layout_margin="5dp"
+                    android:enabled="false"
+                    android:text="@string/action_rent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_round"
+                    android:textColor="#FFFFFF"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/rental_form_btn_cancel"
+                    android:layout_margin="5dp"
+                    android:enabled="true"
+                    android:text="@string/action_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_round_white"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
 
         </LinearLayout>
 
-        <TextView
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:id="@+id/rental_form_tv_total_price"
-            android:text="Total: $0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold">
-        </TextView>
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:text="Delivery Location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/rental_form_et_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="text"
-                android:hint="@string/prompt_address"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/crear_layout_map">
-            <com.google.android.gms.maps.MapView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/crear_mv_map"
-                />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/rental_form_btn_accept"
-                android:layout_margin="10dp"
-                android:text="@string/action_accept"
-                android:enabled="false"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/rental_form_btn_cancel"
-                android:layout_margin="10dp"
-                android:text="@string/action_cancel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/rental_form_pg_loading"

@@ -89,9 +89,9 @@ public class DataSourceCache {
         c2.add(Calendar.DATE, 10);
         Date dueDate2=c2.getTime();
 
-        rentItemByUser(dueDate1,10000L, item1, user2, basicResult);
-        rentItemByUser(dueDate2,15000L, item2,user2, basicResult);
-        rentItemByUser(dueDate1,20000L, item4, user2, basicResult);
+        rentItemByUser(dueDate1,10000L, item1, user2, "Alameda, Bogotá, Colombia.", basicResult);
+        rentItemByUser(dueDate2,15000L, item2,user2, "El poblado, Medellín, Antioquía",basicResult);
+        //rentItemByUser(dueDate1,20000L, item4, user2,"Alameda, Bogotá, Colombia.", basicResult);
         //rentItemByUser(dueDate2,15000L,item3, user1, basicResult);
     }
     /* -------------------------------------------------------------------------- */
@@ -133,19 +133,11 @@ public class DataSourceCache {
     /* -------------------------------------------------------------------------- */
     /*                                ITEM                                */
     /* -------------------------------------------------------------------------- */
-    public void getAvailableItems(MutableLiveData<ItemListQueryResult> itemListQueryResult){
+    public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         List<Item> availableItems = new ArrayList<>();
         for (Map.Entry<Long, Item> entryItem: itemsMp.entrySet()) {
-            Long itemId = entryItem.getKey();
-            boolean isLentItem = false;
-            for (Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()) {
-                ItemLending element = entry.getValue();
-                if(element.getReturnDate()!=null && element.getItem().getId().equals(itemId)){ //it's a lent item
-                    isLentItem = true;
-                    break;
-                }
-            }
-            if(!isLentItem){
+            if(!entryItem.getValue().isRent() &&
+                    !entryItem.getValue().getItemOwner().getEmail().equals(loggedInUser.getEmail())){
                 availableItems.add(entryItem.getValue());
             }
         }
@@ -227,15 +219,23 @@ public class DataSourceCache {
         }
     }
 
-    public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user, MutableLiveData<BasicResult> rentalResult){
-        User renter = new User(user.getFull_name()+"", user.getEmail()+"");
-        ItemLending itemLending = new ItemLending(new Date(), dueDate,totalPrice,item, renter);
-        itemLending.setId(++itemLendingCounter);
-        itemLendingMp.put(itemLending.getId(), itemLending);
-        if(itemLendingMp.containsKey(itemLending.getId()) && itemLendingMp.get(itemLending.getId())!=null){
-            rentalResult.setValue(new BasicResult("Item was successfully rented!"));
+    public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user,
+                               String delivery_address,
+                               MutableLiveData<BasicResult> rentalResult){
+        if(item.isRent()){
+            rentalResult.setValue(new BasicResult(R.string.error_item_is_already_rented));
         }else{
-            rentalResult.setValue(new BasicResult(R.string.error_renting_item));
+            item.setRent(true);
+            User renter = new User(user.getFull_name()+"", user.getEmail()+"");
+            ItemLending itemLending = new ItemLending(new Date(), dueDate,totalPrice,item, renter, delivery_address);
+            itemLending.setId(++itemLendingCounter);
+            itemLendingMp.put(itemLending.getId(), itemLending);
+            if(itemLendingMp.containsKey(itemLending.getId()) && itemLendingMp.get(itemLending.getId())!=null){
+                rentalResult.setValue(new BasicResult("Item was successfully rented!"));
+                itemsMp.put(item.getId(),item); //update item
+            }else{
+                rentalResult.setValue(new BasicResult(R.string.error_renting_item));
+            }
         }
     }
 
@@ -314,6 +314,7 @@ public class DataSourceCache {
         }
         itemListQueryResult.setValue(new ItemListQueryResult(itemList));
     }
+
 
     public void deleteItem(Long itemId, MutableLiveData<BasicResult> deleteItemResult) {
         if(itemsMp.containsKey(itemId)){

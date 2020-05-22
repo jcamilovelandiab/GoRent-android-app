@@ -10,6 +10,7 @@ public class Item {
     private ItemOwner itemOwner;
     private Category category;
     private String image_path;
+    private boolean isRent;
 
     public Item(String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
         this.name = name;
@@ -18,6 +19,7 @@ public class Item {
         this.feeType = feeType;
         this.category = category;
         this.itemOwner = itemOwner;
+        this.isRent = false;
     }
 
     public Item(String name, String description, Long price, String feeType,
@@ -29,6 +31,7 @@ public class Item {
         this.category = category;
         this.itemOwner = itemOwner;
         this.image_path = image_path;
+        this.isRent = false;
     }
 
 
@@ -106,6 +109,14 @@ public class Item {
 
     public void setImage_path(String image_path) {
         this.image_path = image_path;
+    }
+
+    public boolean isRent() {
+        return isRent;
+    }
+
+    public void setRent(boolean rent) {
+        isRent = rent;
     }
 
     @Override

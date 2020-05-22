@@ -15,6 +15,7 @@ import com.app.gorent.data.storage.Session;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.ItemQueryResult;
 import com.app.gorent.utils.Result;
+import com.app.gorent.utils.Validator;
 
 import java.util.Date;
 
@@ -47,16 +48,18 @@ public class RentalFormViewModel extends ViewModel {
         itemRepository.getItemById(itemId, itemQueryResult);
     }
 
-    public void rentItem(Date dueDate, Long totalPrice){
+    public void rentItem(Date dueDate, Long totalPrice, String address){
         Item item = itemQueryResult.getValue().getItem();
         LoggedInUser loggedInUser = Session.getLoggedInUser();
         User rentalUser = new User(loggedInUser.getFull_name()+"",loggedInUser.getEmail()+"");
-        itemLendingRepository.rentItemByUser(dueDate, totalPrice, item, rentalUser, rentalResult);
+        itemLendingRepository.rentItemByUser(dueDate, totalPrice, item, rentalUser, address, rentalResult);
     }
 
-    public void rentalFormDataChanged(Date currentDate, Date dueDate, Long totalPrice){
-        if(isDueDateValid(currentDate, dueDate)){
-            rentalFormState.setValue(new RentalFormState(R.string.invalid_delivery_date));
+    public void rentalFormDataChanged(Date currentDate, Date dueDate, Long totalPrice, String address){
+        if(!isDueDateValid(currentDate, dueDate)){
+            rentalFormState.setValue(new RentalFormState(R.string.invalid_delivery_date, null));
+        }else if(!Validator.isStringValid(address)){
+            rentalFormState.setValue(new RentalFormState(null,R.string.invalid_address));
         }else{
             rentalFormState.setValue(new RentalFormState(true));
         }

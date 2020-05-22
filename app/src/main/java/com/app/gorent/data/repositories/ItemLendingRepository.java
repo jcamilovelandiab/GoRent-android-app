@@ -28,8 +28,9 @@ public class ItemLendingRepository {
         return instance;
     }
 
-    public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user, MutableLiveData<BasicResult> rentItemResult){
-        dataSource.rentItemByUser(dueDate, totalPrice,item, user, rentItemResult);
+    public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user,
+                               String delivery_address, MutableLiveData<BasicResult> rentItemResult){
+        dataSource.rentItemByUser(dueDate, totalPrice,item, user, delivery_address, rentItemResult);
     }
 
     public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnItemResult){

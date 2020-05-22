@@ -63,8 +63,8 @@ public class SearchFragment extends Fragment {
                     if(et_search_text.getText().toString().trim().isEmpty()){
                         Toast.makeText(getContext(), "Please enter a keyword to search for the item", Toast.LENGTH_SHORT).show();
                     }else{
-                        searchViewModel.searchItems(et_search_text.getText().toString());
                         pg_loading.setVisibility(View.VISIBLE);
+                        searchViewModel.searchItems(et_search_text.getText().toString());
                     }
                 }
                 return false;

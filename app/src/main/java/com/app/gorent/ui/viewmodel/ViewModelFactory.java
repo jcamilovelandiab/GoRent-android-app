@@ -20,6 +20,7 @@ import com.app.gorent.ui.activities.main.rented_items_history.RentedItemsViewMod
 import com.app.gorent.ui.activities.main.search.SearchViewModel;
 import com.app.gorent.ui.activities.rental_form.RentalFormViewModel;
 import com.app.gorent.ui.activities.main.rent.RentViewModel;
+import com.app.gorent.ui.activities.return_item.ReturnItemViewModel;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -57,7 +58,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         }else if(modelClass.isAssignableFrom(ItemFormViewModel.class)){
             return (T) new ItemFormViewModel(ItemRepository.getInstance(dataSourceCache),
                     CategoryRepository.getInstance(dataSourceCache));
-        } else {
+        } else if (modelClass.isAssignableFrom(ReturnItemViewModel.class)){
+            return (T) new ReturnItemViewModel(ItemLendingRepository.getInstance(dataSourceCache));
+        } else{
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }

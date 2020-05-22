@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
+import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.ItemListQueryResult;
@@ -25,8 +26,8 @@ public class ItemRepository {
         return instance;
     }
 
-    public void getAvailableItems(MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        dataSourceCache.getAvailableItems(itemListQueryResult);
+    public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        dataSourceCache.getAvailableItems(loggedInUser, itemListQueryResult);
     }
 
     public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){

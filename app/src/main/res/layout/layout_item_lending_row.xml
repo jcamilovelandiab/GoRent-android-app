@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"/>
 
-                <LinearLayout
+                <!--LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -109,7 +109,24 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
                     </TextView>
-                </LinearLayout>
+
+                </LinearLayout-->
+
+                <TextView
+                    android:id="@+id/item_lending_row_tv_rent_date"
+                    android:text="Rent date: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/item_lending_row_tv_due_date"
+                    android:text="Due date: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                </TextView>
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -127,6 +144,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/item_lending_row_tv_delivery_address"
+                        android:text="Delivery address: "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                    </TextView>
                 </LinearLayout>
             </LinearLayout>
 

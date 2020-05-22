@@ -19,12 +19,16 @@ public class RentedItemsViewModel extends ViewModel {
 
     public RentedItemsViewModel(ItemLendingRepository itemLendingRepository){
         this.itemLendingRepository = itemLendingRepository;
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
-        User rentalUser = new User(loggedInUser.getFull_name()+"", loggedInUser.getEmail()+"");
-        this.itemLendingRepository.getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
     }
 
     public MutableLiveData<ItemLendingQueryResult> getItemLendingQueryResult() {
         return itemLendingQueryResult;
     }
+
+    public void getItemLendingHistory(){
+        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        User rentalUser = new User(loggedInUser.getFull_name()+"", loggedInUser.getEmail()+"");
+        this.itemLendingRepository.getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
+    }
+
 }

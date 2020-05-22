@@ -2,9 +2,10 @@ package com.app.gorent.data.model;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ItemLending {
+public class ItemLending implements Serializable {
 
     Long id;
     Date lendingDate;
@@ -14,13 +15,15 @@ public class ItemLending {
     Long totalPrice;
     User renter;
     Item item;
+    String delivery_address;
 
-    public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, Item item,User renter) {
+    public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, Item item,User renter, String delivery_address) {
         this.lendingDate = lendingDate;
         this.dueDate = dueDate;
         this.totalPrice = totalPrice;
         this.renter = renter;
         this.item = item;
+        this.delivery_address = delivery_address;
     }
 
     public Long getId() {
@@ -80,6 +83,14 @@ public class ItemLending {
         this.totalPrice = totalPrice;
     }
 
+    public String getDelivery_address() {
+        return delivery_address;
+    }
+
+    public void setDelivery_address(String delivery_address) {
+        this.delivery_address = delivery_address;
+    }
+
     @Override
     public String toString() {
         return "ItemLending: " + "\r\n" +
@@ -88,6 +99,7 @@ public class ItemLending {
                 "   Due date: " + dueDate + "\r\n" +
                 "   Return date: " + returnDate + "\r\n" +
                 "   Rental " + renter + "\r\n" +
+                "   Delivery address: "+delivery_address+"\r\n"+
                 "   " + item;
     }
 }
