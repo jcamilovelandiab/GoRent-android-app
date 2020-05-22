@@ -14,24 +14,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.ui.activities.return_item.ReturnItemActivity;
-import com.app.gorent.ui.adapters.ItemLendingListAdapter;
 import com.app.gorent.ui.adapters.ItemLendingRecyclerViewAdapter;
 import com.app.gorent.ui.adapters.RecyclerViewClickListener;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemLendingQueryResult;
-
-import java.util.ArrayList;
+import com.app.gorent.utils.ItemLendingListQueryResult;
 
 public class RentedItemsFragment extends Fragment {
 
@@ -58,17 +53,17 @@ public class RentedItemsFragment extends Fragment {
     }
 
     public void prepareItemLendingHistoryObserver(){
-        rentedItemsViewModel.getItemLendingQueryResult().observe(getViewLifecycleOwner(), new Observer<ItemLendingQueryResult>() {
+        rentedItemsViewModel.getItemLendingQueryResult().observe(getViewLifecycleOwner(), new Observer<ItemLendingListQueryResult>() {
             @Override
-            public void onChanged(ItemLendingQueryResult itemLendingQueryResult) {
-                if(itemLendingQueryResult==null) return;
+            public void onChanged(ItemLendingListQueryResult itemLendingListQueryResult) {
+                if(itemLendingListQueryResult ==null) return;
                 pg_loading.setVisibility(View.GONE);
-                if(itemLendingQueryResult.getError()!=null){
-                    Toast.makeText(getActivity(), itemLendingQueryResult.getError(), Toast.LENGTH_SHORT).show();
+                if(itemLendingListQueryResult.getError()!=null){
+                    Toast.makeText(getActivity(), itemLendingListQueryResult.getError(), Toast.LENGTH_SHORT).show();
                 }
-                if(itemLendingQueryResult.getItemLendingList()!=null){
+                if(itemLendingListQueryResult.getItemLendingList()!=null){
                     RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
-                            itemLendingQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
+                            itemLendingListQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
                         @Override
                         public void onMoreItemLendingClicked(ItemLending itemLending) {
                             configureDialog(itemLending);
@@ -82,31 +77,48 @@ public class RentedItemsFragment extends Fragment {
     }
 
     private void configureDialog(final ItemLending itemLending){
-        final String[] options = {"Return item", "Contact the item's owner", "Report problem"};
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case 0:
-                        returnItem(itemLending);
-                        break;
-                    case 1:
-                        contactOwner(itemLending);
-                        break;
-                    case 2:
-                        reportProblem(itemLending);
-                        break;
+        if(itemLending.getReturnDate()==null){
+            final String[] options = {"Return item", "Contact the item's owner", "Report problem"};
+            alertDialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case 0:
+                            returnItem(itemLending);
+                            break;
+                        case 1:
+                            contactOwner(itemLending);
+                            break;
+                        case 2:
+                            reportProblem(itemLending);
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            final String[] options = {"Contact the item's owner", "Report problem"};
+            alertDialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case 0:
+                            contactOwner(itemLending);
+                            break;
+                        case 1:
+                            reportProblem(itemLending);
+                            break;
+                    }
+                }
+            });
+        }
         Dialog dialog = alertDialogBuilder.create();
         dialog.show();
     }
 
     private void returnItem(ItemLending itemLending){
         Intent intent = new Intent(getActivity(), ReturnItemActivity.class);
-        intent.putExtra("itemLending", (Parcelable) itemLending);
+        intent.putExtra("itemLendingId", itemLending.getId());
         startActivity(intent);
     }
 

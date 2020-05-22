@@ -97,6 +97,8 @@ public class RentItemDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(RentItemDetailsActivity.this, RentalFormActivity.class);
                 intent.putExtra("itemId", itemId);
                 startActivity(intent);
+                setResult(Activity.RESULT_OK);
+                finish();
             }
         });
     }

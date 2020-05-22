@@ -115,5 +115,6 @@
     <string name="error_item_is_already_rented">Item is already rented!</string>
     <string name="title_return_item">Return item</string>
     <string name="action_return">Return item</string>
+    <string name="error_item_lending_not_found">Item lending not found</string>
 
 </resources>

@@ -21,7 +21,7 @@ import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.ui.adapters.ItemLendingRecyclerViewAdapter;
 import com.app.gorent.ui.adapters.RecyclerViewClickListener;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemLendingQueryResult;
+import com.app.gorent.utils.ItemLendingListQueryResult;
 
 public class LentItemsFragment extends Fragment {
 
@@ -48,14 +48,14 @@ public class LentItemsFragment extends Fragment {
     }
 
     private void prepareItemLendingObserver() {
-        lentItemsViewModel.getItemLendingQueryResult().observe(getViewLifecycleOwner(), new Observer<ItemLendingQueryResult>() {
+        lentItemsViewModel.getItemLendingQueryResult().observe(getViewLifecycleOwner(), new Observer<ItemLendingListQueryResult>() {
             @Override
-            public void onChanged(ItemLendingQueryResult itemLendingQueryResult) {
-                if(itemLendingQueryResult==null) return;
+            public void onChanged(ItemLendingListQueryResult itemLendingListQueryResult) {
+                if(itemLendingListQueryResult ==null) return;
                 pg_loading.setVisibility(View.GONE);
-                if(itemLendingQueryResult.getItemLendingList()!=null){
+                if(itemLendingListQueryResult.getItemLendingList()!=null){
                     RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
-                            itemLendingQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
+                            itemLendingListQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
                         @Override
                         public void onMoreItemLendingClicked(ItemLending itemLending) {
                             configureDialog(itemLending);
@@ -64,8 +64,8 @@ public class LentItemsFragment extends Fragment {
                     rv_item_lending_list.setAdapter(adapter_item_lending_list);
                     adapter_item_lending_list.notifyDataSetChanged();
                 }
-                if(itemLendingQueryResult.getError()!=null){
-                    Toast.makeText(getContext(), itemLendingQueryResult.getError(), Toast.LENGTH_SHORT).show();
+                if(itemLendingListQueryResult.getError()!=null){
+                    Toast.makeText(getContext(), itemLendingListQueryResult.getError(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

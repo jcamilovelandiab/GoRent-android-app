@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
+import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.ItemQueryResult;
@@ -90,9 +92,16 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public boolean onSupportNavigateUp(){
+        goBack();
+        return true;
+    }
+
+    private void goBack(){
+        Intent intent = new Intent(RentalFormActivity.this, RentItemDetailsActivity.class);
+        intent.putExtra("itemId", bundle.getLong("itemId"));
+        startActivity(intent);
         setResult(Activity.RESULT_OK);
         finish();
-        return true;
     }
 
     private void connectModelWithView(){
@@ -123,8 +132,7 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(Activity.RESULT_OK);
-                finish();
+                goBack();
             }
         });
     }
@@ -171,9 +179,10 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
+                            setResult(Activity.RESULT_OK);
                             finish();
                         }
-                    }, 3*1000);
+                    }, 2*1000);
                 }
             }
         });
@@ -188,14 +197,13 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
                 til_delivery_date.setErrorEnabled(rentalFormState.getDueDateError()!=null);
                 if(rentalFormState.getDueDateError()!=null){
                     til_delivery_date.setError(getString(rentalFormState.getDueDateError()));
+                }else{
+                    configureTotalPrice();
                 }
                 if(rentalFormState.getAddressError()!=null){
                     et_address.setError(getString(rentalFormState.getAddressError()));
                 }
                 btn_accept.setEnabled(rentalFormState.isDataValid());
-                if(rentalFormState.isDataValid()){
-                    configureTotalPrice();
-                }
             }
         });
     }

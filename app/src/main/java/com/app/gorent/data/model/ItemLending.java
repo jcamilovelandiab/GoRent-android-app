@@ -7,15 +7,16 @@ import java.util.Date;
 
 public class ItemLending implements Serializable {
 
-    Long id;
-    Date lendingDate;
-    Date dueDate;
+    private Long id;
+    private Date lendingDate;
+    private Date dueDate;
+
     @Nullable
-    Date returnDate;
-    Long totalPrice;
-    User renter;
-    Item item;
-    String delivery_address;
+    private Date returnDate;
+    private Long totalPrice;
+    private User renter;
+    private Item item;
+    private String delivery_address;
 
     public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, Item item,User renter, String delivery_address) {
         this.lendingDate = lendingDate;
@@ -90,6 +91,8 @@ public class ItemLending implements Serializable {
     public void setDelivery_address(String delivery_address) {
         this.delivery_address = delivery_address;
     }
+
+
 
     @Override
     public String toString() {

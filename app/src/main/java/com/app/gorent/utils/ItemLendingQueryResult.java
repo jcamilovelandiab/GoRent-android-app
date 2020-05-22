@@ -4,12 +4,10 @@ import androidx.annotation.Nullable;
 
 import com.app.gorent.data.model.ItemLending;
 
-import java.util.List;
-
 public class ItemLendingQueryResult {
 
     @Nullable
-    private List<ItemLending> itemLendingList;
+    private ItemLending itemLending;
     @Nullable
     private Integer error;
 
@@ -17,13 +15,13 @@ public class ItemLendingQueryResult {
         this.error = error;
     }
 
-    public ItemLendingQueryResult(@Nullable List<ItemLending> itemLendingList) {
-        this.itemLendingList = itemLendingList;
+    public ItemLendingQueryResult(@Nullable ItemLending itemLending) {
+        this.itemLending = itemLending;
     }
 
     @Nullable
-    public List<ItemLending> getItemLendingList() {
-        return itemLendingList;
+    public ItemLending getItemLending() {
+        return itemLending;
     }
 
     @Nullable

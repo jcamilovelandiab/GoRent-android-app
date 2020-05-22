@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
-import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.BasicResult;
+import com.app.gorent.utils.ItemLendingQueryResult;
 
 public class ReturnItemActivity extends AppCompatActivity {
 
@@ -34,6 +34,7 @@ public class ReturnItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         returnItemViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(ReturnItemViewModel.class);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_return_item);
         setContentView(R.layout.activity_return_item);
@@ -42,9 +43,10 @@ public class ReturnItemActivity extends AppCompatActivity {
         prepareItemLendingObservable();
         prepareReturnItemResult();
 
-        ItemLending itemLending = (ItemLending) this.getIntent().getSerializableExtra("itemLending");
-        returnItemViewModel.setItemLending(itemLending);
-
+        //ItemLending itemLending = (ItemLending) this.getIntent().getSerializableExtra("itemLending");
+        Long itemLendingId = this.getIntent().getExtras().getLong("itemLendingId");
+        //returnItemViewModel.setItemLending(itemLending);
+        returnItemViewModel.getItemLending(itemLendingId);
     }
 
     private void connectModelWithView(){
@@ -55,19 +57,23 @@ public class ReturnItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp(){
-        setResult(Activity.RESULT_OK);
-        finish();
+        closeActivity(0);
         return true;
     }
 
     private void prepareItemLendingObservable(){
-        returnItemViewModel.getItemLendingQuery().observe(this, new Observer<ItemLending>() {
+        returnItemViewModel.getItemLendingQuery().observe(this, new Observer<ItemLendingQueryResult>() {
             @Override
-            public void onChanged(ItemLending itemLending) {
-                if(itemLending==null) return;
+            public void onChanged(ItemLendingQueryResult itemLendingQueryResult) {
+                if(itemLendingQueryResult==null) return;
                 pg_loading.setVisibility(View.GONE);
-                configureBtnReturn();
-                btn_return.setEnabled(true);
+                if(itemLendingQueryResult.getError()!=null){
+                    showErrorMessage(getString(itemLendingQueryResult.getError())+". Try later!");
+                }
+                if(itemLendingQueryResult.getItemLending()!=null){
+                    configureBtnReturn();
+                    btn_return.setEnabled(true);
+                }
             }
         });
     }
@@ -83,9 +89,20 @@ public class ReturnItemActivity extends AppCompatActivity {
                 }
                 if(returnItemResult.getSuccess()!=null){
                     showMessage(returnItemResult.getSuccess());
+                    closeActivity(1500);
                 }
             }
         });
+    }
+
+    private void closeActivity(long delayMillis){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                setResult(Activity.RESULT_OK);
+                finish();
+            }
+        }, delayMillis);
     }
 
     private void showErrorMessage(final String errorMsg){
@@ -112,7 +129,7 @@ public class ReturnItemActivity extends AppCompatActivity {
                 toast.setGravity(Gravity.CENTER, 0,0);
                 View view = toast.getView();
                 //Gets the actual oval background of the Toast then sets the colour filter
-                view.getBackground().setColorFilter(Color.parseColor("#03DAC5"), PorterDuff.Mode.SRC_IN);
+                view.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
                 //Gets the TextView from the Toast so it can be edited
                 TextView text = view.findViewById(android.R.id.message);
                 text.setTextColor(Color.BLACK);
@@ -125,6 +142,7 @@ public class ReturnItemActivity extends AppCompatActivity {
         btn_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pg_loading.setVisibility(View.VISIBLE);
                 returnItemViewModel.returnItem();
             }
         });

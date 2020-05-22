@@ -14,6 +14,7 @@ import com.app.gorent.ui.activities.auth.LoggedInUserView;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.CategoryListQueryResult;
 import com.app.gorent.utils.CategoryQueryResult;
+import com.app.gorent.utils.ItemLendingListQueryResult;
 import com.app.gorent.utils.ItemLendingQueryResult;
 import com.app.gorent.utils.ItemListQueryResult;
 import com.app.gorent.utils.ItemQueryResult;
@@ -127,7 +128,7 @@ public class DataSourceCache {
     }
 
     public void logout() {
-        //loggedUser = null;
+        Session.setLoggedInUser(null);
     }
 
     /* -------------------------------------------------------------------------- */
@@ -189,9 +190,9 @@ public class DataSourceCache {
     /* -------------------------------------------------------------------------- */
     /*                                ITEM LENDING                                */
     /* -------------------------------------------------------------------------- */
-    public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+    public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
         if(!itemOwnersMp.containsKey(owner.getEmail())) {
-            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_not_found));
+            itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<ItemLending> itemLendingList = new ArrayList<>();
             for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
@@ -199,15 +200,15 @@ public class DataSourceCache {
                     itemLendingList.add(entry.getValue());
                 }
             }
-            itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLendingList));
+            itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
         }
     }
 
     /* -------------------------------------------------------------------------- */
 
-    public void getItemLendingHistoryByRentalUser(User user, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+    public void getItemLendingHistoryByRentalUser(User user, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
         if(!usersMp.containsKey(user.getEmail())){
-            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_owner_not_found));
+            itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<ItemLending> itemLendingList = new ArrayList<>();
             for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
@@ -215,7 +216,16 @@ public class DataSourceCache {
                     itemLendingList.add(entry.getValue());
                 }
             }
-            itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLendingList));
+            itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
+        }
+    }
+
+    public void getItemLendingById(Long itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
+        if(itemLendingMp.containsKey(itemLendingId)){
+            ItemLending itemLending = itemLendingMp.get(itemLendingId);
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLending));
+        }else{
+            itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_lending_not_found));
         }
     }
 
@@ -243,6 +253,9 @@ public class DataSourceCache {
         if(itemLendingMp.containsKey(itemLending.getId())){
             ItemLending new_element = itemLendingMp.get(itemLending.getId());
             new_element.setReturnDate(itemLending.getReturnDate());
+            Item item = itemLending.getItem();
+            item.setRent(false);
+            itemsMp.put(item.getId(), item);
             itemLendingMp.put(itemLending.getId(), new_element);
             returnResult.setValue(new BasicResult("Item was successfully returned!"));
         }else{
@@ -334,4 +347,6 @@ public class DataSourceCache {
             deleteItemResult.setValue(new BasicResult(R.string.error_item_not_found));
         }
     }
+
+
 }
