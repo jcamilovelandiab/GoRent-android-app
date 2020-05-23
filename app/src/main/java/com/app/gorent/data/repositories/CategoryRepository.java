@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.Category;
 import com.app.gorent.data.storage.DataSourceCache;
+import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.utils.CategoryListQueryResult;
 import com.app.gorent.utils.CategoryQueryResult;
 
@@ -13,6 +15,8 @@ public class CategoryRepository {
 
     private static volatile CategoryRepository instance;
     private DataSourceCache dataSourceCache;
+    private DataSourceFirestore dataSourceFirestore;
+    private DataSourceSQLite dataSourceSQLite;
 
     private CategoryRepository(DataSourceCache dataSourceCache){
         this.dataSourceCache = dataSourceCache;

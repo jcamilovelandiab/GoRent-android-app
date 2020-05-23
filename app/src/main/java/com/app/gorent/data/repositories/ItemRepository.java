@@ -6,6 +6,8 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
+import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.ItemListQueryResult;
 import com.app.gorent.utils.ItemQueryResult;
@@ -14,6 +16,8 @@ public class ItemRepository {
 
     private static volatile ItemRepository instance;
     private DataSourceCache dataSourceCache;
+    private DataSourceFirestore dataSourceFirestore;
+    private DataSourceSQLite dataSourceSQLite;
 
     private ItemRepository(DataSourceCache dataSourceCache){
         this.dataSourceCache = dataSourceCache;

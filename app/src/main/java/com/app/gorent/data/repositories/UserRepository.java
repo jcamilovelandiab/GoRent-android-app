@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
+import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.utils.AuthResult;
 
 /**
@@ -14,6 +16,8 @@ public class UserRepository {
 
     private static volatile UserRepository instance;
     private DataSourceCache dataSourceCache;
+    private DataSourceFirestore dataSourceFirestore;
+    private DataSourceSQLite dataSourceSQLite;
 
     // private constructor : singleton access
     private UserRepository(DataSourceCache dataSourceCache) {

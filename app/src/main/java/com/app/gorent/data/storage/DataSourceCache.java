@@ -40,7 +40,7 @@ public class DataSourceCache {
     private static Map<String, ItemOwner> itemOwnersMp = new HashMap<>();
     private static Map<String, User> usersMp = new HashMap<>();
 
-    public static DataSourceCache instance=null;
+    private static DataSourceCache instance=null;
 
     public static DataSourceCache getInstance(){
         if(instance==null){

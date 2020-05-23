@@ -9,20 +9,24 @@ public class User {
     private String full_name;
     private String email;
     private String password;
+    private Role role;
     private Location home;
 
     public User() {
+        this.role = Role.user;
     }
 
     public User(String full_name, String email, String password) {
         this.full_name = full_name;
         this.email = email;
         this.password = password;
+        this.role = Role.user;
     }
 
     public User(String full_name, String email) {
         this.full_name = full_name;
         this.email = email;
+        this.role = Role.user;
     }
 
     public String getUserId() {
@@ -65,10 +69,19 @@ public class User {
         this.home = home;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "-User:" + "\r\n" +
                 "Name: " + full_name + "\r\n" +
                 "Email: " + email;
     }
+
 }

@@ -7,6 +7,8 @@ import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
+import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.utils.BasicResult;
 import com.app.gorent.utils.ItemLendingListQueryResult;
 import com.app.gorent.utils.ItemLendingQueryResult;
@@ -17,6 +19,8 @@ public class ItemLendingRepository {
 
     private static volatile ItemLendingRepository instance;
     private DataSourceCache dataSourceCache;
+    private DataSourceFirestore dataSourceFirestore;
+    private DataSourceSQLite dataSourceSQLite;
 
     private ItemLendingRepository(DataSourceCache dataSourceCache){
         this.dataSourceCache = dataSourceCache;
