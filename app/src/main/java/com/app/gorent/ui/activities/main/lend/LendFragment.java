@@ -23,7 +23,7 @@ import com.app.gorent.ui.adapters.ItemListAdapter;
 import com.app.gorent.ui.activities.item_information.ItemInformationActivity;
 import com.app.gorent.ui.activities.item_form.ItemFormActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemListQueryResult;
+import com.app.gorent.utils.result.ItemListQueryResult;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -31,15 +31,16 @@ import java.util.ArrayList;
 public class LendFragment extends Fragment {
 
     private LendViewModel lendViewModel;
-    FloatingActionButton fab_add_button;
-    ListView lv_items;
-    ProgressBar pg_loading;
+    private FloatingActionButton fab_add_button;
+    private ListView lv_items;
+    private ProgressBar pg_loading;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root =  inflater.inflate(R.layout.fragment_my_stuff, container, false);
-        lendViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(LendViewModel.class);
+        assert(getActivity()!=null);
+        lendViewModel = ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(LendViewModel.class);
 
         connectModelWithView(root);
         configureListItemResultObserver();

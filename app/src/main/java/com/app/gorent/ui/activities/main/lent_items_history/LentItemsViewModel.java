@@ -7,7 +7,7 @@ import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.storage.Session;
-import com.app.gorent.utils.ItemLendingListQueryResult;
+import com.app.gorent.utils.result.ItemLendingListQueryResult;
 
 public class LentItemsViewModel extends ViewModel {
 

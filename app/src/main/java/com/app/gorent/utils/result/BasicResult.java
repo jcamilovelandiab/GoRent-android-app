@@ -1,4 +1,4 @@
-package com.app.gorent.utils;
+package com.app.gorent.utils.result;
 
 import androidx.annotation.Nullable;
 

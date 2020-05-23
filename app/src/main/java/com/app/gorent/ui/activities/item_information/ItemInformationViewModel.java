@@ -13,10 +13,9 @@ import com.app.gorent.data.repositories.CategoryRepository;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.storage.Session;
 import com.app.gorent.ui.activities.item_form.ItemFormState;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.CategoryListQueryResult;
-import com.app.gorent.utils.CategoryQueryResult;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.CategoryListQueryResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 import com.app.gorent.utils.Validator;
 
 import java.util.List;

@@ -3,9 +3,8 @@ package com.app.gorent.ui.activities.rent_item_details;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.app.gorent.data.model.Item;
 import com.app.gorent.data.repositories.ItemRepository;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 
 public class RentItemDetailsViewModel extends ViewModel {
 

@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.repositories.ItemLendingRepository;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.ItemLendingQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.ItemLendingQueryResult;
 
 import java.util.Date;
 

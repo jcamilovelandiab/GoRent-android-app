@@ -26,7 +26,7 @@ import com.app.gorent.ui.activities.return_item.ReturnItemActivity;
 import com.app.gorent.ui.adapters.ItemLendingRecyclerViewAdapter;
 import com.app.gorent.ui.adapters.RecyclerViewClickListener;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemLendingListQueryResult;
+import com.app.gorent.utils.result.ItemLendingListQueryResult;
 
 public class RentedItemsFragment extends Fragment {
 
@@ -37,8 +37,9 @@ public class RentedItemsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        assert(getActivity()!=null);
         rentedItemsViewModel =
-                ViewModelProviders.of(this, new ViewModelFactory()).get(RentedItemsViewModel.class);
+                ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(RentedItemsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_renting_history, container, false);
         connectModelWithView(root);
         prepareItemLendingHistoryObserver();

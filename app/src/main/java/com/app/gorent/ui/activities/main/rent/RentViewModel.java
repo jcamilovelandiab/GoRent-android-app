@@ -3,14 +3,11 @@ package com.app.gorent.ui.activities.main.rent;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.storage.Session;
-import com.app.gorent.utils.ItemListQueryResult;
-
-import java.util.List;
+import com.app.gorent.utils.result.ItemListQueryResult;
 
 public class RentViewModel extends ViewModel {
 

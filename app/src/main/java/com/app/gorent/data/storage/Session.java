@@ -13,8 +13,8 @@ public class Session {
         return loggedInUser;
     }
 
-    public static void setLoggedInUser(@Nullable LoggedInUser loggedInUser) {
-        Session.loggedInUser = loggedInUser;
+    public static void setLoggedInUser(@Nullable LoggedInUser user) {
+        loggedInUser = user;
     }
 
 }

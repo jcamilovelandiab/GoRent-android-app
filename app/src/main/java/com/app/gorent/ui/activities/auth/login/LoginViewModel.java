@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.app.gorent.data.repositories.UserRepository;
 import com.app.gorent.R;
-import com.app.gorent.utils.AuthResult;
+import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.utils.Validator;
 
 public class LoginViewModel extends ViewModel {

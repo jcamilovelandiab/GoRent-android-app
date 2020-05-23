@@ -2,11 +2,9 @@ package com.app.gorent.ui.activities.main.search;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.app.gorent.data.model.Item;
-import com.app.gorent.data.repositories.ItemRepository;
-import com.app.gorent.utils.ItemListQueryResult;
 
-import java.util.List;
+import com.app.gorent.data.repositories.ItemRepository;
+import com.app.gorent.utils.result.ItemListQueryResult;
 
 public class SearchViewModel extends ViewModel {
 

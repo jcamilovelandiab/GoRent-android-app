@@ -1,33 +1,32 @@
 package com.app.gorent.data.repositories;
 
+import android.content.Context;
+
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.DataSourceSQLite;
 
 import java.util.List;
 
-public class ItemOwnerRepository {
+public class ItemOwnerRepository extends Repository{
 
     private static volatile ItemOwnerRepository instance;
-    private DataSourceCache dataSource;
-    private DataSourceFirestore dataSourceFirestore;
-    private DataSourceSQLite dataSourceSQLite;
 
-    private ItemOwnerRepository(DataSourceCache dataSource){
-        this.dataSource = dataSource;
+    private ItemOwnerRepository(Context context){
+        super(context);
     }
 
-    public static ItemOwnerRepository getInstance(DataSourceCache dataSource){
+    public static ItemOwnerRepository getInstance(Context context){
         if(instance == null){
-            instance = new ItemOwnerRepository(dataSource);
+            instance = new ItemOwnerRepository(context);
         }
         return instance;
     }
 
     public ItemOwner save(ItemOwner itemOwner){
-        return dataSource.saveItemOwner(itemOwner);
+        return getDataSourceCache().saveItemOwner(itemOwner);
     }
 
     public ItemOwner getItemOwnerById(Long id){

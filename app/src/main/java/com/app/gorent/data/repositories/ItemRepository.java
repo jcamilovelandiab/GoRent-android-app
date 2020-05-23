@@ -1,69 +1,68 @@
 package com.app.gorent.data.repositories;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.DataSourceSQLite;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.ItemListQueryResult;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.ItemListQueryResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 
-public class ItemRepository {
+public class ItemRepository extends Repository{
 
     private static volatile ItemRepository instance;
-    private DataSourceCache dataSourceCache;
-    private DataSourceFirestore dataSourceFirestore;
-    private DataSourceSQLite dataSourceSQLite;
 
-    private ItemRepository(DataSourceCache dataSourceCache){
-        this.dataSourceCache = dataSourceCache;
+    private ItemRepository(Context context){
+        super(context);
     }
 
-    public static ItemRepository getInstance(DataSourceCache dataSource){
+    public static ItemRepository getInstance(Context context){
         if(instance == null){
-            instance = new ItemRepository(dataSource);
+            instance = new ItemRepository(context);
         }
         return instance;
     }
 
     public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        dataSourceCache.getAvailableItems(loggedInUser, itemListQueryResult);
+        getDataSourceCache().getAvailableItems(loggedInUser, itemListQueryResult);
     }
 
     public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
-        dataSourceCache.getItemById(id, itemQueryResult);
+        getDataSourceCache().getItemById(id, itemQueryResult);
     }
 
     public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        dataSourceCache.getItemsByName(name, itemListQueryResult);
+        getDataSourceCache().getItemsByName(name, itemListQueryResult);
     }
 
     public void getItemsByCategory(String nameCategory, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        dataSourceCache.getItemsByCategory(nameCategory, itemListQueryResult);
+        getDataSourceCache().getItemsByCategory(nameCategory, itemListQueryResult);
     }
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
-        dataSourceCache.saveItem(item, saveItemResult);
+        getDataSourceCache().saveItem(item, saveItemResult);
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
-        dataSourceCache.updateItem(item, updateItemResult);
+        getDataSourceCache().updateItem(item, updateItemResult);
     }
 
     public void deleteItem(Long itemId, MutableLiveData deleteItemResult){
-        dataSourceCache.deleteItem(itemId, deleteItemResult);
+        getDataSourceCache().deleteItem(itemId, deleteItemResult);
     }
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        dataSourceCache.getItemsByOwner(itemOwner, itemListQueryResult);
+        getDataSourceCache().getItemsByOwner(itemOwner, itemListQueryResult);
     }
 
     public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        dataSourceCache.getItemsByNameOrCategory(search_text, itemListQueryResult);
+        getDataSourceCache().getItemsByNameOrCategory(search_text, itemListQueryResult);
     }
 
 }

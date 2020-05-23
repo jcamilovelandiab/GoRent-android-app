@@ -44,16 +44,15 @@ import com.app.gorent.data.model.Category;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.activities.item_form.ItemFormState;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.CategoryListQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.CategoryListQueryResult;
 import com.app.gorent.utils.ImageUtils;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -82,7 +81,7 @@ public class ItemInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_information);
 
-        itemInformationViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(ItemInformationViewModel.class);
+        itemInformationViewModel = ViewModelProviders.of(this, new ViewModelFactory(getApplicationContext())).get(ItemInformationViewModel.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_activity_item_info);
         connectModelWithView();

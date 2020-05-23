@@ -21,19 +21,20 @@ import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.ui.adapters.ItemLendingRecyclerViewAdapter;
 import com.app.gorent.ui.adapters.RecyclerViewClickListener;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemLendingListQueryResult;
+import com.app.gorent.utils.result.ItemLendingListQueryResult;
 
 public class LentItemsFragment extends Fragment {
 
     private LentItemsViewModel lentItemsViewModel;
-    RecyclerView rv_item_lending_list;
-    ProgressBar pg_loading;
+    private RecyclerView rv_item_lending_list;
+    private ProgressBar pg_loading;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        assert(getActivity()!=null);
         lentItemsViewModel =
-                ViewModelProviders.of(this, new ViewModelFactory()).get(LentItemsViewModel.class);
+                ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(LentItemsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_lending_history, container, false);
         connectModelWithView(root);
         prepareItemLendingObserver();

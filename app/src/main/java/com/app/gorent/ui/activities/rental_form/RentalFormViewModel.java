@@ -10,11 +10,9 @@ import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.model.User;
 import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.repositories.ItemRepository;
-import com.app.gorent.data.repositories.UserRepository;
 import com.app.gorent.data.storage.Session;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.ItemQueryResult;
-import com.app.gorent.utils.Result;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 import com.app.gorent.utils.Validator;
 
 import java.util.Date;
@@ -66,7 +64,9 @@ public class RentalFormViewModel extends ViewModel {
     }
 
     private boolean isDueDateValid(Date currentDate, Date dueDate){
-        if(dueDate.compareTo(currentDate)>0){
+        if(currentDate == null || dueDate==null){
+            return false;
+        } else if(dueDate.compareTo(currentDate)>0){
             return true;
         }else{
             return false;

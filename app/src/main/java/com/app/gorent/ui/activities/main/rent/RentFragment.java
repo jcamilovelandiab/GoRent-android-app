@@ -20,21 +20,22 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
 import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemListQueryResult;
+import com.app.gorent.utils.result.ItemListQueryResult;
 
 import java.util.ArrayList;
 
 public class RentFragment extends Fragment {
 
-    RentViewModel rentViewModel;
-    ListView lv_items;
-    ItemListAdapter itemListAdapter;
-    ProgressBar pg_loading;
+    private RentViewModel rentViewModel;
+    private ListView lv_items;
+    private ItemListAdapter itemListAdapter;
+    private ProgressBar pg_loading;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        assert(getActivity()!=null);
         rentViewModel =
-                ViewModelProviders.of(this, new ViewModelFactory()).get(RentViewModel.class);
+                ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(RentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_rent, container, false);
         lv_items = root.findViewById(R.id.rent_lv_items);
         pg_loading = root.findViewById(R.id.rent_pg_loading);

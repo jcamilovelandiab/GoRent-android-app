@@ -1,4 +1,4 @@
-package com.app.gorent.utils;
+package com.app.gorent.utils.result;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.

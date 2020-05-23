@@ -22,7 +22,7 @@ import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.activities.rental_form.RentalFormActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 
 public class RentItemDetailsActivity extends AppCompatActivity {
 
@@ -37,7 +37,7 @@ public class RentItemDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rent_item_details);
-        rentItemDetailsViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(RentItemDetailsViewModel.class);
+        rentItemDetailsViewModel = ViewModelProviders.of(this, new ViewModelFactory(getApplicationContext())).get(RentItemDetailsViewModel.class);
 
         connectViewWithModel();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -22,24 +22,25 @@ import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.adapters.ItemListAdapter;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.ItemListQueryResult;
+import com.app.gorent.utils.result.ItemListQueryResult;
 
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
     private SearchViewModel searchViewModel;
-    ListView lv_items;
-    EditText et_search_text;
-    Button btn_filter;
-    ProgressBar pg_loading;
+    private ListView lv_items;
+    private EditText et_search_text;
+    private Button btn_filter;
+    private ProgressBar pg_loading;
     String keyword;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        assert(getActivity()!=null);
         searchViewModel =
-                ViewModelProviders.of(this, new ViewModelFactory()).get(SearchViewModel.class);
+                ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search, container, false);
         connectModelWithView(root);
         configureBtnFilter();

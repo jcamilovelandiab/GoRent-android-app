@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -35,8 +34,8 @@ import android.widget.Toast;
 import com.app.gorent.R;
 import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -53,7 +52,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
-import static com.app.gorent.utils.Constantes.MAPVIEW_BUNDLE_KEY;
+import static com.app.gorent.utils.Constants.MAPVIEW_BUNDLE_KEY;
 
 public class RentalFormActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -76,7 +75,7 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rental_form);
-        rentalFormViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(RentalFormViewModel.class);
+        rentalFormViewModel = ViewModelProviders.of(this, new ViewModelFactory(getApplicationContext())).get(RentalFormViewModel.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_activity_item_info);
 
@@ -239,9 +238,9 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
                 DatePickerDialog datePickerDialog = new DatePickerDialog(RentalFormActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear , int dayOfMonth) {
-                        int deliveryDay = dayOfMonth, deliveryMonth=monthOfYear+1, deliveryYear = year;
-                        dueDate = new GregorianCalendar(deliveryYear, deliveryMonth-1, deliveryDay).getTime();
-                        et_delivery_date.setText(deliveryDay+"/"+deliveryMonth+"/"+deliveryYear);
+                        int deliveryMonth=monthOfYear+1;
+                        dueDate = new GregorianCalendar(year, deliveryMonth-1, dayOfMonth).getTime();
+                        et_delivery_date.setText(dayOfMonth +"/"+deliveryMonth+"/"+ year);
                     }
                 },year,month,day);
                 datePickerDialog.show();
@@ -253,12 +252,10 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
             }
 
             @Override

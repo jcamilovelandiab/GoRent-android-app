@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.app.gorent.R;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.ItemLendingQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.ItemLendingQueryResult;
 
 public class ReturnItemActivity extends AppCompatActivity {
 
@@ -32,7 +32,8 @@ public class ReturnItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        returnItemViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(ReturnItemViewModel.class);
+        returnItemViewModel = ViewModelProviders.of(this,
+                new ViewModelFactory(getApplicationContext())).get(ReturnItemViewModel.class);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

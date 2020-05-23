@@ -36,8 +36,8 @@ import android.widget.Toast;
 import com.app.gorent.R;
 import com.app.gorent.data.model.Category;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.CategoryListQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.CategoryListQueryResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class ItemFormActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_new_item_form);
-        itemFormViewModel = ViewModelProviders.of(this,new ViewModelFactory()).get(ItemFormViewModel.class);
+        itemFormViewModel = ViewModelProviders.of(this,new ViewModelFactory(getApplicationContext())).get(ItemFormViewModel.class);
 
         connectModelWithView();
         configureSpFeeType();

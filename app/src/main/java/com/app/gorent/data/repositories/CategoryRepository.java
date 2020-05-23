@@ -1,40 +1,36 @@
 package com.app.gorent.data.repositories;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
-import com.app.gorent.data.model.Category;
 import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirestore;
+import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.DataSourceSQLite;
-import com.app.gorent.utils.CategoryListQueryResult;
-import com.app.gorent.utils.CategoryQueryResult;
+import com.app.gorent.utils.result.CategoryListQueryResult;
+import com.app.gorent.utils.result.CategoryQueryResult;
 
-import java.util.List;
-
-public class CategoryRepository {
+public class CategoryRepository extends Repository{
 
     private static volatile CategoryRepository instance;
-    private DataSourceCache dataSourceCache;
-    private DataSourceFirestore dataSourceFirestore;
-    private DataSourceSQLite dataSourceSQLite;
 
-    private CategoryRepository(DataSourceCache dataSourceCache){
-        this.dataSourceCache = dataSourceCache;
+    private CategoryRepository(Context context){
+        super(context);
     }
 
-    public static CategoryRepository getInstance(DataSourceCache dataSourceCache){
+    public static CategoryRepository getInstance(Context context){
         if(instance == null){
-            instance = new CategoryRepository(dataSourceCache);
+            instance = new CategoryRepository(context);
         }
         return instance;
     }
 
     public void getCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
-        dataSourceCache.getCategories(categoryListQueryResult);
+        getDataSourceCache().getCategories(categoryListQueryResult);
     }
 
     public void getCategoryByName(String nameCategory, MutableLiveData<CategoryQueryResult> categoryQueryResult){
-        dataSourceCache.getCategoryByName(nameCategory, categoryQueryResult);
+        getDataSourceCache().getCategoryByName(nameCategory, categoryQueryResult);
     }
 
 }

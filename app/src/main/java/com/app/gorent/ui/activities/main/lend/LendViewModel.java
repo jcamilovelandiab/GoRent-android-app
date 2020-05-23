@@ -3,14 +3,11 @@ package com.app.gorent.ui.activities.main.lend;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.repositories.ItemRepository;
 import com.app.gorent.data.storage.Session;
-import com.app.gorent.utils.ItemListQueryResult;
-
-import java.util.List;
+import com.app.gorent.utils.result.ItemListQueryResult;
 
 public class LendViewModel extends ViewModel {
 

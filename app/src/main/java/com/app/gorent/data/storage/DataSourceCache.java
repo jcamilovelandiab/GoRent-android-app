@@ -9,15 +9,15 @@ import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.model.User;
-import com.app.gorent.utils.AuthResult;
+import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.ui.activities.auth.LoggedInUserView;
-import com.app.gorent.utils.BasicResult;
-import com.app.gorent.utils.CategoryListQueryResult;
-import com.app.gorent.utils.CategoryQueryResult;
-import com.app.gorent.utils.ItemLendingListQueryResult;
-import com.app.gorent.utils.ItemLendingQueryResult;
-import com.app.gorent.utils.ItemListQueryResult;
-import com.app.gorent.utils.ItemQueryResult;
+import com.app.gorent.utils.result.BasicResult;
+import com.app.gorent.utils.result.CategoryListQueryResult;
+import com.app.gorent.utils.result.CategoryQueryResult;
+import com.app.gorent.utils.result.ItemLendingListQueryResult;
+import com.app.gorent.utils.result.ItemLendingQueryResult;
+import com.app.gorent.utils.result.ItemListQueryResult;
+import com.app.gorent.utils.result.ItemQueryResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,7 +104,8 @@ public class DataSourceCache {
             if(usersMp.containsKey(email) && usersMp.get(email).getPassword().equals(password)){
                 User loggedUser = usersMp.get(email);
                 //String first_name = loggedUser.getFull_name().split(" ")[0];
-                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
+                assert loggedUser != null;
+                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
                 Session.setLoggedInUser(loggedInUser);
                 authResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
             }else{

@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
-import com.app.gorent.utils.AuthResult;
+import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.ui.activities.auth.LoggedInUserView;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.ui.activities.auth.login.LoginActivity;
@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        signUpViewModel = ViewModelProviders.of(this, new ViewModelFactory()).get(SignUpViewModel.class);
+        signUpViewModel = ViewModelProviders.of(this, new ViewModelFactory(getApplicationContext())).get(SignUpViewModel.class);
         connectViewWithModel();
         configureTextWatchers();
         configureLoginButton();
