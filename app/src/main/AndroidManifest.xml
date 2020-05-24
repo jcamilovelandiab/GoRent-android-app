@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.app.gorent">
 
     <uses-feature
@@ -21,10 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".ui.activities.return_item.ReturnItemActivity"
-            android:theme="@style/ReturnItemTheme.AppTheme.ActionBar.Transparent"
-            />
+
         <activity android:name=".ui.activities.item_information.ItemInformationActivity" />
         <activity android:name=".ui.activities.item_form.ItemFormActivity" />
         <activity android:name=".ui.activities.rental_form.RentalFormActivity" />

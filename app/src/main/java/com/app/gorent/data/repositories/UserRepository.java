@@ -5,14 +5,8 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.data.model.User;
-import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirebase;
-import com.app.gorent.data.storage.DataSourceSQLite;
-import com.app.gorent.data.storage.Session;
-import com.app.gorent.utils.CheckInternetConnectivity;
+import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.AuthResult;
-
-import javax.sql.DataSource;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -35,16 +29,28 @@ public class UserRepository extends Repository{
     }
 
     public void logout() {
-        getDataSourceCache().logout();
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().logout();
+        }else{
+            getDataSourceCache().logout();
+        }
     }
 
-    public void login(String username, String password, MutableLiveData<AuthResult> authResult) {
+    public void login(String email, String password, MutableLiveData<AuthResult> authResult) {
         // handle login
-        getDataSourceCache().login(username, password, authResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().login(email, password, authResult);
+        }else{
+            getDataSourceCache().login(email, password, authResult);
+        }
     }
 
     public void signUp(User user, MutableLiveData<AuthResult> authResult){
-        getDataSourceCache().signUp(user, authResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().signUp(user, authResult);
+        }else{
+            getDataSourceCache().signUp(user, authResult);
+        }
     }
 
 }

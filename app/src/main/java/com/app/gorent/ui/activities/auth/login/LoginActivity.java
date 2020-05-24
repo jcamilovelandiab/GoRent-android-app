@@ -5,7 +5,6 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -27,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
-import com.app.gorent.utils.CheckInternetConnectivity;
 import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.ui.activities.auth.LoggedInUserView;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;

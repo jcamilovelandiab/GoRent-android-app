@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class CheckInternetConnectivity {
+public class InternetConnectivity {
 
     public static boolean check(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
