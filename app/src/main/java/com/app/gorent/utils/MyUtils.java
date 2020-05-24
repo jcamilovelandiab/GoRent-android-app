@@ -7,10 +7,15 @@ import android.util.Log;
 import androidx.core.content.FileProvider;
 
 import com.app.gorent.R;
+import com.app.gorent.data.model.Category;
+import com.app.gorent.data.model.Item;
+import com.app.gorent.data.model.ItemOwner;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ImageUtils {
+public class MyUtils {
 
     public static Uri loadImage(Context context, String path_image){
         try{
@@ -23,6 +28,5 @@ public class ImageUtils {
             return null;
         }
     }
-
 
 }

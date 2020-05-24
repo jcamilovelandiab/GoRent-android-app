@@ -119,7 +119,7 @@ public class ItemFormActivity extends AppCompatActivity {
                 if(categoryListQueryResult==null) return;
                 pg_loading.setVisibility(View.GONE);
                 if(categoryListQueryResult.getError()!=null){
-                    showErrorMessage(getString(categoryListQueryResult.getError()));
+                    showErrorMessage(getString(categoryListQueryResult.getError()), 0);
                 }
                 if(categoryListQueryResult.getCategoryList()!=null){
                     configureSpCategory(categoryListQueryResult.getCategoryList());
@@ -135,7 +135,7 @@ public class ItemFormActivity extends AppCompatActivity {
                 if(basicResult==null) return;
                 pg_loading.setVisibility(View.GONE);
                 if(basicResult.getError()!=null){
-                    showErrorMessage(getString(basicResult.getError()));
+                    showErrorMessage(getString(basicResult.getError()), 0);
                 }
                 if(basicResult.getSuccess()!=null){
                     showMessage(basicResult.getSuccess());
@@ -162,7 +162,7 @@ public class ItemFormActivity extends AppCompatActivity {
                 }
                 if(itemFormState.isDataValid()){
                     if(picture_path.isEmpty()){
-                        showErrorMessage("Click on the camera and add a photo of the item to complete the registration.");
+                        showErrorMessage("Click on the camera and add a photo of the item to complete the registration.", 2000);
                     }else{
                         btn_save.setEnabled(itemFormState.isDataValid());
                     }
@@ -243,7 +243,7 @@ public class ItemFormActivity extends AppCompatActivity {
         et_item_price.addTextChangedListener(textWatcher);
     }
 
-    private void showErrorMessage(final String errorMsg){
+    private void showErrorMessage(final String errorMsg, long delayMillis){
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -257,7 +257,7 @@ public class ItemFormActivity extends AppCompatActivity {
                 text.setTextColor(Color.WHITE);
                 toast.show();
             }
-        }, 2000);
+        }, delayMillis);
     }
 
     private void showMessage(final String msg){

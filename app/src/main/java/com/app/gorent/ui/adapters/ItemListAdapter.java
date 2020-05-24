@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
-import com.app.gorent.utils.ImageUtils;
+import com.app.gorent.utils.MyUtils;
 
 import java.util.ArrayList;
 
@@ -64,7 +64,7 @@ public class ItemListAdapter extends BaseAdapter {
 
             boolean hasImage = false;
             if(item.getImage_path()!=null){
-                Uri photoUri = ImageUtils.loadImage(context, item.getImage_path());
+                Uri photoUri = MyUtils.loadImage(context, item.getImage_path());
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;

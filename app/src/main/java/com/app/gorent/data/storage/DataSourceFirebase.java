@@ -1,9 +1,11 @@
 package com.app.gorent.data.storage;
 
-import android.util.Log;
+import android.content.Context;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.Category;
@@ -13,6 +15,7 @@ import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.model.User;
 import com.app.gorent.ui.activities.auth.LoggedInUserView;
+import com.app.gorent.utils.MyUtils;
 import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.CategoryListQueryResult;
@@ -21,15 +24,23 @@ import com.app.gorent.utils.result.ItemLendingListQueryResult;
 import com.app.gorent.utils.result.ItemLendingQueryResult;
 import com.app.gorent.utils.result.ItemListQueryResult;
 import com.app.gorent.utils.result.ItemQueryResult;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataSourceFirebase {
 
@@ -39,8 +50,10 @@ public class DataSourceFirebase {
     private StorageReference mStorageRef;
 
     private static DataSourceFirebase instance = null;
+    private Context context;
 
-    private DataSourceFirebase(){
+    private DataSourceFirebase(Context context){
+        this.context = context;
         fireStoreDB = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -51,9 +64,9 @@ public class DataSourceFirebase {
         this.fireStoreDB.setFirestoreSettings(settings);
     }
 
-    public static DataSourceFirebase getInstance(){
+    public static DataSourceFirebase getInstance(Context context){
         if(instance == null){
-            instance = new DataSourceFirebase();
+            instance = new DataSourceFirebase(context);
         }
         return instance;
     }
@@ -158,7 +171,20 @@ public class DataSourceFirebase {
     }
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
-
+        Map<String, Object> itemMap = itemToMap(item);
+        MutableLiveData<BasicResult> uploadImageResult = new MutableLiveData<>();
+        uploadImage(item.getImage_path(), uploadImageResult);
+        fireStoreDB.collection("/Items").add(itemMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>(){
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                saveItemResult.setValue(new BasicResult("Item successfully saved!"));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                saveItemResult.setValue(new BasicResult(R.string.error_saving_item));
+            }
+        });
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
@@ -187,5 +213,55 @@ public class DataSourceFirebase {
 
     }
 
+    private void uploadImage(String image_path, MutableLiveData<BasicResult> imageUploadResult){
+        Uri photoUri = MyUtils.loadImage(context, image_path);
+        if(photoUri!=null) {
+            StorageReference fileReference =  mStorageRef.child(image_path);
+            fileReference.putFile(photoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    imageUploadResult.setValue(new BasicResult("Image uploaded successfully!"));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    imageUploadResult.setValue(new BasicResult(R.string.error_uploading_image));
+                }
+            });
+        }else{
+            imageUploadResult.setValue(new BasicResult(R.string.error_image_not_found));
+        }
+    }
+
+    private Map<String,Object> itemToMap(Item item){
+        Map<String, Object> itemMap = new HashMap<>();
+        itemMap.put("name", item.getName());
+        itemMap.put("description", item.getDescription());
+        itemMap.put("price", item.getPrice());
+        itemMap.put("feeType", item.getFeeType());
+        itemMap.put("isRent", item.isRent());
+        itemMap.put("image_path", item.getImage_path());
+        DocumentReference categoryReference = fireStoreDB.collection("Categories")
+                .document(item.getCategory().getId());
+        itemMap.put("category", categoryReference);
+        DocumentReference itemOwnerReference = fireStoreDB.collection("ItemOwners")
+                .document(item.getItemOwner().getEmail());
+        itemMap.put("itemOwner", itemOwnerReference);
+        return itemMap;
+    }
+
+    private Map<String, Object> categoryToMap(Category category){
+        Map<String, Object> categoryMap = new HashMap<>();
+        categoryMap.put("name", category.getName());
+        categoryMap.put("description", category.getDescription());
+        return categoryMap;
+    }
+
+    private Map<String, Object> itemOwnerToMap(ItemOwner itemOwner){
+        Map<String, Object> itemOwnerMap = new HashMap<>();
+        itemOwnerMap.put("email", itemOwner.getEmail());
+        itemOwnerMap.put("password", itemOwner.getFull_name());
+        return itemOwnerMap;
+    }
 
 }

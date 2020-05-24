@@ -46,7 +46,7 @@ import com.app.gorent.ui.activities.item_form.ItemFormState;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.CategoryListQueryResult;
-import com.app.gorent.utils.ImageUtils;
+import com.app.gorent.utils.MyUtils;
 import com.app.gorent.utils.result.ItemQueryResult;
 
 import java.io.File;
@@ -420,7 +420,7 @@ public class ItemInformationActivity extends AppCompatActivity {
     public void loadImage(Item item){
         boolean hasImage = false;
         if(item.getImage_path()!=null){
-            Uri photoUri = ImageUtils.loadImage(this, item.getImage_path());
+            Uri photoUri = MyUtils.loadImage(this, item.getImage_path());
             if(photoUri!=null){
                 iv_item_picture.setImageURI(photoUri);
                 hasImage = true;

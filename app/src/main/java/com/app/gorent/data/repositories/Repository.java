@@ -16,7 +16,7 @@ public abstract class Repository {
     Repository(Context context){
         this.context = context;
         this.dataSourceCache = DataSourceCache.getInstance();
-        this.dataSourceFirebase = DataSourceFirebase.getInstance();
+        this.dataSourceFirebase = DataSourceFirebase.getInstance(context);
     }
 
     Context getContext() {

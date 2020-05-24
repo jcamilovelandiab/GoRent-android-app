@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
+import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.ItemListQueryResult;
 import com.app.gorent.utils.result.ItemQueryResult;
@@ -43,7 +44,8 @@ public class ItemRepository extends Repository{
     }
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
-        getDataSourceCache().saveItem(item, saveItemResult);
+        //getDataSourceCache().saveItem(item, saveItemResult);
+        getDataSourceFirebase().saveItem(item, saveItemResult);
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){

@@ -2,8 +2,6 @@ package com.app.gorent.ui.adapters;
 
 import android.content.Context;
 import android.net.Uri;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.ItemLending;
-import com.app.gorent.utils.ImageUtils;
+import com.app.gorent.utils.MyUtils;
 
-import java.io.File;
 import java.util.List;
 
 public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLendingRecyclerViewAdapter.ItemLendingViewHolder>{
@@ -89,7 +85,7 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             tv_item_lending_delivery_address.setText("Delivery address: "+itemLending.getDelivery_address());
             boolean hasImage = false;
             if(itemLending.getItem().getImage_path()!=null){
-                Uri photoUri = ImageUtils.loadImage(context, itemLending.getItem().getImage_path());
+                Uri photoUri = MyUtils.loadImage(context, itemLending.getItem().getImage_path());
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;
