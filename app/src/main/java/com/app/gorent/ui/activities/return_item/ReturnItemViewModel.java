@@ -21,11 +21,11 @@ public class ReturnItemViewModel extends ViewModel {
         this.itemLendingRepository = itemLendingRepository;
     }
 
-    public LiveData<ItemLendingQueryResult> getItemLendingQuery() {
+    LiveData<ItemLendingQueryResult> getItemLendingQuery() {
         return itemLendingQuery;
     }
 
-    public LiveData<BasicResult> getReturnItemResult() {
+    LiveData<BasicResult> getReturnItemResult() {
         return returnItemResult;
     }
 
@@ -33,12 +33,13 @@ public class ReturnItemViewModel extends ViewModel {
         this.itemLendingQuery.setValue(itemLending);
     }*/
 
-    public void getItemLending(Long itemLendingId){
+    void getItemLending(String itemLendingId){
         this.itemLendingRepository.getItemLendingById(itemLendingId, itemLendingQuery);
     }
 
-    public void returnItem(){
+    void returnItem(){
         ItemLending itemLending = itemLendingQuery.getValue().getItemLending();
+        assert itemLending != null;
         itemLending.setReturnDate(new Date());
         itemLendingRepository.returnItem(itemLending, returnItemResult);
     }

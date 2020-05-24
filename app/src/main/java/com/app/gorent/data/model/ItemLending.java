@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class ItemLending implements Serializable {
 
-    private Long id;
+    private String id;
     private Date lendingDate;
     private Date dueDate;
 
@@ -27,11 +27,11 @@ public class ItemLending implements Serializable {
         this.delivery_address = delivery_address;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

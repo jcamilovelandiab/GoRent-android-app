@@ -1,5 +1,6 @@
 package com.app.gorent.ui.activities.main.lend;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -11,19 +12,20 @@ import com.app.gorent.utils.result.ItemListQueryResult;
 
 public class LendViewModel extends ViewModel {
 
-    public ItemRepository itemRepository;
-    public MutableLiveData<ItemListQueryResult> itemListQueryResult =  new MutableLiveData<>();
+    private ItemRepository itemRepository;
+    private MutableLiveData<ItemListQueryResult> itemListQueryResult =  new MutableLiveData<>();
 
     public LendViewModel(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 
-    public MutableLiveData<ItemListQueryResult> getItemListQueryResult() {
+    LiveData<ItemListQueryResult> getItemListQueryResult() {
         return itemListQueryResult;
     }
 
-    public void findMyItems(){
+    void findMyItems(){
         LoggedInUser loggedInUser = Session.getLoggedInUser();
+        assert loggedInUser != null;
         ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
         itemRepository.getItemsByOwner(itemOwner, itemListQueryResult);
     }

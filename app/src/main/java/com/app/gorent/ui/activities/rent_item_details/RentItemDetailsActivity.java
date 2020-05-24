@@ -31,7 +31,7 @@ public class RentItemDetailsActivity extends AppCompatActivity {
     ImageView iv_item_picture;
     Button btn_rent;
     ProgressBar pg_loading;
-    Long itemId;
+    String itemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class RentItemDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_activity_item_info);
 
-        itemId = this.getIntent().getExtras().getLong("itemId");
+        itemId = this.getIntent().getExtras().getString("itemId");
         rentItemDetailsViewModel.retrieveItemById(itemId);
         configureItemObserver();
     }

@@ -80,7 +80,7 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setTitle(R.string.title_activity_item_info);
 
         bundle = getIntent().getExtras();
-        rentalFormViewModel.retrieveItemById(bundle.getLong("itemId"));
+        rentalFormViewModel.retrieveItemById(bundle.getString("itemId"));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_rent_form);

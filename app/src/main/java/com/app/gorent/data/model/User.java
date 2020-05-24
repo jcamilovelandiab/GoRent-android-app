@@ -5,12 +5,10 @@ package com.app.gorent.data.model;
  */
 public class User {
 
-    private String userId;
     private String full_name;
     private String email;
     private String password;
     private Role role;
-    private Location home;
 
     public User() {
         this.role = Role.user;
@@ -27,14 +25,6 @@ public class User {
         this.full_name = full_name;
         this.email = email;
         this.role = Role.user;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getFull_name() {
@@ -59,14 +49,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Location getHome() {
-        return home;
-    }
-
-    public void setHome(Location home) {
-        this.home = home;
     }
 
     public Role getRole() {

@@ -1,5 +1,6 @@
 package com.app.gorent.ui.activities.main.rented_items_history;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -18,12 +19,13 @@ public class RentedItemsViewModel extends ViewModel {
         this.itemLendingRepository = itemLendingRepository;
     }
 
-    public MutableLiveData<ItemLendingListQueryResult> getItemLendingQueryResult() {
+    LiveData<ItemLendingListQueryResult> getItemLendingQueryResult() {
         return itemLendingQueryResult;
     }
 
-    public void getItemLendingHistory(){
+    void getItemLendingHistory(){
         LoggedInUser loggedInUser = Session.getLoggedInUser();
+        assert loggedInUser != null;
         User rentalUser = new User(loggedInUser.getFull_name()+"", loggedInUser.getEmail()+"");
         this.itemLendingRepository.getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
     }

@@ -7,9 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
-import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirebase;
-import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.ItemListQueryResult;
 import com.app.gorent.utils.result.ItemQueryResult;
@@ -33,7 +30,7 @@ public class ItemRepository extends Repository{
         getDataSourceCache().getAvailableItems(loggedInUser, itemListQueryResult);
     }
 
-    public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
+    public void getItemById(String id, MutableLiveData<ItemQueryResult> itemQueryResult){
         getDataSourceCache().getItemById(id, itemQueryResult);
     }
 
@@ -53,7 +50,7 @@ public class ItemRepository extends Repository{
         getDataSourceCache().updateItem(item, updateItemResult);
     }
 
-    public void deleteItem(Long itemId, MutableLiveData deleteItemResult){
+    public void deleteItem(String itemId, MutableLiveData deleteItemResult){
         getDataSourceCache().deleteItem(itemId, deleteItemResult);
     }
 

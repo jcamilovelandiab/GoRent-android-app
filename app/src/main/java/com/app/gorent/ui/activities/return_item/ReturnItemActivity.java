@@ -45,7 +45,7 @@ public class ReturnItemActivity extends AppCompatActivity {
         prepareReturnItemResult();
 
         //ItemLending itemLending = (ItemLending) this.getIntent().getSerializableExtra("itemLending");
-        Long itemLendingId = this.getIntent().getExtras().getLong("itemLendingId");
+        String itemLendingId = this.getIntent().getExtras().getString("itemLendingId");
         //returnItemViewModel.setItemLending(itemLending);
         returnItemViewModel.getItemLending(itemLendingId);
     }

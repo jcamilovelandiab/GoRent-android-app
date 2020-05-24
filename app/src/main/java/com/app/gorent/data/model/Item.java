@@ -2,7 +2,7 @@ package com.app.gorent.data.model;
 
 public class Item {
 
-    private Long id;
+    private String id;
     private String name;
     private String description;
     private Long price;
@@ -35,7 +35,7 @@ public class Item {
     }
 
 
-    public Item(Long id, String name, String description, Long price, String feeType,
+    public Item(String id, String name, String description, Long price, String feeType,
                 Category category, ItemOwner itemOwner, String image_path) {
         this.id = id;
         this.name = name;
@@ -47,11 +47,11 @@ public class Item {
         this.image_path = image_path;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

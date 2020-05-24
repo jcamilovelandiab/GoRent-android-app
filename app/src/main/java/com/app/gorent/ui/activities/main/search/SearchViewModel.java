@@ -16,11 +16,11 @@ public class SearchViewModel extends ViewModel {
         this.itemRepository = itemRepository;
     }
 
-    public MutableLiveData<ItemListQueryResult> getItemListQueryResult() {
+    MutableLiveData<ItemListQueryResult> getItemListQueryResult() {
         return itemListQueryResult;
     }
 
-    public void searchItems(String keyword){
+    void searchItems(String keyword){
         itemRepository.getItemsByNameOrCategory(keyword, itemListQueryResult);
     }
 

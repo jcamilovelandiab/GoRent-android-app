@@ -26,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Date;
 
@@ -34,11 +36,13 @@ public class DataSourceFirebase {
     private FirebaseFirestore fireStoreDB;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser loggedUser;
+    private StorageReference mStorageRef;
 
     private static DataSourceFirebase instance = null;
 
     private DataSourceFirebase(){
         fireStoreDB = FirebaseFirestore.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         //Offline configuration
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()

@@ -1,5 +1,6 @@
 package com.app.gorent.ui.activities.main.rent;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -18,12 +19,13 @@ public class RentViewModel extends ViewModel {
         this.itemRepository = itemRepository;
     }
 
-    public MutableLiveData<ItemListQueryResult> getAvailableItems() {
+    LiveData<ItemListQueryResult> getAvailableItems() {
         return availableItems;
     }
 
-    public void retrieveAvailableItems(){
+    void retrieveAvailableItems(){
         LoggedInUser loggedInUser = Session.getLoggedInUser();
+        assert loggedInUser != null;
         User user = new User(loggedInUser.getFull_name()+"", loggedInUser.getEmail()+"");
         this.itemRepository.getAvailableItems(user, availableItems);
     }

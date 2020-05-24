@@ -4,7 +4,6 @@ public class ItemOwner {
 
     private String full_name;
     private String email;
-    private Location home;
 
     public ItemOwner(String email, String full_name) {
         this.full_name = full_name;
@@ -25,14 +24,6 @@ public class ItemOwner {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Location getHome() {
-        return home;
-    }
-
-    public void setHome(Location home) {
-        this.home = home;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class ItemInformationViewModel extends ViewModel {
         return deleteItemResult;
     }
 
-    public void findItemById(Long id){
+    public void findItemById(String id){
         itemRepository.getItemById(id, itemQueryResult);
     }
 
@@ -103,7 +103,7 @@ public class ItemInformationViewModel extends ViewModel {
     }
 
     public void deleteItem(){
-        Long itemId = itemQueryResult.getValue().getItem().getId();
+        String itemId = itemQueryResult.getValue().getItem().getId();
         itemRepository.deleteItem(itemId, deleteItemResult);
     }
 

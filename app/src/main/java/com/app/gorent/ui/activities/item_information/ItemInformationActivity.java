@@ -234,7 +234,7 @@ public class ItemInformationActivity extends AppCompatActivity {
                 }
                 if(categoryListQueryResult.getCategoryList()!=null){
                     configureSpCategory(categoryListQueryResult.getCategoryList());
-                    itemInformationViewModel.findItemById(bundle.getLong("itemId"));
+                    itemInformationViewModel.findItemById(bundle.getString("itemId"));
                 }
             }
         });

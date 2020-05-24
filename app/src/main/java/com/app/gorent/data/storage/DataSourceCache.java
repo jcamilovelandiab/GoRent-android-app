@@ -25,18 +25,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 public class DataSourceCache {
-    private Long categoryCounter = 0L;
-    private Long itemCounter = 0L;
-    private Long itemLendingCounter = 0L;
-    private static Map<Long, Category> categoriesMp = new HashMap<>();
-    private static Map<Long, ItemLending> itemLendingMp = new HashMap<>();
-    private static Map<Long, Item> itemsMp = new HashMap<>();
+    private static Map<String, Category> categoriesMp = new HashMap<>();
+    private static Map<String, ItemLending> itemLendingMp = new HashMap<>();
+    private static Map<String, Item> itemsMp = new HashMap<>();
     private static Map<String, ItemOwner> itemOwnersMp = new HashMap<>();
     private static Map<String, User> usersMp = new HashMap<>();
 
@@ -137,7 +135,7 @@ public class DataSourceCache {
     /* -------------------------------------------------------------------------- */
     public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         List<Item> availableItems = new ArrayList<>();
-        for (Map.Entry<Long, Item> entryItem: itemsMp.entrySet()) {
+        for (Map.Entry<String, Item> entryItem: itemsMp.entrySet()) {
             if(!entryItem.getValue().isRent() &&
                     !entryItem.getValue().getItemOwner().getEmail().equals(loggedInUser.getEmail())){
                 availableItems.add(entryItem.getValue());
@@ -146,7 +144,7 @@ public class DataSourceCache {
         itemListQueryResult.setValue(new ItemListQueryResult(availableItems));
     }
 
-    public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
+    public void getItemById(String id, MutableLiveData<ItemQueryResult> itemQueryResult){
         if(itemsMp.containsKey(id)){
             itemQueryResult.setValue(new ItemQueryResult(itemsMp.get(id)));
         }else{
@@ -156,7 +154,7 @@ public class DataSourceCache {
 
     public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemsQueryResult){
         List<Item> itemList = new ArrayList<>();
-        for (Map.Entry<Long,Item> entry: itemsMp.entrySet()) {
+        for (Map.Entry<String,Item> entry: itemsMp.entrySet()) {
             if(entry.getValue().getName().equals(name)){
                 itemList.add(entry.getValue());
             }
@@ -166,7 +164,7 @@ public class DataSourceCache {
 
     public void getItemsByCategory(String nameCategory, MutableLiveData<ItemListQueryResult> itemsQueryResult){
         List<Item> itemList = new ArrayList<>();
-        for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
+        for(Map.Entry<String, Item> entry: itemsMp.entrySet()){
             if(entry.getValue().getCategory().getName().equals(nameCategory)){
                 itemList.add(entry.getValue());
             }
@@ -179,7 +177,7 @@ public class DataSourceCache {
             itemsQueryResult.setValue(new ItemListQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<Item> itemList = new ArrayList<>();
-            for (Map.Entry<Long, Item> entry : itemsMp.entrySet()) {
+            for (Map.Entry<String, Item> entry : itemsMp.entrySet()) {
                 if (entry.getValue().getItemOwner().getEmail().equals(itemOwner.getEmail())) {
                     itemList.add(entry.getValue());
                 }
@@ -196,7 +194,7 @@ public class DataSourceCache {
             itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<ItemLending> itemLendingList = new ArrayList<>();
-            for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
+            for (Map.Entry<String, ItemLending> entry : itemLendingMp.entrySet()) {
                 if (entry.getValue().getItem().getItemOwner().getEmail().equals(owner.getEmail())) {
                     itemLendingList.add(entry.getValue());
                 }
@@ -212,7 +210,7 @@ public class DataSourceCache {
             itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_item_owner_not_found));
         }else {
             List<ItemLending> itemLendingList = new ArrayList<>();
-            for (Map.Entry<Long, ItemLending> entry : itemLendingMp.entrySet()) {
+            for (Map.Entry<String, ItemLending> entry : itemLendingMp.entrySet()) {
                 if (entry.getValue().getRenter().getEmail().equals(user.getEmail())) {
                     itemLendingList.add(entry.getValue());
                 }
@@ -221,7 +219,7 @@ public class DataSourceCache {
         }
     }
 
-    public void getItemLendingById(Long itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
+    public void getItemLendingById(String itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
         if(itemLendingMp.containsKey(itemLendingId)){
             ItemLending itemLending = itemLendingMp.get(itemLendingId);
             itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLending));
@@ -239,7 +237,7 @@ public class DataSourceCache {
             item.setRent(true);
             User renter = new User(user.getFull_name()+"", user.getEmail()+"");
             ItemLending itemLending = new ItemLending(new Date(), dueDate,totalPrice,item, renter, delivery_address);
-            itemLending.setId(++itemLendingCounter);
+            itemLending.setId(UUID.randomUUID().toString());
             itemLendingMp.put(itemLending.getId(), itemLending);
             if(itemLendingMp.containsKey(itemLending.getId()) && itemLendingMp.get(itemLending.getId())!=null){
                 rentalResult.setValue(new BasicResult("Item was successfully rented!"));
@@ -265,7 +263,7 @@ public class DataSourceCache {
     }
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
-        item.setId(++itemCounter);
+        item.setId(UUID.randomUUID().toString());
         itemsMp.put(item.getId(), item);
         saveItemResult.setValue(new BasicResult("Item successfully saved"));
     }
@@ -294,21 +292,21 @@ public class DataSourceCache {
 
     //Category
     private void saveCategory(Category category, MutableLiveData<BasicResult> saveCategoryResult){
-        category.setId(++categoryCounter);
+        category.setId(UUID.randomUUID().toString());
         categoriesMp.put(category.getId(), category);
         saveCategoryResult.setValue(new BasicResult("Category successfully saved"));
     }
 
     public void getCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
         List<Category> categoryList = new ArrayList<>();
-        for(Map.Entry<Long, Category> entry: categoriesMp.entrySet()){
+        for(Map.Entry<String, Category> entry: categoriesMp.entrySet()){
             categoryList.add(entry.getValue());
         }
         categoryListQueryResult.setValue(new CategoryListQueryResult(categoryList));
     }
 
     public void getCategoryByName(String nameCategory, MutableLiveData<CategoryQueryResult> categoryQueryResult){
-        for (Map.Entry<Long, Category> entry: categoriesMp.entrySet()){
+        for (Map.Entry<String, Category> entry: categoriesMp.entrySet()){
             if(entry.getValue().getName().equals(nameCategory)){
                 categoryQueryResult.setValue(new CategoryQueryResult(entry.getValue()));
                 return;
@@ -320,7 +318,7 @@ public class DataSourceCache {
     public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult) {
         search_text = search_text.toLowerCase();
         List<Item> itemList = new ArrayList<>();
-        for(Map.Entry<Long, Item> entry: itemsMp.entrySet()){
+        for(Map.Entry<String, Item> entry: itemsMp.entrySet()){
             if(entry.getValue().getName().toLowerCase().equals(search_text) ||
                 entry.getValue().getCategory().getName().toLowerCase().equals(search_text)){
                 itemList.add(entry.getValue());
@@ -330,10 +328,10 @@ public class DataSourceCache {
     }
 
 
-    public void deleteItem(Long itemId, MutableLiveData<BasicResult> deleteItemResult) {
+    public void deleteItem(String itemId, MutableLiveData<BasicResult> deleteItemResult) {
         if(itemsMp.containsKey(itemId)){
             boolean hasHistory = false;
-            for(Map.Entry<Long, ItemLending> entry: itemLendingMp.entrySet()){
+            for(Map.Entry<String, ItemLending> entry: itemLendingMp.entrySet()){
                 if(entry.getValue().getItem().getId().equals(itemId)){
                     hasHistory = true; break;
                 }

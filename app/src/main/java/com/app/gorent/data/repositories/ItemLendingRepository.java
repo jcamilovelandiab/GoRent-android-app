@@ -8,9 +8,6 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
-import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirebase;
-import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.ItemLendingListQueryResult;
 import com.app.gorent.utils.result.ItemLendingQueryResult;
@@ -49,8 +46,8 @@ public class ItemLendingRepository extends Repository{
         getDataSourceCache().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
     }
 
-    public void getItemLendingById(Long itemLending, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
-        getDataSourceCache().getItemLendingById(itemLending, itemLendingQueryResult);
+    public void getItemLendingById(String itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
+        getDataSourceCache().getItemLendingById(itemLendingId, itemLendingQueryResult);
     }
 
 }

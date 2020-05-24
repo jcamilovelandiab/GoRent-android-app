@@ -1,5 +1,6 @@
 package com.app.gorent.ui.activities.rent_item_details;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,11 +16,11 @@ public class RentItemDetailsViewModel extends ViewModel {
         this.itemRepository = itemRepository;
     }
 
-    public MutableLiveData<ItemQueryResult> getItemQueryResult() {
+    LiveData<ItemQueryResult> getItemQueryResult() {
         return itemQueryResult;
     }
 
-    public void retrieveItemById(Long id){
+    void retrieveItemById(String id){
         itemRepository.getItemById(id, itemQueryResult);
     }
 

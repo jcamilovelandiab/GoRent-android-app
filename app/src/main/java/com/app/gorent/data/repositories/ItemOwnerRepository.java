@@ -4,9 +4,6 @@ import android.content.Context;
 
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
-import com.app.gorent.data.storage.DataSourceCache;
-import com.app.gorent.data.storage.DataSourceFirebase;
-import com.app.gorent.data.storage.DataSourceSQLite;
 
 import java.util.List;
 

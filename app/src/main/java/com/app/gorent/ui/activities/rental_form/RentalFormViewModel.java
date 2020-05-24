@@ -30,30 +30,30 @@ public class RentalFormViewModel extends ViewModel {
         this.itemLendingRepository = itemLendingRepository;
     }
 
-    public LiveData<BasicResult> getRentalResult() {
+    LiveData<BasicResult> getRentalResult() {
         return rentalResult;
     }
 
-    public LiveData<RentalFormState> getRentalFormState() {
+    LiveData<RentalFormState> getRentalFormState() {
         return rentalFormState;
     }
 
-    public MutableLiveData<ItemQueryResult> getItemQueryResult() {
+    LiveData<ItemQueryResult> getItemQueryResult() {
         return itemQueryResult;
     }
 
-    public void retrieveItemById(Long itemId){
+    void retrieveItemById(String itemId){
         itemRepository.getItemById(itemId, itemQueryResult);
     }
 
-    public void rentItem(Date dueDate, Long totalPrice, String address){
+    void rentItem(Date dueDate, Long totalPrice, String address){
         Item item = itemQueryResult.getValue().getItem();
         LoggedInUser loggedInUser = Session.getLoggedInUser();
         User rentalUser = new User(loggedInUser.getFull_name()+"",loggedInUser.getEmail()+"");
         itemLendingRepository.rentItemByUser(dueDate, totalPrice, item, rentalUser, address, rentalResult);
     }
 
-    public void rentalFormDataChanged(Date currentDate, Date dueDate, Long totalPrice, String address){
+    void rentalFormDataChanged(Date currentDate, Date dueDate, Long totalPrice, String address){
         if(!isDueDateValid(currentDate, dueDate)){
             rentalFormState.setValue(new RentalFormState(R.string.invalid_delivery_date, null));
         }else if(!Validator.isStringValid(address)){
@@ -66,10 +66,8 @@ public class RentalFormViewModel extends ViewModel {
     private boolean isDueDateValid(Date currentDate, Date dueDate){
         if(currentDate == null || dueDate==null){
             return false;
-        } else if(dueDate.compareTo(currentDate)>0){
-            return true;
-        }else{
-            return false;
+        } else{
+            return dueDate.compareTo(currentDate) > 0;
         }
     }
 
