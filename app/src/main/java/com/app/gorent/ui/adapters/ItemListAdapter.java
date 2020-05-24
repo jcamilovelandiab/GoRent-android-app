@@ -68,13 +68,23 @@ public class ItemListAdapter extends BaseAdapter {
             ImageView iv_image = view.findViewById(R.id.item_row_layout_iv_image);
 
             boolean hasImage = false;
-            /*if(item.getImage_path()!=null){
+            if(item.getImage_path()!=null){
                 Uri photoUri = MyUtils.loadImage(context, item.getImage_path());
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;
+                }else{
+                    try{
+                        StorageReference fileReference =  mediaRepository.getStorageReference().child(
+                                item.getImage_path());
+                        Glide.with(view)
+                                .load(fileReference)
+                                .into(iv_image);
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
-            }*/
+            }
             if(!hasImage){
                 if(item.getCategory().getName().toLowerCase().equals("houses")){
                     iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.houses));
@@ -85,16 +95,6 @@ public class ItemListAdapter extends BaseAdapter {
                 }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
                     iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.laptops));
                 }
-                try{
-                    StorageReference fileReference =  mediaRepository.getStorageReference().child(
-                            item.getImage_path());
-                    Glide.with(view)
-                            .load(fileReference)
-                            .into(iv_image);
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
-
 
             }
         }

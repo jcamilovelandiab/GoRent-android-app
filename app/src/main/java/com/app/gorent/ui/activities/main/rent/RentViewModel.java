@@ -24,7 +24,7 @@ public class RentViewModel extends ViewModel {
     }
 
     void retrieveAvailableItems(){
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        LoggedInUser loggedInUser = itemRepository.getLoggedInUser();
         assert loggedInUser != null;
         User user = new User(loggedInUser.getFull_name()+"", loggedInUser.getEmail()+"");
         this.itemRepository.getAvailableItems(user, availableItems);

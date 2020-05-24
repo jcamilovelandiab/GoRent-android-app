@@ -2,9 +2,12 @@ package com.app.gorent.data.repositories;
 
 import android.content.Context;
 
+import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.DataSourceSQLite;
+import com.app.gorent.data.storage.Session;
+import com.app.gorent.utils.InternetConnectivity;
 
 public abstract class Repository {
 
@@ -15,7 +18,7 @@ public abstract class Repository {
 
     Repository(Context context){
         this.context = context;
-        this.dataSourceCache = DataSourceCache.getInstance();
+        this.dataSourceCache = DataSourceCache.getInstance(context);
         this.dataSourceFirebase = DataSourceFirebase.getInstance(context);
     }
 
@@ -34,4 +37,9 @@ public abstract class Repository {
     DataSourceSQLite getDataSourceSQLite() {
         return dataSourceSQLite;
     }
+
+    public LoggedInUser getLoggedInUser(){
+        return new Session(context).getLoggedInUser();
+    }
+
 }

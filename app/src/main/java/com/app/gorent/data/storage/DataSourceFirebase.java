@@ -89,7 +89,7 @@ public class DataSourceFirebase {
 
                         LoggedInUser loggedInUser = new LoggedInUser(
                                 loggedUser.getEmail()+"", loggedUser.getDisplayName()+"");
-                        Session.setLoggedInUser(loggedInUser);
+                        new Session(context).saveLoggedInUser(loggedInUser);
                         result.setValue(new com.app.gorent.utils.result.AuthResult(
                                 new LoggedInUserView(loggedUser.getDisplayName())));
                     }else{
@@ -110,7 +110,7 @@ public class DataSourceFirebase {
                        loggedUser.updateProfile(profileUpdates);
                        LoggedInUser loggedInUser = new LoggedInUser(
                                user.getEmail()+"", user.getFull_name()+"");
-                       Session.setLoggedInUser(loggedInUser);
+                       new Session(context).saveLoggedInUser(loggedInUser);
                        authResult.setValue(new AuthResult(
                                new LoggedInUserView(user.getFull_name())));
                    }else{
@@ -120,7 +120,7 @@ public class DataSourceFirebase {
     }
 
     public void logout() {
-        Session.setLoggedInUser(null);
+        new Session(context).clear();
         firebaseAuth.signOut();
     }
 
@@ -128,13 +128,16 @@ public class DataSourceFirebase {
     /*                                ITEM                                */
     /* -------------------------------------------------------------------------- */
     public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        fireStoreDB.collection("Items").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        fireStoreDB.collection("Items").whereEqualTo("isRent", false)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Item> items = new ArrayList<>();
                 if (!queryDocumentSnapshots.isEmpty()){
                     for (DocumentSnapshot snapshot:queryDocumentSnapshots){
                         Item element = snapshot.toObject(Item.class);
+                        assert element != null;
+                        if(element.getItemOwner().getEmail().equals(loggedInUser.getEmail())) continue;
                         element.setId(snapshot.getId());
                         items.add(element);
                     }
@@ -149,8 +152,19 @@ public class DataSourceFirebase {
         });
     }
 
-    public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
-
+    public void getItemById(String id, MutableLiveData<ItemQueryResult> itemQueryResult){
+        fireStoreDB.collection("/Items").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Item item = documentSnapshot.toObject(Item.class);
+                itemQueryResult.setValue(new ItemQueryResult(item));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemQueryResult.setValue(new ItemQueryResult(R.string.error_item_not_found));
+            }
+        });
     }
 
     public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemsQueryResult){
@@ -161,8 +175,53 @@ public class DataSourceFirebase {
 
     }
 
-    public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemsQueryResult){
+    public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        fireStoreDB.collection("Items")
+                .whereEqualTo("itemOwner.email", itemOwner.getEmail()).get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            List<Item> items = new ArrayList<>();
+                            if (!queryDocumentSnapshots.isEmpty()){
+                                for (DocumentSnapshot snapshot:queryDocumentSnapshots){
+                                    Item element = snapshot.toObject(Item.class);
+                                    element.setId(snapshot.getId());
+                                    items.add(element);
+                                }
+                            }
+                            itemListQueryResult.setValue(new ItemListQueryResult(items));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemListQueryResult.setValue(new ItemListQueryResult(R.string.error_retrieving_items));
+            }
+        });
+    }
 
+    public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult) {
+        search_text = search_text.toLowerCase();
+        String finalSearch_text = search_text;
+        fireStoreDB.collection("Items").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Item> items = new ArrayList<>();
+                for(DocumentSnapshot snapshot: queryDocumentSnapshots){
+                    Item element = snapshot.toObject(Item.class);
+                    assert element != null;
+                    if(element.getCategory().getName().equals(finalSearch_text) ||
+                        element.getName().equals(finalSearch_text)){
+                        items.add(element);
+                    }
+                }
+                itemListQueryResult.setValue(new ItemListQueryResult(items));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemListQueryResult.setValue(new ItemListQueryResult(R.string.error_retrieving_items));
+            }
+        });
     }
 
     /* -------------------------------------------------------------------------- */
@@ -226,10 +285,6 @@ public class DataSourceFirebase {
 
     }
 
-    public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult) {
-
-    }
-
 
     public void deleteItem(Long itemId, MutableLiveData<BasicResult> deleteItemResult) {
 
@@ -238,7 +293,10 @@ public class DataSourceFirebase {
     private void uploadImage(String image_path, MutableLiveData<BasicResult> imageUploadResult){
         Uri photoUri = MyUtils.loadImage(context, image_path);
         if(photoUri!=null) {
-            StorageReference fileReference =  mStorageRef.child(image_path);
+            String[] array = image_path.split("/");
+            String fileName = array[array.length-1];
+            StorageReference fileReference =  mStorageRef.child("uploads/"+fileName);
+
             fileReference.putFile(photoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

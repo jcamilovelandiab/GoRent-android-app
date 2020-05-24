@@ -48,7 +48,7 @@ public class RentalFormViewModel extends ViewModel {
 
     void rentItem(Date dueDate, Long totalPrice, String address){
         Item item = itemQueryResult.getValue().getItem();
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        LoggedInUser loggedInUser = itemRepository.getLoggedInUser();
         User rentalUser = new User(loggedInUser.getFull_name()+"",loggedInUser.getEmail()+"");
         itemLendingRepository.rentItemByUser(dueDate, totalPrice, item, rentalUser, address, rentalResult);
     }

@@ -17,7 +17,7 @@ public class LentItemsViewModel extends ViewModel {
 
     public LentItemsViewModel(ItemLendingRepository itemLendingRepository){
         this.itemLendingRepository = itemLendingRepository;
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        LoggedInUser loggedInUser = itemLendingRepository.getLoggedInUser();
         assert loggedInUser != null;
         ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
         this.itemLendingRepository.getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);

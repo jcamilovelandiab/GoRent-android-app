@@ -1,5 +1,7 @@
 package com.app.gorent.data.storage;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.gorent.R;
@@ -39,15 +41,17 @@ public class DataSourceCache {
     private static Map<String, User> usersMp = new HashMap<>();
 
     private static DataSourceCache instance=null;
+    private Context context;
 
-    public static DataSourceCache getInstance(){
+    public static DataSourceCache getInstance(Context context){
         if(instance==null){
-            instance = new DataSourceCache();
+            instance = new DataSourceCache(context);
         }
         return instance;
     }
 
-    private DataSourceCache(){
+    private DataSourceCache(Context context){
+        this.context = context;
         User user1 = new User("Juan Felipe","juan@mail.com", "juan123");
         User user2 = new User("Juan Camilo","camilo@mail.com", "camilo123");
         usersMp.put(user1.getEmail(), user1);
@@ -104,7 +108,7 @@ public class DataSourceCache {
                 //String first_name = loggedUser.getFull_name().split(" ")[0];
                 assert loggedUser != null;
                 LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
-                Session.setLoggedInUser(loggedInUser);
+                new Session(context).saveLoggedInUser(loggedInUser);
                 authResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
             }else{
                 authResult.setValue(new AuthResult(R.string.login_failed));
@@ -122,12 +126,12 @@ public class DataSourceCache {
         usersMp.put(user.getEmail(), user);
         LoggedInUser loggedInUser = new LoggedInUser(user.getEmail()+"", user.getFull_name()+"");
         //String first_name = loggedUser.getFull_name().split(" ")[0];
-        Session.setLoggedInUser(loggedInUser);
+        new Session(context).saveLoggedInUser(loggedInUser);
         authResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
     }
 
     public void logout() {
-        Session.setLoggedInUser(null);
+        new Session(context).clear();
     }
 
     /* -------------------------------------------------------------------------- */

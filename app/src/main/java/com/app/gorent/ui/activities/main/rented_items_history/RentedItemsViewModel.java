@@ -24,7 +24,7 @@ public class RentedItemsViewModel extends ViewModel {
     }
 
     void getItemLendingHistory(){
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        LoggedInUser loggedInUser = itemLendingRepository.getLoggedInUser();
         assert loggedInUser != null;
         User rentalUser = new User(loggedInUser.getFull_name()+"", loggedInUser.getEmail()+"");
         this.itemLendingRepository.getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);

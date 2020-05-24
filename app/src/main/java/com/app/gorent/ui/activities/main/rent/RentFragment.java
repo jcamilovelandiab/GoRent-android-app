@@ -2,6 +2,7 @@ package com.app.gorent.ui.activities.main.rent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class RentFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        assert(getActivity()!=null);
+        assert (getActivity() != null);
         rentViewModel =
                 ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(RentViewModel.class);
         View root = inflater.inflate(R.layout.fragment_rent, container, false);
@@ -43,32 +44,36 @@ public class RentFragment extends Fragment {
         return root;
     }
 
-    private void prepareAvailableItemsObservable(){
+    private void prepareAvailableItemsObservable() {
         rentViewModel.getAvailableItems().observe(getViewLifecycleOwner(), new Observer<ItemListQueryResult>() {
             @Override
             public void onChanged(ItemListQueryResult itemListQueryResult) {
-                if(itemListQueryResult==null) return;
+                if (itemListQueryResult == null) return;
                 pg_loading.setVisibility(View.GONE);
-                if(itemListQueryResult.getError()!=null){
+                if (itemListQueryResult.getError() != null) {
                     Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
                 }
-                if(itemListQueryResult.getItems()!=null){
-                    itemListAdapter = new ItemListAdapter(getActivity(), (ArrayList<Item>) itemListQueryResult.getItems());
-                    lv_items.setAdapter(itemListAdapter);
-                    itemListAdapter.notifyDataSetChanged();
-                    configureClickableItems();
+                if (itemListQueryResult.getItems() != null) {
+                    if (itemListQueryResult.getItems().size() != 0) {
+                        itemListAdapter = new ItemListAdapter(getActivity(), (ArrayList<Item>) itemListQueryResult.getItems());
+                        lv_items.setAdapter(itemListAdapter);
+                        itemListAdapter.notifyDataSetChanged();
+                        configureClickableItems();
+                    } else {
+                        showMessage("There are no items to rent!");
+                    }
                 }
             }
         });
     }
 
-    private void configureClickableItems(){
+    private void configureClickableItems() {
         lv_items.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Item item = (Item) lv_items.getAdapter().getItem(position);
                 Intent intent = new Intent(getActivity(), RentItemDetailsActivity.class);
-                intent.putExtra("itemId",item.getId());
+                intent.putExtra("itemId", item.getId());
                 startActivity(intent);
             }
         });
@@ -79,5 +84,15 @@ public class RentFragment extends Fragment {
         pg_loading.setVisibility(View.VISIBLE);
         rentViewModel.retrieveAvailableItems();
         super.onResume();
+    }
+
+    private void showMessage(final String msg) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
     }
 }

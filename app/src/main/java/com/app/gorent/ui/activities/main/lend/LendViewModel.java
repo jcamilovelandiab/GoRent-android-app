@@ -24,7 +24,7 @@ public class LendViewModel extends ViewModel {
     }
 
     void findMyItems(){
-        LoggedInUser loggedInUser = Session.getLoggedInUser();
+        LoggedInUser loggedInUser = itemRepository.getLoggedInUser();
         assert loggedInUser != null;
         ItemOwner itemOwner = new ItemOwner(loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
         itemRepository.getItemsByOwner(itemOwner, itemListQueryResult);

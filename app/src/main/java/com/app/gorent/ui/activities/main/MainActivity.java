@@ -56,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
         View headerView =  navigationView.getHeaderView(0);
         TextView nav_header_title = headerView.findViewById(R.id.nav_header_title);
         TextView nav_header_subtitle = headerView.findViewById(R.id.nav_header_subtitle);
-        LoggedInUser loggedUser = Session.getLoggedInUser();
+        LoggedInUser loggedUser = new Session(getApplicationContext()).getLoggedInUser();
         assert loggedUser != null;
+        assert loggedUser.getFull_name()!=null;
         nav_header_title.setText(loggedUser.getFull_name());
         nav_header_subtitle.setText(loggedUser.getEmail());
     }

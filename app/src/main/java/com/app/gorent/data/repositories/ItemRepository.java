@@ -36,7 +36,11 @@ public class ItemRepository extends Repository{
     }
 
     public void getItemById(String id, MutableLiveData<ItemQueryResult> itemQueryResult){
-        getDataSourceCache().getItemById(id, itemQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getItemById(id, itemQueryResult);
+        }else{
+            getDataSourceCache().getItemById(id, itemQueryResult);
+        }
     }
 
     public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemListQueryResult){
@@ -61,11 +65,19 @@ public class ItemRepository extends Repository{
     }
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        getDataSourceCache().getItemsByOwner(itemOwner, itemListQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getItemsByOwner(itemOwner, itemListQueryResult);
+        }else{
+            getDataSourceCache().getItemsByOwner(itemOwner, itemListQueryResult);
+        }
     }
 
     public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        getDataSourceCache().getItemsByNameOrCategory(search_text, itemListQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getItemsByNameOrCategory(search_text, itemListQueryResult);
+        }else{
+            getDataSourceCache().getItemsByNameOrCategory(search_text, itemListQueryResult);
+        }
     }
 
 }
