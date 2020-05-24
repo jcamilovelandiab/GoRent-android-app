@@ -1,6 +1,7 @@
 package com.app.gorent.ui.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.ItemLending;
+import com.app.gorent.data.repositories.MediaRepository;
+import com.app.gorent.utils.MyUtils;
 
 import java.util.ArrayList;
 
@@ -17,10 +20,12 @@ public class ItemLendingListAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<ItemLending> itemLendingList;
+    private MediaRepository mediaRepository;
 
     public ItemLendingListAdapter(Context context, ArrayList<ItemLending> itemLendingList) {
         this.context = context;
         this.itemLendingList = itemLendingList;
+        this.mediaRepository = MediaRepository.getInstance(context);
     }
 
     @Override
@@ -69,7 +74,18 @@ public class ItemLendingListAdapter extends BaseAdapter {
             TextView tv_item_lending_total_price = view.findViewById(R.id.item_lending_row_tv_total_price);
             tv_item_lending_total_price.setText("Total fee: "+itemLending.getTotalPrice().toString());
 
+
             ImageView iv_image = view.findViewById(R.id.item_lending_row_iv_item_picture);
+            boolean hasImage = false;
+            if(itemLending.getItem().getImage_path()!=null){
+                Uri photoUri = MyUtils.loadImage(context, itemLending.getItem().getImage_path());
+                if(photoUri!=null){
+                    iv_image.setImageURI(photoUri);
+                    hasImage = true;
+                }
+            }
+
+
             if(itemLending.getItem().getCategory().getName().toLowerCase().equals("houses")){
                 iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.houses));
             }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("cars")){

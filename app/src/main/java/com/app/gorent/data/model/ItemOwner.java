@@ -5,6 +5,9 @@ public class ItemOwner {
     private String full_name;
     private String email;
 
+    public ItemOwner() {
+    }
+
     public ItemOwner(String email, String full_name) {
         this.full_name = full_name;
         this.email = email;

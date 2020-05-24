@@ -28,7 +28,11 @@ public class ItemRepository extends Repository{
     }
 
     public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        getDataSourceCache().getAvailableItems(loggedInUser, itemListQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getAvailableItems(loggedInUser, itemListQueryResult);
+        }else{
+            getDataSourceCache().getAvailableItems(loggedInUser, itemListQueryResult);
+        }
     }
 
     public void getItemById(String id, MutableLiveData<ItemQueryResult> itemQueryResult){

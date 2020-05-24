@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
+import com.app.gorent.data.repositories.MediaRepository;
 import com.app.gorent.utils.MyUtils;
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -19,10 +22,12 @@ public class ItemListAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Item> items;
+    private MediaRepository mediaRepository;
 
     public ItemListAdapter(Context context, ArrayList<Item> itemList) {
         this.context = context;
         this.items = itemList;
+        this.mediaRepository = MediaRepository.getInstance(context);
     }
 
     @Override
@@ -63,13 +68,13 @@ public class ItemListAdapter extends BaseAdapter {
             ImageView iv_image = view.findViewById(R.id.item_row_layout_iv_image);
 
             boolean hasImage = false;
-            if(item.getImage_path()!=null){
+            /*if(item.getImage_path()!=null){
                 Uri photoUri = MyUtils.loadImage(context, item.getImage_path());
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;
                 }
-            }
+            }*/
             if(!hasImage){
                 if(item.getCategory().getName().toLowerCase().equals("houses")){
                     iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.houses));
@@ -80,6 +85,17 @@ public class ItemListAdapter extends BaseAdapter {
                 }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
                     iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.laptops));
                 }
+                try{
+                    StorageReference fileReference =  mediaRepository.getStorageReference().child(
+                            item.getImage_path());
+                    Glide.with(view)
+                            .load(fileReference)
+                            .into(iv_image);
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
+
+
             }
         }
         return view;

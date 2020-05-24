@@ -118,5 +118,6 @@
     <string name="error_item_lending_not_found">Item lending not found</string>
     <string name="error_image_not_found">Image not found</string>
     <string name="error_uploading_image">An error occurred while uploading image</string>
+    <string name="error_retrieving_items">An error occurred while retrieving items</string>
 
 </resources>

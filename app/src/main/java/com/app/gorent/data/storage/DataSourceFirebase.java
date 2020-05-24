@@ -30,16 +30,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataSourceFirebase {
@@ -124,7 +128,25 @@ public class DataSourceFirebase {
     /*                                ITEM                                */
     /* -------------------------------------------------------------------------- */
     public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-
+        fireStoreDB.collection("Items").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Item> items = new ArrayList<>();
+                if (!queryDocumentSnapshots.isEmpty()){
+                    for (DocumentSnapshot snapshot:queryDocumentSnapshots){
+                        Item element = snapshot.toObject(Item.class);
+                        element.setId(snapshot.getId());
+                        items.add(element);
+                    }
+                }
+                itemListQueryResult.setValue(new ItemListQueryResult(items));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemListQueryResult.setValue(new ItemListQueryResult(R.string.error_retrieving_items));
+            }
+        });
     }
 
     public void getItemById(Long id, MutableLiveData<ItemQueryResult> itemQueryResult){
@@ -241,17 +263,16 @@ public class DataSourceFirebase {
         itemMap.put("feeType", item.getFeeType());
         itemMap.put("isRent", item.isRent());
         itemMap.put("image_path", item.getImage_path());
-        DocumentReference categoryReference = fireStoreDB.collection("Categories")
-                .document(item.getCategory().getId());
-        itemMap.put("category", categoryReference);
-        DocumentReference itemOwnerReference = fireStoreDB.collection("ItemOwners")
-                .document(item.getItemOwner().getEmail());
-        itemMap.put("itemOwner", itemOwnerReference);
+        Map<String, Object> categoryMap = categoryToMap(item.getCategory());
+        itemMap.put("category", categoryMap);
+        Map<String, Object> itemOwnerMap = itemOwnerToMap(item.getItemOwner());
+        itemMap.put("itemOwner", itemOwnerMap);
         return itemMap;
     }
 
     private Map<String, Object> categoryToMap(Category category){
         Map<String, Object> categoryMap = new HashMap<>();
+        categoryMap.put("id",category.getId());
         categoryMap.put("name", category.getName());
         categoryMap.put("description", category.getDescription());
         return categoryMap;
@@ -260,8 +281,12 @@ public class DataSourceFirebase {
     private Map<String, Object> itemOwnerToMap(ItemOwner itemOwner){
         Map<String, Object> itemOwnerMap = new HashMap<>();
         itemOwnerMap.put("email", itemOwner.getEmail());
-        itemOwnerMap.put("password", itemOwner.getFull_name());
+        itemOwnerMap.put("full_name", itemOwner.getFull_name());
         return itemOwnerMap;
+    }
+
+    public StorageReference getStorageReference() {
+        return mStorageRef;
     }
 
 }

@@ -12,6 +12,9 @@ public class Item {
     private String image_path;
     private boolean isRent;
 
+    public Item() {
+    }
+
     public Item(String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
         this.name = name;
         this.description = description;
