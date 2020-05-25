@@ -2,9 +2,7 @@ package com.app.gorent.data.storage;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.app.gorent.R;
@@ -13,6 +11,7 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.LoggedInUser;
+import com.app.gorent.data.model.Role;
 import com.app.gorent.data.model.User;
 import com.app.gorent.ui.activities.auth.LoggedInUserView;
 import com.app.gorent.utils.MyUtils;
@@ -24,10 +23,9 @@ import com.app.gorent.utils.result.ItemLendingListQueryResult;
 import com.app.gorent.utils.result.ItemLendingQueryResult;
 import com.app.gorent.utils.result.ItemListQueryResult;
 import com.app.gorent.utils.result.ItemQueryResult;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.app.gorent.utils.result.UserQueryResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -40,13 +38,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -575,4 +571,27 @@ public class DataSourceFirebase {
         });
     }
 
+    public void findUserByEmail(String email, MutableLiveData<UserQueryResult> userQueryResult) {
+        fireStoreDB.collection("Users").document(email)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                if(user==null){
+                    userQueryResult.setValue(new UserQueryResult(R.string.error_user_not_found));
+                }else{
+                    String role = documentSnapshot.getString("role");
+                    if(role!=null){
+                        user.setRole(Role.valueOf(role));
+                    }
+                    userQueryResult.setValue(new UserQueryResult(user));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                userQueryResult.setValue(new UserQueryResult(R.string.error_user_not_found));
+            }
+        });
+    }
 }

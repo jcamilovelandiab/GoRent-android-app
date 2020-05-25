@@ -29,16 +29,22 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void initApp(){
-        Session session = new Session( this );
+
         final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            if (session.containsToken()){
-                startActivity( new Intent( LauncherActivity.this, MainActivity.class ) );
-            }else{
+        Session session = new Session( this );
+        if(session.containsToken()){
+            handler.postDelayed(() -> {
+                Intent intent = new Intent(LauncherActivity.this, AuthorizationActivity.class);
+                intent.putExtra("email", session.getLoggedInUser().getEmail());
+                startActivity(intent);
+                finish();
+            }, 2000);
+        }else{
+            handler.postDelayed(() -> {
                 startActivity( new Intent( LauncherActivity.this, LoginActivity.class ) );
-            }
-            finish();
-        }, 4000);
+                finish();
+            }, 3000);
+        }
     }
 
     private void askPermissions(){

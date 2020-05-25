@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
+import com.app.gorent.AuthorizationViewModel;
 import com.app.gorent.data.repositories.CategoryRepository;
 import com.app.gorent.data.repositories.ItemLendingRepository;
 import com.app.gorent.data.repositories.ItemRepository;
@@ -40,7 +41,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(LoginViewModel.class)) {
+        if(modelClass.isAssignableFrom(AuthorizationViewModel.class)){
+          return (T) new AuthorizationViewModel(UserRepository.getInstance(context));
+        } else if (modelClass.isAssignableFrom(LoginViewModel.class)) {
             return (T) new LoginViewModel(UserRepository.getInstance(context));
         } else if (modelClass.isAssignableFrom(SignUpViewModel.class)){
             return (T) new SignUpViewModel(UserRepository.getInstance(context));

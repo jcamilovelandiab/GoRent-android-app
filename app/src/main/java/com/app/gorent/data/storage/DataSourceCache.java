@@ -20,6 +20,7 @@ import com.app.gorent.utils.result.ItemLendingListQueryResult;
 import com.app.gorent.utils.result.ItemLendingQueryResult;
 import com.app.gorent.utils.result.ItemListQueryResult;
 import com.app.gorent.utils.result.ItemQueryResult;
+import com.app.gorent.utils.result.UserQueryResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -352,4 +353,15 @@ public class DataSourceCache {
     }
 
 
+    public void findUserByEmail(String email, MutableLiveData<UserQueryResult> userQueryResult) {
+        if(!usersMp.containsKey(email)){
+            userQueryResult.setValue(new UserQueryResult(R.string.error_user_not_found));
+        }else{
+            User userQuery = usersMp.get(email);
+            assert userQuery != null;
+            User user = new User();
+            user.setEmail(userQuery.getEmail());
+            user.setRole(userQuery.getRole());
+        }
+    }
 }

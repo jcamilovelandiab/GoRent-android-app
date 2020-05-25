@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.gorent.AuthorizationActivity;
 import com.app.gorent.R;
 import com.app.gorent.utils.MyUtils;
 import com.app.gorent.utils.result.AuthResult;
@@ -92,9 +93,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-                    setResult(Activity.RESULT_OK);
-                    //Complete and destroy login activity once successful
-                    finish();
                 }
             }
         });
@@ -159,8 +157,12 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) +" "+ model.getDisplayName() +"!";
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, AuthorizationActivity.class);
+        intent.putExtra("email", usernameEditText.getText().toString());
         startActivity(intent);
+        setResult(Activity.RESULT_OK);
+        //Complete and destroy login activity once successful
+        finish();
     }
 
     private void showLoginFailed(@StringRes final Integer errorString) {

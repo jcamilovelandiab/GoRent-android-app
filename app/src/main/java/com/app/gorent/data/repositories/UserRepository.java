@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.app.gorent.data.model.User;
 import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.AuthResult;
+import com.app.gorent.utils.result.UserQueryResult;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -50,6 +51,14 @@ public class UserRepository extends Repository{
             getDataSourceFirebase().signUp(user, authResult);
         }else{
             getDataSourceCache().signUp(user, authResult);
+        }
+    }
+
+    public void findUserByEmail(String email, MutableLiveData<UserQueryResult> userQueryResult){
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().findUserByEmail(email, userQueryResult);
+        }else{
+            getDataSourceCache().findUserByEmail(email, userQueryResult);
         }
     }
 

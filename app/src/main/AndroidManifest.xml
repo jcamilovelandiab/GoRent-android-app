@@ -42,6 +42,10 @@
             android:name=".ui.activities.auth.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".AuthorizationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity android:name=".LauncherActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
