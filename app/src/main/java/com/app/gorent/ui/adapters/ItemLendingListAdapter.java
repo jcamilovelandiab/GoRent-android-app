@@ -85,7 +85,6 @@ public class ItemLendingListAdapter extends BaseAdapter {
                 }
             }
 
-
             if(itemLending.getItem().getCategory().getName().toLowerCase().equals("houses")){
                 iv_image.setImageDrawable(view.getResources().getDrawable(R.drawable.houses));
             }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("cars")){

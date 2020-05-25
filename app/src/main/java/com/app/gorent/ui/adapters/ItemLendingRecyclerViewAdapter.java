@@ -94,12 +94,6 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;
-                }else{
-                    StorageReference fileReference =  mediaRepository.getStorageReference().child(
-                            itemLending.getItem().getImage_path());
-                    Glide.with(itemView)
-                            .load(fileReference)
-                            .into(iv_image);
                 }
             }
             if(!hasImage){

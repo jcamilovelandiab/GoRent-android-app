@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -120,6 +121,10 @@ public class ItemFormActivity extends AppCompatActivity {
                 pg_loading.setVisibility(View.GONE);
                 if(categoryListQueryResult.getError()!=null){
                     showErrorMessage(getString(categoryListQueryResult.getError()), 0);
+                    new Handler().postDelayed(() -> {
+                        setResult(Activity.RESULT_OK);
+                        finish();
+                    }, 2000);
                 }
                 if(categoryListQueryResult.getCategoryList()!=null){
                     configureSpCategory(categoryListQueryResult.getCategoryList());

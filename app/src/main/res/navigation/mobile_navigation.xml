@@ -48,4 +48,10 @@
         android:label="@string/title_credits"
         tools:layout="@layout/fragment_credits" />
 
+    <fragment
+        android:id="@+id/nav_web"
+        android:name="com.app.gorent.ui.activities.main.web.WebFragment"
+        android:label="@string/title_web"
+        tools:layout="@layout/fragment_web" />
+
 </navigation>

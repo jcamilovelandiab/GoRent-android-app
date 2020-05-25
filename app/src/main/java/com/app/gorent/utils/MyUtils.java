@@ -3,6 +3,7 @@ package com.app.gorent.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,6 +16,7 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +32,24 @@ public class MyUtils {
             Log.d("Loading image","Error occurred while attempting to load the image "+path_image+"\nMessage: "+ex.getMessage()+"\nCause: "+ex.getCause());
             return null;
         }
+    }
+
+    public static File createImageFile(Context context, String imageFileName) throws IOException {
+        // Create an image file name
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        assert storageDir != null;
+        String strStorageDir = storageDir.getAbsolutePath();
+        File image = new File(strStorageDir+"/"+imageFileName);
+        return image;
+    }
+
+    public static boolean checkFileExists(Context context, String imageFileName) throws IOException {
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        String pathImage = storageDir.getAbsolutePath()+"/"+imageFileName;
+        File imageFile = new File(pathImage);
+        boolean exists = imageFile.exists();
+        boolean isDirectory = imageFile.isDirectory();
+        return  exists && !isDirectory;
     }
 
     public static void hideKeyboard(Activity activity) {

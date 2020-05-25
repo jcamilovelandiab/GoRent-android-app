@@ -73,7 +73,9 @@ public class DataSourceFirebase {
                 .setPersistenceEnabled(true)
                 .build();
         this.fireStoreDB.setFirestoreSettings(settings);
-        downloadImages();
+        new Thread(()->{
+            downloadAllImages();
+        }).start();
     }
 
     public static DataSourceFirebase getInstance(Context context){
@@ -149,6 +151,11 @@ public class DataSourceFirebase {
                         assert element != null;
                         if(element.getItemOwner().getEmail().equals(loggedInUser.getEmail())) continue;
                         element.setId(snapshot.getId());
+                        String [] array = element.getImage_path().split("/");
+                        String imageFileName = array[array.length-1];
+                        new Thread(()->{
+                            downloadImage(imageFileName);
+                        }).start();
                         items.add(element);
                     }
                 }
@@ -197,6 +204,7 @@ public class DataSourceFirebase {
                             if (!queryDocumentSnapshots.isEmpty()){
                                 for (DocumentSnapshot snapshot:queryDocumentSnapshots){
                                     Item element = snapshot.toObject(Item.class);
+                                    assert element != null;
                                     element.setId(snapshot.getId());
                                     items.add(element);
                                 }
@@ -379,16 +387,31 @@ public class DataSourceFirebase {
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
         Map<String, Object> itemMap = itemToMap(item);
-        fireStoreDB.collection("Items").document(item.getId()).update(itemMap).
-                addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        updateItemResult.setValue(new BasicResult("Item successfully updated!"));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+        final DocumentReference itemRef = fireStoreDB.collection("Items").document(item.getId());
+        fireStoreDB.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                Item itemQuery = transaction.get(itemRef).toObject(Item.class);
+                assert itemQuery != null;
+                if(!item.getImage_path().equals(itemQuery.getImage_path())){
+                    new Thread(()->{
+                        MutableLiveData<BasicResult> uploadImageResult = new MutableLiveData<>();
+                        uploadImage(item.getImage_path(), uploadImageResult);
+                    }).start();
+                }
+                transaction.update(itemRef, itemMap);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                updateItemResult.setValue(new BasicResult("Item successfully updated!"));
+            }
+        }) .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                updateItemResult.setValue(new BasicResult(R.string.error_updating_item));
+                Log.w("FAILURE", "Transaction failure.", e);
+                updateItemResult.setValue(new BasicResult(R.string.error_renting_item));
             }
         });
     }
@@ -414,7 +437,24 @@ public class DataSourceFirebase {
     }
 
     public void getCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
-
+        fireStoreDB.collection("Categories").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Category> categoryList = new ArrayList<>();
+                        for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                            Category category = documentSnapshot.toObject(Category.class);
+                            category.setId(documentSnapshot.getId());
+                            categoryList.add(category);
+                        }
+                        categoryListQueryResult.setValue(new CategoryListQueryResult(categoryList));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                categoryListQueryResult.setValue(new CategoryListQueryResult(R.string.error_retrieving_categories));
+            }
+        });
     }
 
     public void getCategoryByName(String nameCategory, MutableLiveData<CategoryQueryResult> categoryQueryResult){
@@ -499,40 +539,28 @@ public class DataSourceFirebase {
         return mStorageRef;
     }
 
-    private void downloadImages(){
-        mStorageRef.child("uploads").listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
-            @Override
-            public void onSuccess(ListResult listResult) {
-                for(StorageReference ref :listResult.getItems()){
-                    String file_name = ref.getName();
-                    try {
-                        if(!checkFileExists(file_name)){
-                            String name = file_name.substring(0,file_name.length()-4);
-                            File localFile = createImageFile(file_name);
-                            createFile(file_name, localFile);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+    private void downloadAllImages(){
+        mStorageRef.child("uploads").listAll().addOnSuccessListener(listResult -> {
+            for(StorageReference ref :listResult.getItems()){
+                String file_name = ref.getName();
+                downloadImage(file_name);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
+        }).addOnFailureListener(e -> {
         });
     }
 
-    private File createImageFile(String imageFileName) throws IOException {
-        // Create an image file name
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        assert storageDir != null;
-        String strStorageDir = storageDir.getAbsolutePath();
-        File image = new File(strStorageDir+"/"+imageFileName);
-        return image;
+    private void downloadImage(String file_name){
+        try {
+            if(!MyUtils.checkFileExists(context, file_name)){
+                File localFile = MyUtils.createImageFile(context, file_name);
+                downloadFileFromFireStorage(file_name, localFile);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void createFile(String nameImage, File localFile){
+    private void downloadFileFromFireStorage(String nameImage, File localFile){
         StorageReference imageRef = mStorageRef.child("uploads/"+nameImage);
         imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
@@ -545,15 +573,6 @@ public class DataSourceFirebase {
                 Log.w("FAILURE", "Create file failure.", e);
             }
         });
-    }
-
-    private boolean checkFileExists(String imageFileName) throws IOException {
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        String pathImage = storageDir.getAbsolutePath()+"/"+imageFileName;
-        File imageFile = new File(pathImage);
-        boolean exists = imageFile.exists();
-        boolean isDirectory = imageFile.isDirectory();
-        return  exists && !isDirectory;
     }
 
 }

@@ -73,16 +73,6 @@ public class ItemListAdapter extends BaseAdapter {
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;
-                }else{
-                    try{
-                        StorageReference fileReference =  mediaRepository.getStorageReference().child(
-                                item.getImage_path());
-                        Glide.with(view)
-                                .load(fileReference)
-                                .into(iv_image);
-                    }catch(Exception ex){
-                        ex.printStackTrace();
-                    }
                 }
             }
             if(!hasImage){
