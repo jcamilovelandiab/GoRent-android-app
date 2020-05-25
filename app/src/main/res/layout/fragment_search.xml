@@ -24,6 +24,7 @@
         android:imeOptions="actionSearch"/>
 
     <Button
+        android:visibility="gone"
         android:id="@+id/search_btn_filter"
         android:text="@string/action_filter"
         android:layout_marginTop="10dp"

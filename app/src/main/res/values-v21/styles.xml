@@ -19,7 +19,7 @@
     </style>
 
     <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
-        <item name="android:headerBackground">@color/colorBlack</item>
+        <item name="android:headerBackground">@color/colorAccent</item>
     </style>
 
 </resources>
