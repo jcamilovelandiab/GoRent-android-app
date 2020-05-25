@@ -34,7 +34,7 @@ public class Session {
         sharedPreferences.edit().putString(NAME_KEY, loggedInUser.getFull_name()).apply();
     }
 
-    private boolean containsToken(){
+    public boolean containsToken(){
         return sharedPreferences.contains( EMAIL_KEY ) && sharedPreferences.contains(NAME_KEY);
     }
 

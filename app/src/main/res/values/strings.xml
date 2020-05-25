@@ -123,5 +123,7 @@
     <string name="error_retrieving_item_lending_history">An error occurred while retrieving lending history</string>
     <string name="error_retrieving_lending_history">An error occurred while retrieving lending history</string>
     <string name="error_retrieving_renting_history">An error was occurred while retrieving renting history</string>
+    <string name="developed_by">Developed by</string>
+    <string name="copyright">Copyright © 2020</string>
 
 </resources>

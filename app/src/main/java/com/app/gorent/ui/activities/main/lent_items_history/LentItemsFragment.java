@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
@@ -86,6 +87,11 @@ public class LentItemsFragment extends Fragment {
             public void run() {
                 Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if(v!=null){
+                    v.setGravity(Gravity.CENTER);
+                    v.setTextSize(20);
+                }
                 toast.show();
             }
         });

@@ -243,6 +243,7 @@ public class DataSourceFirebase {
                 List<ItemLending> itemLendingList = new ArrayList<>();
                 for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                     ItemLending itemLending = documentSnapshot.toObject(ItemLending.class);
+                    itemLending.setId(documentSnapshot.getId());
                     itemLendingList.add(itemLending);
                 }
                 itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
@@ -266,6 +267,7 @@ public class DataSourceFirebase {
                 List<ItemLending> itemLendingList = new ArrayList<>();
                 for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
                     ItemLending itemLending = documentSnapshot.toObject(ItemLending.class);
+                    itemLending.setId(documentSnapshot.getId());
                     itemLendingList.add(itemLending);
                 }
                 itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
@@ -279,7 +281,20 @@ public class DataSourceFirebase {
     }
 
     public void getItemLendingById(String itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
-
+        fireStoreDB.collection("ItemLending").document(itemLendingId).get()
+            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    ItemLending itemLending = documentSnapshot.toObject(ItemLending.class);
+                    itemLending.setId(documentSnapshot.getId());
+                    itemLendingQueryResult.setValue(new ItemLendingQueryResult(itemLending));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_item_lending_not_found));
+            }
+        });
     }
 
     public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user,
@@ -313,7 +328,29 @@ public class DataSourceFirebase {
     }
 
     public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnResult){
-
+        final DocumentReference itemRef = fireStoreDB
+                .collection("Items").document(itemLending.getItem().getId());
+        final DocumentReference itemLendingRef = fireStoreDB.
+                collection("ItemLending").document(itemLending.getId());
+        fireStoreDB.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                transaction.update(itemRef, "isRent", false);
+                transaction.update(itemLendingRef, "returnDate", new Date());
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                returnResult.setValue(new BasicResult("Item successfully returned!"));
+            }
+        }) .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("FAILURE", "Transaction failure.", e);
+                returnResult.setValue(new BasicResult(R.string.error_returning_item));
+            }
+        });
     }
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
@@ -402,6 +439,7 @@ public class DataSourceFirebase {
 
     private Map<String,Object> itemToMap(Item item){
         Map<String, Object> itemMap = new HashMap<>();
+        if(item.getId()!=null) itemMap.put("id", item.getId());
         itemMap.put("name", item.getName());
         itemMap.put("description", item.getDescription());
         itemMap.put("price", item.getPrice());
@@ -437,7 +475,7 @@ public class DataSourceFirebase {
         itemLendingMap.put("dueDate", itemLending.getDueDate());
         itemLendingMap.put("returnDate", itemLending.getReturnDate());
         itemLendingMap.put("totalPrice", itemLending.getTotalPrice());
-        itemLendingMap.put("deliveryAddress", itemLending.getDelivery_address());
+        itemLendingMap.put("delivery_address", itemLending.getDelivery_address());
         Map<String, Object> renterMap = new HashMap<>();
         renterMap.put("email", itemLending.getRenter().getEmail());
         renterMap.put("full_name", itemLending.getRenter().getFull_name());

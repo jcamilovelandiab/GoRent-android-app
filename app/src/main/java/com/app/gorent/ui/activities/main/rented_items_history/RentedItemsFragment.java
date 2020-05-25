@@ -14,10 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
@@ -63,15 +65,21 @@ public class RentedItemsFragment extends Fragment {
                     Toast.makeText(getActivity(), itemLendingListQueryResult.getError(), Toast.LENGTH_SHORT).show();
                 }
                 if(itemLendingListQueryResult.getItemLendingList()!=null){
-                    RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
-                            itemLendingListQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
-                        @Override
-                        public void onMoreItemLendingClicked(ItemLending itemLending) {
-                            configureDialog(itemLending);
-                        }
-                    });
-                    rv_item_lending_list.setAdapter(adapter_item_lending_list);
-                    adapter_item_lending_list.notifyDataSetChanged();
+                    if(itemLendingListQueryResult.getItemLendingList().size()>0){
+                        RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
+                                itemLendingListQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
+                            @Override
+                            public void onMoreItemLendingClicked(ItemLending itemLending) {
+                                configureDialog(itemLending);
+                            }
+                        });
+                        rv_item_lending_list.setAdapter(adapter_item_lending_list);
+                        adapter_item_lending_list.notifyDataSetChanged();
+                    }else{
+                        showMessage("You haven't rented anything.\nDo you need anything? \n" +
+                                "Just let us know!");
+                    }
+
                 }
             }
         });
@@ -137,4 +145,20 @@ public class RentedItemsFragment extends Fragment {
         rentedItemsViewModel.getItemLendingHistory();
         super.onResume();
     }
+
+    private void showMessage(final String msg) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if(v!=null){
+                    v.setGravity(Gravity.CENTER);
+                    v.setTextSize(20);
+                }
+                toast.show();
+            }
+        });
+    }
+
 }

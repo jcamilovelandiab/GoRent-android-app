@@ -9,12 +9,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
@@ -86,11 +88,17 @@ public class LendFragment extends Fragment {
                     Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
                 }
                 if(itemListQueryResult.getItems()!=null){
-                    ItemListAdapter itemListAdapter = new ItemListAdapter(getActivity(),
-                            (ArrayList<Item>) itemListQueryResult.getItems());
-                    lv_items.setAdapter(itemListAdapter);
-                    itemListAdapter.notifyDataSetChanged();
-                    configureClickableItems();
+                    if(itemListQueryResult.getItems().size()>0){
+                        ItemListAdapter itemListAdapter = new ItemListAdapter(getActivity(),
+                                (ArrayList<Item>) itemListQueryResult.getItems());
+                        lv_items.setAdapter(itemListAdapter);
+                        itemListAdapter.notifyDataSetChanged();
+                        configureClickableItems();
+                    }else{
+                        showMessage("Looks like you haven't registered anything.\n" +
+                                "Post your item and earn money!");
+                    }
+
                 }
             }
         });
@@ -100,6 +108,21 @@ public class LendFragment extends Fragment {
     public void onResume() {
         lendViewModel.findMyItems();
         super.onResume();
+    }
+
+    private void showMessage(final String msg) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if(v!=null){
+                    v.setGravity(Gravity.CENTER);
+                    v.setTextSize(20);
+                }
+                toast.show();
+            }
+        });
     }
 
 }
