@@ -2,8 +2,6 @@ package com.app.gorent.data.repositories;
 
 import android.content.Context;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.google.firebase.storage.StorageReference;
 
 public class MediaRepository extends Repository{

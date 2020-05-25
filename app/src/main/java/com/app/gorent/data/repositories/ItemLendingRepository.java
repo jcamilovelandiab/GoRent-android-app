@@ -8,6 +8,7 @@ import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
+import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.ItemLendingListQueryResult;
 import com.app.gorent.utils.result.ItemLendingQueryResult;
@@ -31,23 +32,43 @@ public class ItemLendingRepository extends Repository{
 
     public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user,
                                String delivery_address, MutableLiveData<BasicResult> rentItemResult){
-        getDataSourceCache().rentItemByUser(dueDate, totalPrice,item, user, delivery_address, rentItemResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().rentItemByUser(dueDate, totalPrice, item, user, delivery_address, rentItemResult);
+        }else{
+            getDataSourceCache().rentItemByUser(dueDate, totalPrice,item, user, delivery_address, rentItemResult);
+        }
     }
 
     public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnItemResult){
-        getDataSourceCache().returnItem(itemLending, returnItemResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().returnItem(itemLending, returnItemResult);
+        }else{
+            getDataSourceCache().returnItem(itemLending, returnItemResult);
+        }
     }
 
     public void getItemLendingHistoryByOwner(ItemOwner itemOwner, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
-        getDataSourceCache().getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
+        }else{
+            getDataSourceCache().getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
+        }
     }
 
     public void getItemLendingHistoryByRentalUser(User rentalUser, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
-        getDataSourceCache().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
+        }else{
+            getDataSourceCache().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
+        }
     }
 
     public void getItemLendingById(String itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult){
-        getDataSourceCache().getItemLendingById(itemLendingId, itemLendingQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getItemLendingById(itemLendingId, itemLendingQueryResult);
+        } else {
+            getDataSourceCache().getItemLendingById(itemLendingId, itemLendingQueryResult);
+        }
     }
 
 }

@@ -18,12 +18,23 @@ public class ItemLending implements Serializable {
     private Item item;
     private String delivery_address;
 
-    public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, Item item,User renter, String delivery_address) {
+    public ItemLending() {
+    }
+
+    public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, Item item, User renter, String delivery_address) {
         this.lendingDate = lendingDate;
         this.dueDate = dueDate;
         this.totalPrice = totalPrice;
         this.renter = renter;
         this.item = item;
+        this.delivery_address = delivery_address;
+    }
+
+    public ItemLending(Date lendingDate, Date dueDate, Long totalPrice, User renter, String delivery_address) {
+        this.lendingDate = lendingDate;
+        this.dueDate = dueDate;
+        this.totalPrice = totalPrice;
+        this.renter = renter;
         this.delivery_address = delivery_address;
     }
 
@@ -92,7 +103,17 @@ public class ItemLending implements Serializable {
         this.delivery_address = delivery_address;
     }
 
-
+    public String getRentalInformation(){
+        String [] array = lendingDate.toString().split(" ");
+        String strLendingDate = array[0]+" "+array[1]+" "+array[2];
+        array = dueDate.toString().split(" ");
+        String strDueDate = array[0]+" "+array[1]+ " "+ array[2];
+        return "Lending date: " + strLendingDate + "\r\n" +
+                "Due date: " + strDueDate + "\r\n"+
+                "Delivery address: "+delivery_address+"\r\n"+
+                "Total price: "+totalPrice+"\r\n"+
+                "\r\n" + item;
+    }
 
     @Override
     public String toString() {

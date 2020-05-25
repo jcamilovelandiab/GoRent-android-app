@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
+import com.app.gorent.utils.MyUtils;
 import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.ui.activities.auth.LoggedInUserView;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
@@ -45,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new ViewModelFactory(getApplicationContext()))
                 .get(LoginViewModel.class);
-
         connectViewWithModel();
         configureLoginFormStateObserver();
         configureLoginResultObserver();
@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginFormState.getPasswordError() != null) {
                     passwordEditText.setError(getString(loginFormState.getPasswordError()));
                 }
-
             }
         });
     }
@@ -105,12 +104,10 @@ public class LoginActivity extends AppCompatActivity {
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
             }
 
             @Override
@@ -137,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyUtils.hideKeyboard(LoginActivity.this);
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
@@ -166,18 +164,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showLoginFailed(@StringRes final Integer errorString) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                Toast toast = Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT);
-                View view = toast.getView();
-                //Gets the actual oval background of the Toast then sets the colour filter
-                view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-                //Gets the TextView from the Toast so it can be edited
-                TextView text = view.findViewById(android.R.id.message);
-                text.setTextColor(Color.WHITE);
-                toast.show();
-            }
+        runOnUiThread(() -> {
+            Toast toast = Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT);
+            View view = toast.getView();
+            //Gets the actual oval background of the Toast then sets the colour filter
+            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+            //Gets the TextView from the Toast so it can be edited
+            TextView text = view.findViewById(android.R.id.message);
+            text.setTextColor(Color.WHITE);
+            toast.show();
         });
-
     }
+
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.DataSourceSQLite;
+import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.CategoryListQueryResult;
 import com.app.gorent.utils.result.CategoryQueryResult;
 
@@ -26,11 +27,11 @@ public class CategoryRepository extends Repository{
     }
 
     public void getCategories(MutableLiveData<CategoryListQueryResult> categoryListQueryResult){
-        getDataSourceCache().getCategories(categoryListQueryResult);
-    }
-
-    public void getCategoryByName(String nameCategory, MutableLiveData<CategoryQueryResult> categoryQueryResult){
-        getDataSourceCache().getCategoryByName(nameCategory, categoryQueryResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getCategories(categoryListQueryResult);
+        }else{
+            getDataSourceCache().getCategories(categoryListQueryResult);
+        }
     }
 
 }

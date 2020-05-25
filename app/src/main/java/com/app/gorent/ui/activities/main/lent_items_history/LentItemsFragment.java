@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,15 +56,20 @@ public class LentItemsFragment extends Fragment {
                 if(itemLendingListQueryResult ==null) return;
                 pg_loading.setVisibility(View.GONE);
                 if(itemLendingListQueryResult.getItemLendingList()!=null){
-                    RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
-                            itemLendingListQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
-                        @Override
-                        public void onMoreItemLendingClicked(ItemLending itemLending) {
-                            configureDialog(itemLending);
-                        }
-                    });
-                    rv_item_lending_list.setAdapter(adapter_item_lending_list);
-                    adapter_item_lending_list.notifyDataSetChanged();
+                    if(itemLendingListQueryResult.getItemLendingList().size()>0){
+                        RecyclerView.Adapter adapter_item_lending_list = new ItemLendingRecyclerViewAdapter(getActivity(),
+                                itemLendingListQueryResult.getItemLendingList(), new RecyclerViewClickListener() {
+                            @Override
+                            public void onMoreItemLendingClicked(ItemLending itemLending) {
+                                configureDialog(itemLending);
+                            }
+                        });
+                        rv_item_lending_list.setAdapter(adapter_item_lending_list);
+                        adapter_item_lending_list.notifyDataSetChanged();
+                    }else{
+                        showMessage("You haven't earned any money! \n" +
+                                "Lend an article!!\nWhat are you waiting for?");
+                    }
                 }
                 if(itemLendingListQueryResult.getError()!=null){
                     Toast.makeText(getContext(), itemLendingListQueryResult.getError(), Toast.LENGTH_SHORT).show();
@@ -75,5 +81,14 @@ public class LentItemsFragment extends Fragment {
     private void configureDialog(ItemLending itemLending){
     }
 
+    private void showMessage(final String msg) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
+    }
 
 }

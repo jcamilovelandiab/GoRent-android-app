@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -32,6 +34,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.gorent.R;
+import com.app.gorent.data.model.Item;
+import com.app.gorent.data.model.ItemLending;
 import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.result.BasicResult;
@@ -97,7 +101,7 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
 
     private void goBack(){
         Intent intent = new Intent(RentalFormActivity.this, RentItemDetailsActivity.class);
-        intent.putExtra("itemId", bundle.getLong("itemId"));
+        intent.putExtra("itemId", bundle.getString("itemId"));
         startActivity(intent);
         setResult(Activity.RESULT_OK);
         finish();
@@ -121,10 +125,38 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         btn_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                configureDialogConfirmation();
+            }
+        });
+    }
+
+    private void configureDialogConfirmation(){
+        Item item = rentalFormViewModel.getItemQueryResult().getValue().getItem();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Rental confirmation");
+        assert item != null;
+        ItemLending itemLending = new ItemLending();
+        itemLending.setItem(item);
+        itemLending.setLendingDate(new Date());
+        itemLending.setDueDate(dueDate);
+        itemLending.setDelivery_address(et_address.getText().toString());
+        itemLending.setTotalPrice(totalPrice);
+        String msg = itemLending.getRentalInformation();
+        builder.setMessage(msg);
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
                 pg_loading.setVisibility(View.VISIBLE);
                 rentalFormViewModel.rentItem(dueDate, totalPrice, et_address.getText().toString()+"");
             }
         });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void configureBtnCancel(){

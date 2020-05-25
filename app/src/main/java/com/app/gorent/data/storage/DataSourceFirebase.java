@@ -2,11 +2,10 @@ package com.app.gorent.data.storage;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-
 import com.app.gorent.R;
 import com.app.gorent.data.model.Category;
 import com.app.gorent.data.model.Item;
@@ -24,8 +23,10 @@ import com.app.gorent.utils.result.ItemLendingListQueryResult;
 import com.app.gorent.utils.result.ItemLendingQueryResult;
 import com.app.gorent.utils.result.ItemListQueryResult;
 import com.app.gorent.utils.result.ItemQueryResult;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -128,7 +129,9 @@ public class DataSourceFirebase {
     /*                                ITEM                                */
     /* -------------------------------------------------------------------------- */
     public void getAvailableItems(User loggedInUser, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        fireStoreDB.collection("Items").whereEqualTo("isRent", false)
+        fireStoreDB.collection("Items")
+                .whereEqualTo("isRent", false)
+                .whereEqualTo("isDeleted", false)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -153,10 +156,11 @@ public class DataSourceFirebase {
     }
 
     public void getItemById(String id, MutableLiveData<ItemQueryResult> itemQueryResult){
-        fireStoreDB.collection("/Items").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        fireStoreDB.collection("Items").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Item item = documentSnapshot.toObject(Item.class);
+                item.setId(documentSnapshot.getId());
                 itemQueryResult.setValue(new ItemQueryResult(item));
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -177,6 +181,7 @@ public class DataSourceFirebase {
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         fireStoreDB.collection("Items")
+                .whereEqualTo("isDeleted", false)
                 .whereEqualTo("itemOwner.email", itemOwner.getEmail()).get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
@@ -202,7 +207,8 @@ public class DataSourceFirebase {
     public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult) {
         search_text = search_text.toLowerCase();
         String finalSearch_text = search_text;
-        fireStoreDB.collection("Items").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        fireStoreDB.collection("Items")
+                .whereEqualTo("isDeleted", false).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Item> items = new ArrayList<>();
@@ -211,6 +217,7 @@ public class DataSourceFirebase {
                     assert element != null;
                     if(element.getCategory().getName().equals(finalSearch_text) ||
                         element.getName().equals(finalSearch_text)){
+                        element.setId(snapshot.getId());
                         items.add(element);
                     }
                 }
@@ -228,23 +235,81 @@ public class DataSourceFirebase {
     /*                                ITEM LENDING                                */
     /* -------------------------------------------------------------------------- */
     public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
-
+        fireStoreDB.collection("ItemLending")
+                .whereEqualTo("item.itemOwner.email", owner.getEmail())
+            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<ItemLending> itemLendingList = new ArrayList<>();
+                for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                    ItemLending itemLending = documentSnapshot.toObject(ItemLending.class);
+                    itemLendingList.add(itemLending);
+                }
+                itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_retrieving_lending_history));
+            }
+        });
     }
 
     /* -------------------------------------------------------------------------- */
 
     public void getItemLendingHistoryByRentalUser(User user, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
-
+        fireStoreDB.collection("ItemLending")
+                .whereEqualTo("renter.email", user.getEmail())
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<ItemLending> itemLendingList = new ArrayList<>();
+                for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                    ItemLending itemLending = documentSnapshot.toObject(ItemLending.class);
+                    itemLendingList.add(itemLending);
+                }
+                itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_retrieving_renting_history));
+            }
+        });
     }
 
-    public void getItemLendingById(Long itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
+    public void getItemLendingById(String itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
 
     }
 
     public void rentItemByUser(Date dueDate, Long totalPrice, Item item, User user,
                                String delivery_address,
                                MutableLiveData<BasicResult> rentalResult){
-
+        ItemLending itemLending = new ItemLending(new Date(), dueDate, totalPrice, user, delivery_address+"");
+        itemLending.setItem(item);
+        Map<String, Object> itemLendingMap = itemLendingToMap(itemLending);
+        final DocumentReference itemRef = fireStoreDB.collection("Items").document(item.getId());
+        //itemLendingMap.put("item", itemRef);
+        final DocumentReference itemLendingRef = fireStoreDB.collection("ItemLending").document();
+        fireStoreDB.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                transaction.update(itemRef, "isRent", true);
+                transaction.set(itemLendingRef,itemLendingMap);
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                rentalResult.setValue(new BasicResult("Item successfully rented!"));
+            }
+        }) .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("FAILURE", "Transaction failure.", e);
+                rentalResult.setValue(new BasicResult(R.string.error_renting_item));
+            }
+        });
     }
 
     public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnResult){
@@ -255,7 +320,7 @@ public class DataSourceFirebase {
         Map<String, Object> itemMap = itemToMap(item);
         MutableLiveData<BasicResult> uploadImageResult = new MutableLiveData<>();
         uploadImage(item.getImage_path(), uploadImageResult);
-        fireStoreDB.collection("/Items").add(itemMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>(){
+        fireStoreDB.collection("Items").add(itemMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>(){
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 saveItemResult.setValue(new BasicResult("Item successfully saved!"));
@@ -269,7 +334,34 @@ public class DataSourceFirebase {
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
+        Map<String, Object> itemMap = itemToMap(item);
+        fireStoreDB.collection("Items").document(item.getId()).update(itemMap).
+                addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        updateItemResult.setValue(new BasicResult("Item successfully updated!"));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                updateItemResult.setValue(new BasicResult(R.string.error_updating_item));
+            }
+        });
+    }
 
+    public void deleteItem(String itemId, MutableLiveData<BasicResult> deleteItemResult) {
+        fireStoreDB.collection("Items").document(itemId).update("isDeleted", true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        deleteItemResult.setValue(new BasicResult("Item successfully deleted"));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                deleteItemResult.setValue(new BasicResult(R.string.error_deleting_item));
+            }
+        });
     }
 
     //Category
@@ -282,11 +374,6 @@ public class DataSourceFirebase {
     }
 
     public void getCategoryByName(String nameCategory, MutableLiveData<CategoryQueryResult> categoryQueryResult){
-
-    }
-
-
-    public void deleteItem(Long itemId, MutableLiveData<BasicResult> deleteItemResult) {
 
     }
 
@@ -320,6 +407,7 @@ public class DataSourceFirebase {
         itemMap.put("price", item.getPrice());
         itemMap.put("feeType", item.getFeeType());
         itemMap.put("isRent", item.isRent());
+        itemMap.put("isDeleted", item.isDeleted());
         itemMap.put("image_path", item.getImage_path());
         Map<String, Object> categoryMap = categoryToMap(item.getCategory());
         itemMap.put("category", categoryMap);
@@ -341,6 +429,25 @@ public class DataSourceFirebase {
         itemOwnerMap.put("email", itemOwner.getEmail());
         itemOwnerMap.put("full_name", itemOwner.getFull_name());
         return itemOwnerMap;
+    }
+
+    private Map<String, Object> itemLendingToMap(ItemLending itemLending){
+        Map<String, Object> itemLendingMap = new HashMap<>();
+        itemLendingMap.put("lendingDate", itemLending.getLendingDate());
+        itemLendingMap.put("dueDate", itemLending.getDueDate());
+        itemLendingMap.put("returnDate", itemLending.getReturnDate());
+        itemLendingMap.put("totalPrice", itemLending.getTotalPrice());
+        itemLendingMap.put("deliveryAddress", itemLending.getDelivery_address());
+        Map<String, Object> renterMap = new HashMap<>();
+        renterMap.put("email", itemLending.getRenter().getEmail());
+        renterMap.put("full_name", itemLending.getRenter().getFull_name());
+        itemLendingMap.put("renter", renterMap);
+        // Item Map
+        Map<String, Object> itemMap = itemToMap(itemLending.getItem());
+        itemMap.remove("isRent");
+        itemMap.remove("isDeleted");
+        itemLendingMap.put("item",itemMap);
+        return itemLendingMap;
     }
 
     public StorageReference getStorageReference() {

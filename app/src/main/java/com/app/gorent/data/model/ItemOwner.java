@@ -32,7 +32,7 @@ public class ItemOwner {
     @Override
     public String toString() {
         return "-Item Owner" + "\r\n" +
-                "Name: " + full_name + "\r\n" +
-                "Email: " + email;
+                "  Name: " + full_name + "\r\n" +
+                "  Email: " + email;
     }
 }

@@ -119,5 +119,9 @@
     <string name="error_image_not_found">Image not found</string>
     <string name="error_uploading_image">An error occurred while uploading image</string>
     <string name="error_retrieving_items">An error occurred while retrieving items</string>
+    <string name="error_deleting_item">An error occurred while deleting item</string>
+    <string name="error_retrieving_item_lending_history">An error occurred while retrieving lending history</string>
+    <string name="error_retrieving_lending_history">An error occurred while retrieving lending history</string>
+    <string name="error_retrieving_renting_history">An error was occurred while retrieving renting history</string>
 
 </resources>

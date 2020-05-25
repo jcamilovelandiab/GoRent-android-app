@@ -7,7 +7,6 @@ import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.DataSourceSQLite;
 import com.app.gorent.data.storage.Session;
-import com.app.gorent.utils.InternetConnectivity;
 
 public abstract class Repository {
 

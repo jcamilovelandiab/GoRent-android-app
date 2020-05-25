@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.ui.activities.rental_form.RentalFormActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
+import com.app.gorent.utils.MyUtils;
 import com.app.gorent.utils.result.ItemQueryResult;
 
 public class RentItemDetailsActivity extends AppCompatActivity {
@@ -31,7 +33,6 @@ public class RentItemDetailsActivity extends AppCompatActivity {
     ImageView iv_item_picture;
     Button btn_rent;
     ProgressBar pg_loading;
-    String itemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,7 @@ public class RentItemDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_activity_item_info);
 
-        itemId = this.getIntent().getExtras().getString("itemId");
-        rentItemDetailsViewModel.retrieveItemById(itemId);
+        rentItemDetailsViewModel.retrieveItemById(this.getIntent().getExtras().getString("itemId"));
         configureItemObserver();
     }
 
@@ -74,15 +74,7 @@ public class RentItemDetailsActivity extends AppCompatActivity {
                 if(itemQueryResult.getItem()!=null){
                     Item item = itemQueryResult.getItem();
                     tv_item_information.setText(item.toString());
-                    if(item.getCategory().getName().toLowerCase().equals("houses")){
-                        iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.houses));
-                    }else if(item.getCategory().getName().toLowerCase().equals("cars")){
-                        iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.cars));
-                    }else if(item.getCategory().getName().toLowerCase().equals("pianos")){
-                        iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.pianos));
-                    }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
-                        iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.laptops));
-                    }
+                    loadImage(item);
                     configureBtnRent();
                 }
 
@@ -90,16 +82,35 @@ public class RentItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void configureBtnRent(){
-        btn_rent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RentItemDetailsActivity.this, RentalFormActivity.class);
-                intent.putExtra("itemId", itemId);
-                startActivity(intent);
-                setResult(Activity.RESULT_OK);
-                finish();
+    private void loadImage(Item item){
+        boolean hasImage = false;
+        if(item.getImage_path()!=null){
+            Uri photoUri = MyUtils.loadImage(RentItemDetailsActivity.this, item.getImage_path());
+            if(photoUri!=null){
+                iv_item_picture.setImageURI(photoUri);
+                hasImage=true;
             }
+        }
+        if(!hasImage){
+            if(item.getCategory().getName().toLowerCase().equals("houses")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.houses));
+            }else if(item.getCategory().getName().toLowerCase().equals("cars")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.cars));
+            }else if(item.getCategory().getName().toLowerCase().equals("pianos")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.pianos));
+            }else if(item.getCategory().getName().toLowerCase().equals("laptops")){
+                iv_item_picture.setImageDrawable(getResources().getDrawable(R.drawable.laptops));
+            }
+        }
+    }
+
+    private void configureBtnRent(){
+        btn_rent.setOnClickListener(v -> {
+            Intent intent = new Intent(RentItemDetailsActivity.this, RentalFormActivity.class);
+            intent.putExtra("itemId", getIntent().getExtras().getString("itemId"));
+            startActivity(intent);
+            setResult(Activity.RESULT_OK);
+            finish();
         });
     }
 

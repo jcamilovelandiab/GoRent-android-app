@@ -1,5 +1,8 @@
 package com.app.gorent.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Item {
 
     private String id;
@@ -11,8 +14,11 @@ public class Item {
     private Category category;
     private String image_path;
     private boolean isRent;
+    private boolean isDeleted;
 
     public Item() {
+        this.isDeleted = false;
+        this.isRent = false;
     }
 
     public Item(String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
@@ -22,6 +28,7 @@ public class Item {
         this.feeType = feeType;
         this.category = category;
         this.itemOwner = itemOwner;
+        this.isDeleted = false;
         this.isRent = false;
     }
 
@@ -34,9 +41,9 @@ public class Item {
         this.category = category;
         this.itemOwner = itemOwner;
         this.image_path = image_path;
+        this.isDeleted = false;
         this.isRent = false;
     }
-
 
     public Item(String id, String name, String description, Long price, String feeType,
                 Category category, ItemOwner itemOwner, String image_path) {
@@ -48,6 +55,8 @@ public class Item {
         this.category = category;
         this.itemOwner = itemOwner;
         this.image_path = image_path;
+        this.isDeleted = false;
+        this.isRent = false;
     }
 
     public String getId() {
@@ -125,11 +134,20 @@ public class Item {
     @Override
     public String toString() {
         return "-Item" + "\r\n" +
-                "Name: " + name + "\r\n" +
-                "Description: " + description + "\r\n" +
-                "Price: $" + price + "\r\n" +
-                "Fee type: " + feeType + "\r\n" +
+                "  Name: " + name + "\r\n" +
+                "  Description: " + description + "\r\n" +
+                "  Price: $" + price + "\r\n" +
+                "  Fee type: " + feeType + "\r\n" +
                 itemOwner + "\r\n" +
                 category;
     }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
 }

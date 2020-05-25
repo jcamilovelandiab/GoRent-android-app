@@ -53,15 +53,27 @@ public class ItemRepository extends Repository{
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
         //getDataSourceCache().saveItem(item, saveItemResult);
-        getDataSourceFirebase().saveItem(item, saveItemResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().saveItem(item, saveItemResult);
+        }else{
+            getDataSourceCache().saveItem(item, saveItemResult);
+        }
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
-        getDataSourceCache().updateItem(item, updateItemResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().updateItem(item, updateItemResult);
+        }else{
+            getDataSourceCache().updateItem(item, updateItemResult);
+        }
     }
 
     public void deleteItem(String itemId, MutableLiveData deleteItemResult){
-        getDataSourceCache().deleteItem(itemId, deleteItemResult);
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().deleteItem(itemId, deleteItemResult);
+        }else{
+            getDataSourceCache().deleteItem(itemId, deleteItemResult);
+        }
     }
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){

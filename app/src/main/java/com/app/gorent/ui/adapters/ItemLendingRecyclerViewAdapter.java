@@ -89,13 +89,19 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
             tv_item_lending_total_price.setText("Total fee: "+itemLending.getTotalPrice().toString());
             tv_item_lending_delivery_address.setText("Delivery address: "+itemLending.getDelivery_address());
             boolean hasImage = false;
-            /*if(itemLending.getItem().getImage_path()!=null){
+            if(itemLending.getItem().getImage_path()!=null){
                 Uri photoUri = MyUtils.loadImage(context, itemLending.getItem().getImage_path());
                 if(photoUri!=null){
                     iv_image.setImageURI(photoUri);
                     hasImage = true;
+                }else{
+                    StorageReference fileReference =  mediaRepository.getStorageReference().child(
+                            itemLending.getItem().getImage_path());
+                    Glide.with(itemView)
+                            .load(fileReference)
+                            .into(iv_image);
                 }
-            }*/
+            }
             if(!hasImage){
                 if(itemLending.getItem().getCategory().getName().toLowerCase().equals("houses")){
                     iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.houses));
@@ -106,12 +112,6 @@ public class ItemLendingRecyclerViewAdapter extends RecyclerView.Adapter<ItemLen
                 }else if(itemLending.getItem().getCategory().getName().toLowerCase().equals("laptops")){
                     iv_image.setImageDrawable(itemView.getResources().getDrawable(R.drawable.laptops));
                 }
-
-                StorageReference fileReference =  mediaRepository.getStorageReference().child(
-                        itemLending.getItem().getImage_path());
-                Glide.with(itemView)
-                        .load(fileReference)
-                        .into(iv_image);
             }
             tv_item_lending_tv_owner.setText(itemLending.getItem().getItemOwner().getFull_name());
             ib_more.setOnClickListener(new View.OnClickListener() {

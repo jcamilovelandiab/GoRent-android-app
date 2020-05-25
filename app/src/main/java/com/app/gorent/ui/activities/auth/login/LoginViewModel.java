@@ -32,7 +32,7 @@ public class LoginViewModel extends ViewModel {
         userRepository.login(email, password, loginResult);
     }
 
-    public void loginDataChanged(String email, String password) {
+    void loginDataChanged(String email, String password) {
         if (!Validator.isEmailValid(email)) {
             loginFormState.setValue(new LoginFormState(R.string.invalid_email, null));
         } else if (!Validator.isPasswordValid(password)) {
