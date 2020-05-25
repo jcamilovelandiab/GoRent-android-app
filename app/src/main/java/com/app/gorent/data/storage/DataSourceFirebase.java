@@ -2,6 +2,7 @@ package com.app.gorent.data.storage;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -37,10 +38,15 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,6 +73,7 @@ public class DataSourceFirebase {
                 .setPersistenceEnabled(true)
                 .build();
         this.fireStoreDB.setFirestoreSettings(settings);
+        downloadImages();
     }
 
     public static DataSourceFirebase getInstance(Context context){
@@ -490,6 +497,63 @@ public class DataSourceFirebase {
 
     public StorageReference getStorageReference() {
         return mStorageRef;
+    }
+
+    private void downloadImages(){
+        mStorageRef.child("uploads").listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for(StorageReference ref :listResult.getItems()){
+                    String file_name = ref.getName();
+                    try {
+                        if(!checkFileExists(file_name)){
+                            String name = file_name.substring(0,file_name.length()-4);
+                            File localFile = createImageFile(file_name);
+                            createFile(file_name, localFile);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+
+    private File createImageFile(String imageFileName) throws IOException {
+        // Create an image file name
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        assert storageDir != null;
+        String strStorageDir = storageDir.getAbsolutePath();
+        File image = new File(strStorageDir+"/"+imageFileName);
+        return image;
+    }
+
+    private void createFile(String nameImage, File localFile){
+        StorageReference imageRef = mStorageRef.child("uploads/"+nameImage);
+        imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Log.e("SUCCESS", "Create file success");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("FAILURE", "Create file failure.", e);
+            }
+        });
+    }
+
+    private boolean checkFileExists(String imageFileName) throws IOException {
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        String pathImage = storageDir.getAbsolutePath()+"/"+imageFileName;
+        File imageFile = new File(pathImage);
+        boolean exists = imageFile.exists();
+        boolean isDirectory = imageFile.isDirectory();
+        return  exists && !isDirectory;
     }
 
 }
