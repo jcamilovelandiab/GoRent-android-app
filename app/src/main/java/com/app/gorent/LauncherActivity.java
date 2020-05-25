@@ -38,7 +38,7 @@ public class LauncherActivity extends AppCompatActivity {
                 startActivity( new Intent( LauncherActivity.this, LoginActivity.class ) );
             }
             finish();
-        }, 5000);
+        }, 4000);
     }
 
     private void askPermissions(){
@@ -48,6 +48,8 @@ public class LauncherActivity extends AppCompatActivity {
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     },
                     REQUEST_WRITE_EXTERNAL_STORAGE);
+        }else{
+            initApp();
         }
     }
 
