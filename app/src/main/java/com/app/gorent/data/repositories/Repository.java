@@ -5,7 +5,8 @@ import android.content.Context;
 import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.storage.DataSourceCache;
 import com.app.gorent.data.storage.DataSourceFirebase;
-import com.app.gorent.data.storage.DataSourceSQLite;
+import com.app.gorent.data.storage.sql.DataSourceSQLite;
+import com.app.gorent.data.storage.sql.SQLite;
 import com.app.gorent.data.storage.Session;
 
 public abstract class Repository {
@@ -19,6 +20,7 @@ public abstract class Repository {
         this.context = context;
         this.dataSourceCache = DataSourceCache.getInstance(context);
         this.dataSourceFirebase = DataSourceFirebase.getInstance(context);
+        this.dataSourceSQLite = DataSourceSQLite.getInstance(context);
     }
 
     Context getContext() {

@@ -3,6 +3,7 @@ package com.app.gorent;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -56,17 +57,22 @@ public class AuthorizationActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Logging in admin...", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
         startActivity(intent);
-        setResult(Activity.RESULT_OK);
         //Complete and destroy login activity once successful
-        finish();
+        finishA();
     }
 
     private void updateUiUser(){
         Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
         startActivity(intent);
-        setResult(Activity.RESULT_OK);
         //Complete and destroy login activity once successful
-        finish();
+        finishA();
+    }
+
+    private void finishA(){
+        new Handler().postDelayed(() -> {
+            setResult(Activity.RESULT_OK);
+            finish();
+        }, 2000);
     }
 
 }

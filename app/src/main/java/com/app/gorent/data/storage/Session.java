@@ -28,7 +28,7 @@ public class Session {
         return null;
     }
 
-    void saveLoggedInUser(LoggedInUser loggedInUser){
+    public void saveLoggedInUser(LoggedInUser loggedInUser){
         if(containsToken()) clear();
         sharedPreferences.edit().putString( EMAIL_KEY, loggedInUser.getEmail()).apply();
         sharedPreferences.edit().putString(NAME_KEY, loggedInUser.getFull_name()).apply();
@@ -38,7 +38,7 @@ public class Session {
         return sharedPreferences.contains( EMAIL_KEY ) && sharedPreferences.contains(NAME_KEY);
     }
 
-    void clear(){
+    public void clear(){
         sharedPreferences.edit().remove( EMAIL_KEY ).apply();
         sharedPreferences.edit().remove(NAME_KEY).apply();
     }

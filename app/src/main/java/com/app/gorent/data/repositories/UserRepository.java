@@ -3,6 +3,7 @@ package com.app.gorent.data.repositories;
 import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.app.gorent.data.model.User;
 import com.app.gorent.utils.InternetConnectivity;
@@ -33,7 +34,7 @@ public class UserRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().logout();
         }else{
-            getDataSourceCache().logout();
+            getDataSourceSQLite().logout();
         }
     }
 
@@ -42,15 +43,23 @@ public class UserRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().login(email, password, authResult);
         }else{
-            getDataSourceCache().login(email, password, authResult);
+            getDataSourceSQLite().login(email, password, authResult);
         }
     }
 
     public void signUp(User user, MutableLiveData<AuthResult> authResult){
         if(InternetConnectivity.check(getContext())){
-            getDataSourceFirebase().signUp(user, authResult);
-        }else{
-            getDataSourceCache().signUp(user, authResult);
+            MutableLiveData<AuthResult> authResultMutableLiveData = new MutableLiveData<>();
+            authResultMutableLiveData.observeForever(authResultM -> {
+                if(authResultM==null) return;
+                if(authResultM.getError()!=null){
+                    authResult.setValue(authResultM);
+                }
+                if(authResultM.getSuccess()!=null){
+                    getDataSourceSQLite().signUp(user, authResult);
+                }
+            });
+            getDataSourceFirebase().signUp(user, authResultMutableLiveData);
         }
     }
 
@@ -58,7 +67,7 @@ public class UserRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().findUserByEmail(email, userQueryResult);
         }else{
-            getDataSourceCache().findUserByEmail(email, userQueryResult);
+            getDataSourceSQLite().findUserByEmail(email, userQueryResult);
         }
     }
 
