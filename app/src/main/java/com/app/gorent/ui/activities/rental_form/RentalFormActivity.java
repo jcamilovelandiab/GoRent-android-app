@@ -18,6 +18,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -71,9 +73,12 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
     Long totalPrice;
     Bundle bundle;
     ProgressBar pg_loading;
+    private LocationManager location;
+    Double double_latitude= (double) -151, double_longitude = (double) -31;
 
     MapView mv_map;
     GoogleMap myMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,8 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         rentalFormViewModel = ViewModelProviders.of(this, new ViewModelFactory(getApplicationContext())).get(RentalFormViewModel.class);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.title_activity_item_info);
+
+        askPermissions();
 
         bundle = getIntent().getExtras();
         rentalFormViewModel.retrieveItemById(bundle.getString("itemId"));
@@ -340,7 +347,6 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-
         mv_map.onCreate(mapViewBundle);
         mv_map.getMapAsync(this);
     }
@@ -396,19 +402,13 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
                     REQUEST_LOCATION_PERMISSION);
             return;
         }
+        locate();
         map.setMyLocationEnabled(true);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location permission granted", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_LONG).show();
-            }
-        }
+        // Add a marker in Sydney and move the camera
+        LatLng current_place = new LatLng(double_latitude, double_longitude);
+        map.addMarker(new MarkerOptions().position(current_place).title("Location: "+
+                double_latitude.toString()+","+double_longitude.toString()));
+        map.moveCamera(CameraUpdateFactory.newLatLng(current_place));
     }
 
     @Override
@@ -446,7 +446,6 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
-
     private void findAddress(String address){
         List<Address> direcciones = null;
         Geocoder geocoder = new Geocoder(this);
@@ -473,5 +472,68 @@ public class RentalFormActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==REQUEST_LOCATION_PERMISSION){
+            for (int i = 0; i < permissions.length; i++) {
+                String permission = permissions[i];
+                int grantResult = grantResults[i];
+                if (permission.equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        onMapReady(myMap);
+                        Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }else if (permission.equals(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    }
+
+    private void locate() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+            }, REQUEST_LOCATION_PERMISSION);
+        }
+        location = (LocationManager) getSystemService(getBaseContext().LOCATION_SERVICE);
+        Location loc = location.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location != null && loc!=null){
+            String latitude = String.valueOf(loc.getLatitude());
+            String longitude = String.valueOf(loc.getLongitude());
+            double_latitude = Double.parseDouble(latitude);
+            double_longitude = Double.parseDouble(longitude);
+        }
+    }
+
+    private void askPermissions(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+            }, REQUEST_LOCATION_PERMISSION);
+        }
+    }
 
 }

@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.app.gorent.data.model.Role;
@@ -38,7 +37,6 @@ public class AuthorizationActivity extends AppCompatActivity {
     private void prepareUserObserver(){
         authorizationViewModel.getUserQueryResult().observe(this, userQueryResult -> {
             if(userQueryResult==null) return;
-            pg_loading.setVisibility(View.GONE);
             if(userQueryResult.getError()!=null){
                 updateUiUser();
             }
@@ -55,24 +53,25 @@ public class AuthorizationActivity extends AppCompatActivity {
     private void updateUiAdmin(){
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), "Logging in admin...", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
-        startActivity(intent);
-        //Complete and destroy login activity once successful
-        finishA();
-    }
-
-    private void updateUiUser(){
-        Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
-        startActivity(intent);
-        //Complete and destroy login activity once successful
-        finishA();
-    }
-
-    private void finishA(){
-        new Handler().postDelayed(() -> {
+        new Handler().postDelayed(()->{
+            pg_loading.setVisibility(View.GONE);
+            Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
+            startActivity(intent);
+            //Complete and destroy login activity once successful
             setResult(Activity.RESULT_OK);
             finish();
-        }, 2000);
+        }, 1000);
+    }
+
+    private void updateUiUser() {
+        new Handler().postDelayed(() -> {
+            pg_loading.setVisibility(View.GONE);
+            Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
+            startActivity(intent);
+            //Complete and destroy login activity once successful
+            setResult(Activity.RESULT_OK);
+            finish();
+        }, 1000);
     }
 
 }
