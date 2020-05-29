@@ -117,4 +117,10 @@ public class ItemRepository extends Repository{
         }
     }
 
+    public void getAllItemsAdmin(MutableLiveData<ItemListQueryResult> itemListQueryResult){
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getAllItems(itemListQueryResult);
+        }
+    }
+
 }

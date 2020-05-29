@@ -595,4 +595,27 @@ public class DataSourceFirebase {
             }
         });
     }
+
+    public void getAllItems(MutableLiveData<ItemListQueryResult> itemListQueryResult) {
+        fireStoreDB.collection("Items").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Item> items = new ArrayList<>();
+                if (!queryDocumentSnapshots.isEmpty()){
+                    for (DocumentSnapshot snapshot:queryDocumentSnapshots){
+                        Item element = snapshot.toObject(Item.class);
+                        assert element != null;
+                        element.setId(snapshot.getId());
+                        items.add(element);
+                    }
+                }
+                itemListQueryResult.setValue(new ItemListQueryResult(items));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemListQueryResult.setValue(new ItemListQueryResult(R.string.error_retrieving_items));
+            }
+        });
+    }
 }

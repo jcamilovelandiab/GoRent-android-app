@@ -38,19 +38,18 @@
         <activity
             android:name=".ui.activities.auth.signup.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ui.activities.auth.login.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AuthorizationActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".LauncherActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LauncherActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -68,7 +67,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCd9355hf9hK9UUrjYo6rwzg28Uk9xDZ3Y" />
-
     </application>
 
 </manifest>

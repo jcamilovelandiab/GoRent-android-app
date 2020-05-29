@@ -133,5 +133,6 @@
     <string name="error_user_not_found">Error, user not found</string>
     <string name="error_internet_connection">Oops. Looks like you\'re not connected! Try again later.</string>
     <string name="error_not_supported_yet">Error, not supported yet!</string>
+    <string name="item_lending_history">Item lending history</string>
 
 </resources>
