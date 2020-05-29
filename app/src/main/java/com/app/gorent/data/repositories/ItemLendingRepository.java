@@ -34,16 +34,12 @@ public class ItemLendingRepository extends Repository{
                                String delivery_address, MutableLiveData<BasicResult> rentItemResult){
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().rentItemByUser(dueDate, totalPrice, item, user, delivery_address, rentItemResult);
-        }else{
-            getDataSourceCache().rentItemByUser(dueDate, totalPrice,item, user, delivery_address, rentItemResult);
         }
     }
 
     public void returnItem(ItemLending itemLending, MutableLiveData<BasicResult> returnItemResult){
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().returnItem(itemLending, returnItemResult);
-        }else{
-            getDataSourceCache().returnItem(itemLending, returnItemResult);
         }
     }
 
@@ -51,7 +47,7 @@ public class ItemLendingRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
         }else{
-            getDataSourceCache().getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
+            getDataSourceSQLite().getItemLendingHistoryByOwner(itemOwner, itemLendingQueryResult);
         }
     }
 
@@ -59,7 +55,7 @@ public class ItemLendingRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
         }else{
-            getDataSourceCache().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
+            getDataSourceSQLite().getItemLendingHistoryByRentalUser(rentalUser, itemLendingQueryResult);
         }
     }
 
@@ -67,7 +63,7 @@ public class ItemLendingRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getItemLendingById(itemLendingId, itemLendingQueryResult);
         } else {
-            getDataSourceCache().getItemLendingById(itemLendingId, itemLendingQueryResult);
+            getDataSourceSQLite().getItemLendingById(itemLendingId, itemLendingQueryResult);
         }
     }
 

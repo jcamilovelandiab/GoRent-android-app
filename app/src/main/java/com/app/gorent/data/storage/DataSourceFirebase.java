@@ -368,9 +368,10 @@ public class DataSourceFirebase {
         Map<String, Object> itemMap = itemToMap(item);
         MutableLiveData<BasicResult> uploadImageResult = new MutableLiveData<>();
         uploadImage(item.getImage_path(), uploadImageResult);
-        fireStoreDB.collection("Items").add(itemMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>(){
+        final DocumentReference itemRef = fireStoreDB.collection("Items").document(item.getId());
+        itemRef.set(itemMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
+            public void onSuccess(Void aVoid) {
                 saveItemResult.setValue(new BasicResult("Item successfully saved!"));
             }
         }).addOnFailureListener(new OnFailureListener() {

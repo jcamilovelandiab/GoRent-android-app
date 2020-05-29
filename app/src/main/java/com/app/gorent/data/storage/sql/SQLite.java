@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLite extends SQLiteOpenHelper {
     private static final String database = "GORENT";
-    private static final int VERSION = 2;
+    private static final int VERSION = 4;
 
     private String databaseStatement = StatementsSQL.tableCategories+StatementsSQL.tableUsers+
             StatementsSQL.tableItems+StatementsSQL.tableItemLending;

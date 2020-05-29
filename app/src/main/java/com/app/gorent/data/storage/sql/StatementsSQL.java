@@ -26,7 +26,7 @@ class StatementsSQL {
             "\timage_path text not null,\n" +
             "\titemOwnerEmail text not null,\n" +
             "\tcategoryId text not null,\n" +
-            "\tsynchronized integer default 0,\n" +
+            "\tuploaded integer default 0,\n" +
             "\tforeign key(itemOwnerEmail) references users(email),\n" +
             "\tforeign key(categoryId) references categories(id)\n" +
             ");";
@@ -56,4 +56,23 @@ class StatementsSQL {
     static final String login="select * from users where email='%s' and password='%s';";
 
     static final String findUserByEmail = "select email, full_name, role from users where email='%s'";
+
+    static final String findItemById = "select * from items, users, categories where items.id='%s' " +
+            "and users.email=items.itemOwnerEmail and categories.id=items.categoryId";
+
+    static final String findAllItems = "select select * from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and categories.id=items.categoryId";
+
+    static final String findAllCategories = "select * from categories";
+
+    static final String findAllItemsNotUploaded = "select * from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and categories.id=items.categoryId and items.uploaded=0";
+
+    static final String findItemsByOwner = "select * from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and categories.id=items.categoryId and items.itemOwnerEmail='%s'";
+
+    static final String findItemLendingHistory = "select * from itemLending, items, users, categories" +
+            " where itemLending.itemId = items.id and items.categoryId = categoriesId" +
+            " and items.itemOwnerEmail=users.email";
+
 }

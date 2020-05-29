@@ -19,8 +19,4 @@ public class MediaRepository extends Repository{
         return instance;
     }
 
-    public StorageReference getStorageReference(){
-        return getDataSourceFirebase().getStorageReference();
-    }
-
 }

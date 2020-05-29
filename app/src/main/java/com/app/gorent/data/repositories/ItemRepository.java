@@ -3,7 +3,9 @@ package com.app.gorent.data.repositories;
 import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
+import com.app.gorent.R;
 import com.app.gorent.data.model.Item;
 import com.app.gorent.data.model.ItemOwner;
 import com.app.gorent.data.model.User;
@@ -31,7 +33,7 @@ public class ItemRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getAvailableItems(loggedInUser, itemListQueryResult);
         }else{
-            getDataSourceCache().getAvailableItems(loggedInUser, itemListQueryResult);
+            itemListQueryResult.setValue(new ItemListQueryResult(R.string.error_internet_connection));
         }
     }
 
@@ -39,40 +41,65 @@ public class ItemRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getItemById(id, itemQueryResult);
         }else{
-            getDataSourceCache().getItemById(id, itemQueryResult);
+            getDataSourceSQLite().getItemById(id, itemQueryResult);
         }
     }
 
-    public void getItemsByName(String name, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        getDataSourceCache().getItemsByName(name, itemListQueryResult);
-    }
-
-    public void getItemsByCategory(String nameCategory, MutableLiveData<ItemListQueryResult> itemListQueryResult){
-        getDataSourceCache().getItemsByCategory(nameCategory, itemListQueryResult);
-    }
-
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
-        //getDataSourceCache().saveItem(item, saveItemResult);
         if(InternetConnectivity.check(getContext())){
-            getDataSourceFirebase().saveItem(item, saveItemResult);
+            MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
+            itemResultMutable.observeForever(basicResult -> {
+                if(basicResult==null) return;
+                if(basicResult.getError()!=null){
+                    saveItemResult.setValue(basicResult);
+                }
+                if(basicResult.getSuccess()!=null){
+                    item.setUploaded(true);
+                    getDataSourceSQLite().saveItem(item, saveItemResult);
+                }
+            });
+            getDataSourceFirebase().saveItem(item, itemResultMutable);
         }else{
-            getDataSourceCache().saveItem(item, saveItemResult);
+            item.setUploaded(false);
+            getDataSourceSQLite().saveItem(item, saveItemResult);
         }
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
         if(InternetConnectivity.check(getContext())){
-            getDataSourceFirebase().updateItem(item, updateItemResult);
+            MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
+            itemResultMutable.observeForever(basicResult -> {
+                if(basicResult==null) return;
+                if(basicResult.getError()!=null){
+                    updateItemResult.setValue(basicResult);
+                }
+                if(basicResult.getSuccess()!=null){
+                    item.setUploaded(true);
+                    getDataSourceSQLite().updateItem(item, updateItemResult);
+                }
+            });
+            getDataSourceFirebase().updateItem(item, itemResultMutable);
         }else{
-            getDataSourceCache().updateItem(item, updateItemResult);
+            item.setUploaded(false);
+            getDataSourceSQLite().updateItem(item, updateItemResult);
         }
     }
 
-    public void deleteItem(String itemId, MutableLiveData deleteItemResult){
+    public void deleteItem(String itemId, MutableLiveData<BasicResult> deleteItemResult){
         if(InternetConnectivity.check(getContext())){
-            getDataSourceFirebase().deleteItem(itemId, deleteItemResult);
+            MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
+            itemResultMutable.observeForever(basicResult -> {
+                if(basicResult==null) return;
+                if(basicResult.getError()!=null){
+                    deleteItemResult.setValue(basicResult);
+                }
+                if(basicResult.getSuccess()!=null){
+                    getDataSourceSQLite().deleteItem(itemId, true, deleteItemResult);
+                }
+            });
+            getDataSourceFirebase().deleteItem(itemId, itemResultMutable);
         }else{
-            getDataSourceCache().deleteItem(itemId, deleteItemResult);
+            getDataSourceSQLite().deleteItem(itemId,false, deleteItemResult);
         }
     }
 
@@ -80,15 +107,13 @@ public class ItemRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getItemsByOwner(itemOwner, itemListQueryResult);
         }else{
-            getDataSourceCache().getItemsByOwner(itemOwner, itemListQueryResult);
+            getDataSourceSQLite().getItemsByOwner(itemOwner, itemListQueryResult);
         }
     }
 
     public void getItemsByNameOrCategory(String search_text, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getItemsByNameOrCategory(search_text, itemListQueryResult);
-        }else{
-            getDataSourceCache().getItemsByNameOrCategory(search_text, itemListQueryResult);
         }
     }
 

@@ -2,6 +2,7 @@ package com.app.gorent.data.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Item {
 
@@ -15,10 +16,13 @@ public class Item {
     private String image_path;
     private boolean isRent;
     private boolean isDeleted;
+    private boolean uploaded;
 
     public Item() {
         this.isDeleted = false;
         this.isRent = false;
+        this.uploaded = false;
+        this.id = UUID.randomUUID().toString();
     }
 
     public Item(String name, String description, Long price, String feeType, Category category, ItemOwner itemOwner) {
@@ -30,6 +34,8 @@ public class Item {
         this.itemOwner = itemOwner;
         this.isDeleted = false;
         this.isRent = false;
+        this.uploaded = false;
+        this.id = UUID.randomUUID().toString();
     }
 
     public Item(String name, String description, Long price, String feeType,
@@ -43,6 +49,8 @@ public class Item {
         this.image_path = image_path;
         this.isDeleted = false;
         this.isRent = false;
+        this.uploaded = false;
+        this.id = UUID.randomUUID().toString();
     }
 
     public Item(String id, String name, String description, Long price, String feeType,
@@ -57,6 +65,8 @@ public class Item {
         this.image_path = image_path;
         this.isDeleted = false;
         this.isRent = false;
+        this.uploaded = false;
+        this.id = UUID.randomUUID().toString();
     }
 
     public String getId() {
@@ -150,4 +160,11 @@ public class Item {
         isDeleted = deleted;
     }
 
+    public boolean isUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        this.uploaded = uploaded;
+    }
 }

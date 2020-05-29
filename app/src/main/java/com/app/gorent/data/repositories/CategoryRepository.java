@@ -26,7 +26,7 @@ public class CategoryRepository extends Repository{
         if(InternetConnectivity.check(getContext())){
             getDataSourceFirebase().getCategories(categoryListQueryResult);
         }else{
-            getDataSourceCache().getCategories(categoryListQueryResult);
+            getDataSourceSQLite().getCategories(categoryListQueryResult);
         }
     }
 

@@ -51,7 +51,7 @@ public class RentFragment extends Fragment {
                 if (itemListQueryResult == null) return;
                 pg_loading.setVisibility(View.GONE);
                 if (itemListQueryResult.getError() != null) {
-                    Toast.makeText(getContext(), itemListQueryResult.getError(), Toast.LENGTH_SHORT).show();
+                    showMessage(getString(itemListQueryResult.getError()));
                 }
                 if (itemListQueryResult.getItems() != null) {
                     if (itemListQueryResult.getItems().size() != 0) {
