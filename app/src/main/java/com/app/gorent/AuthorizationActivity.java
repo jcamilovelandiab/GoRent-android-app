@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.app.gorent.data.model.Role;
 import com.app.gorent.ui.activities.main.MainActivity;
+import com.app.gorent.ui.activities.main_admin.AdminMainActivity;
 import com.app.gorent.ui.viewmodel.ViewModelFactory;
 import com.app.gorent.utils.result.UserQueryResult;
 
@@ -55,7 +56,7 @@ public class AuthorizationActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Logging in admin...", Toast.LENGTH_LONG).show();
         new Handler().postDelayed(()->{
             pg_loading.setVisibility(View.GONE);
-            Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
+            Intent intent = new Intent(AuthorizationActivity.this, AdminMainActivity.class);
             startActivity(intent);
             //Complete and destroy login activity once successful
             setResult(Activity.RESULT_OK);

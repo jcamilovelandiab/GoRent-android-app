@@ -23,30 +23,15 @@
         app:layout_constraintRight_toRightOf="parent"
         android:imeOptions="actionSearch"/>
 
-    <Button
-        android:visibility="gone"
-        android:id="@+id/search_btn_filter"
-        android:text="@string/action_filter"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/button_round"
-        app:layout_constraintTop_toBottomOf="@id/search_et_search_text"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textColor="#FFFFFF"/>
-
     <ListView
         android:id="@+id/search_lv_items"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/search_btn_filter"
+        app:layout_constraintTop_toBottomOf="@id/search_et_search_text"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingBottom="100dp"/>
 
     <ProgressBar
         android:id="@+id/search_pg_loading"

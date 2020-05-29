@@ -12,7 +12,7 @@ public class MainActivityViewModel extends ViewModel {
         this.userRepository = userRepository;
     }
 
-    void logout(){
+    public void logout(){
         userRepository.logout();
     }
 

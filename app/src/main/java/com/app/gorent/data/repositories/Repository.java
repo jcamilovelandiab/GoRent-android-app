@@ -29,7 +29,7 @@ public abstract class Repository {
         this.dataSourceCache = DataSourceCache.getInstance(context);
         this.dataSourceFirebase = DataSourceFirebase.getInstance(context);
         this.dataSourceSQLite = DataSourceSQLite.getInstance(context);
-        synchronizeDatabases();
+        //synchronizeDatabases();
     }
 
     private void synchronizeDatabases(){

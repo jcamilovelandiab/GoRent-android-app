@@ -17,6 +17,9 @@ import com.app.gorent.ui.activities.auth.signup.SignUpViewModel;
 import com.app.gorent.ui.activities.item_information.ItemInformationViewModel;
 import com.app.gorent.ui.activities.item_form.ItemFormViewModel;
 import com.app.gorent.ui.activities.main.MainActivityViewModel;
+import com.app.gorent.ui.activities.main_admin.item_lending_history.ItemLendingHistoryViewModel;
+import com.app.gorent.ui.activities.main_admin.itemsadmin.ItemsAdminFragment;
+import com.app.gorent.ui.activities.main_admin.itemsadmin.ItemsAdminViewModel;
 import com.app.gorent.ui.activities.rent_item_details.RentItemDetailsViewModel;
 import com.app.gorent.ui.activities.main.lend.LendViewModel;
 import com.app.gorent.ui.activities.main.lent_items_history.LentItemsViewModel;
@@ -72,7 +75,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
                     CategoryRepository.getInstance(context));
         } else if (modelClass.isAssignableFrom(ReturnItemViewModel.class)){
             return (T) new ReturnItemViewModel(ItemLendingRepository.getInstance(context));
-        } else{
+        } else if(modelClass.isAssignableFrom(ItemsAdminViewModel.class)){
+            return (T) new ItemsAdminViewModel(ItemRepository.getInstance(context));
+        } else if(modelClass.isAssignableFrom(ItemLendingHistoryViewModel.class)){
+            return (T) new ItemLendingHistoryViewModel(ItemLendingRepository.getInstance(context));
+        }else{
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }

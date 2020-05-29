@@ -34,10 +34,11 @@ public class ItemsAdminFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_items_admin, container, false);
-        itemsAdminViewModel = ViewModelProviders.of(getActivity(), new ViewModelFactory(getActivity().getApplicationContext())).get(ItemsAdminViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_admin_items, container, false);
+        itemsAdminViewModel = ViewModelProviders.of(getActivity(),
+                new ViewModelFactory(getActivity().getApplicationContext())).get(ItemsAdminViewModel.class);
 
         lv_items = root.findViewById(R.id.items_admin_item_list);
         pg_loading = root.findViewById(R.id.items_admin_pg_loading);

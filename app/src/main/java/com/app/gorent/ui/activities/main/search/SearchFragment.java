@@ -43,7 +43,6 @@ public class SearchFragment extends Fragment {
                 ViewModelProviders.of(this, new ViewModelFactory(getActivity().getApplicationContext())).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search, container, false);
         connectModelWithView(root);
-        configureBtnFilter();
         prepareItemListObserver();
         configureSearchEditText();
         return root;
@@ -52,7 +51,6 @@ public class SearchFragment extends Fragment {
     private void connectModelWithView(View view){
         lv_items = view.findViewById(R.id.search_lv_items);
         et_search_text = view.findViewById(R.id.search_et_search_text);
-        btn_filter = view.findViewById(R.id.search_btn_filter);
         pg_loading = view.findViewById(R.id.search_pg_loading);
     }
 
@@ -69,15 +67,6 @@ public class SearchFragment extends Fragment {
                     }
                 }
                 return false;
-            }
-        });
-    }
-
-    private void configureBtnFilter(){
-        btn_filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                configureFilterDialog();
             }
         });
     }

@@ -245,7 +245,7 @@ public class DataSourceFirebase {
     /* -------------------------------------------------------------------------- */
     /*                                ITEM LENDING                                */
     /* -------------------------------------------------------------------------- */
-    public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingListQueryResult> itemLendingQueryResult){
+    public void getItemLendingHistoryByOwner(ItemOwner owner, MutableLiveData<ItemLendingListQueryResult> itemLendingListQueryResult){
         fireStoreDB.collection("ItemLending")
                 .whereEqualTo("item.itemOwner.email", owner.getEmail())
             .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -257,12 +257,12 @@ public class DataSourceFirebase {
                     itemLending.setId(documentSnapshot.getId());
                     itemLendingList.add(itemLending);
                 }
-                itemLendingQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
+                itemLendingListQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                itemLendingQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_retrieving_lending_history));
+                itemLendingListQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_retrieving_lending_history));
             }
         });
     }
@@ -615,6 +615,26 @@ public class DataSourceFirebase {
             @Override
             public void onFailure(@NonNull Exception e) {
                 itemListQueryResult.setValue(new ItemListQueryResult(R.string.error_retrieving_items));
+            }
+        });
+    }
+
+    public void getAllItemLending(MutableLiveData<ItemLendingListQueryResult> itemLendingListQueryResult) {
+        fireStoreDB.collection("ItemLending").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<ItemLending> itemLendingList = new ArrayList<>();
+                for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                    ItemLending itemLending = documentSnapshot.toObject(ItemLending.class);
+                    itemLending.setId(documentSnapshot.getId());
+                    itemLendingList.add(itemLending);
+                }
+                itemLendingListQueryResult.setValue(new ItemLendingListQueryResult(itemLendingList));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                itemLendingListQueryResult.setValue(new ItemLendingListQueryResult(R.string.error_retrieving_lending_history));
             }
         });
     }

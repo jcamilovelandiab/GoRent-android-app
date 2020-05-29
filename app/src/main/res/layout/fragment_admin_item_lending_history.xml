@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.main_admin.item_lending_history.ItemLendingHistory">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/admin_item_lending_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:divider="@null"
+        android:dividerHeight="0dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/admin_item_lending_list_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/admin_item_lending_list"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:progressDrawable="@drawable/progress_bar_style"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

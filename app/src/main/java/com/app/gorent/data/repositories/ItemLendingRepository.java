@@ -67,4 +67,10 @@ public class ItemLendingRepository extends Repository{
         }
     }
 
+    public void getAllItemLending(MutableLiveData<ItemLendingListQueryResult> itemLendingListQueryResult){
+        if(InternetConnectivity.check(getContext())){
+            getDataSourceFirebase().getAllItemLending(itemLendingListQueryResult);
+        }
+    }
+
 }

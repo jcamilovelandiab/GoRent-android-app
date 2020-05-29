@@ -24,7 +24,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".ui.activities.main_admin.AdminMainActivity"
+            android:label="@string/title_activity_admin_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ui.activities.item_information.ItemInformationActivity" />
         <activity android:name=".ui.activities.item_form.ItemFormActivity" />
         <activity android:name=".ui.activities.rental_form.RentalFormActivity" />

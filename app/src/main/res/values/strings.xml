@@ -133,6 +133,13 @@
     <string name="error_user_not_found">Error, user not found</string>
     <string name="error_internet_connection">Oops. Looks like you\'re not connected! Try again later.</string>
     <string name="error_not_supported_yet">Error, not supported yet!</string>
-    <string name="item_lending_history">Item lending history</string>
+    <string name="title_activity_admin_main">AdminMainActivity</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+    <string name="menu_items">Items</string>
+    <string name="title_items">Items</string>
+    <string name="title_item_lending_history">Lending History</string>
 
 </resources>

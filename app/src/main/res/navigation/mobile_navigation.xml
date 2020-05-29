@@ -54,4 +54,16 @@
         android:label="@string/title_web"
         tools:layout="@layout/fragment_web" />
 
+    <fragment
+        android:id="@+id/nav_items"
+        android:name="com.app.gorent.ui.activities.main_admin.itemsadmin.ItemsAdminFragment"
+        android:label="@string/title_items"
+        tools:layout="@layout/fragment_admin_items" />
+
+    <fragment
+        android:id="@+id/nav_item_lending_history"
+        android:name="com.app.gorent.ui.activities.main_admin.item_lending_history.ItemLendingHistory"
+        android:label="@string/title_item_lending_history"
+        tools:layout="@layout/fragment_admin_items" />
+
 </navigation>

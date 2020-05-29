@@ -9,13 +9,11 @@ import com.app.gorent.utils.result.ItemListQueryResult;
 
 public class ItemsAdminViewModel extends ViewModel {
 
-    private ItemRepository itemRepository;
     private MutableLiveData<ItemListQueryResult> itemListQueryResult = new MutableLiveData<>();
 
 
     public ItemsAdminViewModel(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-        this.itemRepository.getAllItemsAdmin(itemListQueryResult);
+        itemRepository.getAllItemsAdmin(itemListQueryResult);
     }
 
     public LiveData<ItemListQueryResult> getItemListQueryResult() {

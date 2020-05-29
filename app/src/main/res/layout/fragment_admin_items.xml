@@ -13,6 +13,7 @@
 
     <ProgressBar
         android:id="@+id/items_admin_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/lend_item_my_item_list"
         android:layout_width="match_parent"
         android:foregroundGravity="center_horizontal"
         android:layout_height="wrap_content"
