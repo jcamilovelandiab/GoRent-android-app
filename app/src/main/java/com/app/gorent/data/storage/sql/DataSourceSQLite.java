@@ -121,9 +121,9 @@ public class DataSourceSQLite {
         cv.put("description", item.getDescription());
         cv.put("price",item.getPrice());
         cv.put("feeType", item.getFeeType());
-        cv.put("isRent", item.isRent());
-        cv.put("isDeleted",item.isDeleted());
-        cv.put("uploaded", item.isUploaded());
+        cv.put("isRent", item.isRent()?1:0);
+        cv.put("isDeleted",item.isDeleted()?1:0);
+        cv.put("uploaded", item.isUploaded()?1:0);
         cv.put("image_path", item.getImage_path());
         cv.put("itemOwnerEmail", item.getItemOwner().getEmail());
         cv.put("categoryId", item.getCategory().getId());
@@ -165,8 +165,9 @@ public class DataSourceSQLite {
 
     public void itemWasUploaded(Item item) {
         ContentValues cv = new ContentValues();
-        cv.put("uploaded", true);
-        this.database.update("items", cv, "id= ?", new String[]{item.getId()});
+        cv.put("uploaded", 1);
+        String sqlStatement = String.format("update items set uploaded=1 where id='%s'", item.getId());
+        this.database.execSQL(sqlStatement);
     }
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult) {
@@ -183,7 +184,7 @@ public class DataSourceSQLite {
         cv.put("itemOwnerEmail", item.getItemOwner().getEmail());
         cv.put("categoryId", item.getCategory().getId());
         int result = -1;
-        result = this.database.update("items", cv, "id= ?", new String[]{item.getId()});
+        result = this.database.update("items", cv, "id= '?'", new String[]{item.getId()});
         if(result!=-1){
             updateItemResult.setValue(new BasicResult("Item successfully updated!"));
         }else{
@@ -235,6 +236,12 @@ public class DataSourceSQLite {
 
     public void getItemLendingById(String itemLendingId, MutableLiveData<ItemLendingQueryResult> itemLendingQueryResult) {
         itemLendingQueryResult.setValue(new ItemLendingQueryResult(R.string.error_not_supported_yet));
+    }
+
+    public User findUserByEmail(String email){
+        String queryStatement = String.format(StatementsSQL.findUserByEmail, email);
+        Cursor cursor = database.rawQuery(queryStatement, null);
+        return CursorUtils.cursorToUser(cursor);
     }
 
 }

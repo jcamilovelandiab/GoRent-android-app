@@ -105,7 +105,19 @@ public class ItemRepository extends Repository{
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         if(InternetConnectivity.check(getContext())){
-            getDataSourceFirebase().getItemsByOwner(itemOwner, itemListQueryResult);
+            MutableLiveData<ItemListQueryResult> itemListResultFB = new MutableLiveData<>();
+            itemListResultFB.observeForever(itemListQueryResultFirebase -> {
+                if(itemListQueryResultFirebase == null) return;
+                if(itemListQueryResultFirebase.getError()!=null){
+                    itemListQueryResult.setValue(itemListQueryResultFirebase);
+                }
+                if(itemListQueryResultFirebase.getItems()!=null){
+                    DatabaseSynchronization.downloadCloudedItems(getDataSourceFirebase(), getDataSourceSQLite(),
+                            itemListQueryResultFirebase.getItems());
+                    itemListQueryResult.setValue(itemListQueryResultFirebase);
+                }
+            });
+            getDataSourceFirebase().getItemsByOwner(itemOwner, itemListResultFB);
         }else{
             getDataSourceSQLite().getItemsByOwner(itemOwner, itemListQueryResult);
         }

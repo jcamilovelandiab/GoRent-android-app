@@ -69,9 +69,6 @@ public class DataSourceFirebase {
                 .setPersistenceEnabled(true)
                 .build();
         this.fireStoreDB.setFirestoreSettings(settings);
-        new Thread(()->{
-            downloadAllImages();
-        }).start();
     }
 
     public static DataSourceFirebase getInstance(Context context){
@@ -546,7 +543,7 @@ public class DataSourceFirebase {
         });
     }
 
-    private void downloadImage(String file_name){
+    public void downloadImage(String file_name){
         try {
             if(!MyUtils.checkFileExists(context, file_name)){
                 File localFile = MyUtils.createImageFile(context, file_name);

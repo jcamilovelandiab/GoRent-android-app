@@ -44,14 +44,14 @@ class StatementsSQL {
             "\tforeign key(itemId) references items(id)\n" +
             ");";
 
-    static final String dropItemLending = "drop table if exists itemLending;";
-    static final String dropItems = "drop table if exists items;";
-    static final String dropCategories = "drop table if exists categories;";
-    static final String dropUsers = "drop table if exists users;";
+    static final String dropItemLending = "drop table itemLending;";
+    static final String dropItems = "drop table items;";
+    static final String dropCategories = "drop table categories;";
+    static final String dropUsers = "drop table users;";
 
     static final String insertUser="insert into users(email, password, full_name, role) values('%s','%s','%s','%s');";
 
-    static final String insertCategory = "insert into category(id, name, description) values('%s','%s','%s');";
+    static final String insertCategory = "insert into categories(id, name, description) values('%s','%s','%s');";
 
     static final String login="select * from users where email='%s' and password='%s';";
 
@@ -60,7 +60,7 @@ class StatementsSQL {
     static final String findItemById = "select * from items, users, categories where items.id='%s' " +
             "and users.email=items.itemOwnerEmail and categories.id=items.categoryId";
 
-    static final String findAllItems = "select select * from items, users, categories " +
+    static final String findAllItems = "select * from items, users, categories " +
             "where users.email=items.itemOwnerEmail and categories.id=items.categoryId";
 
     static final String findAllCategories = "select * from categories";
@@ -69,7 +69,7 @@ class StatementsSQL {
             "where users.email=items.itemOwnerEmail and categories.id=items.categoryId and items.uploaded=0";
 
     static final String findItemsByOwner = "select * from items, users, categories " +
-            "where users.email=items.itemOwnerEmail and categories.id=items.categoryId and items.itemOwnerEmail='%s'";
+            "where users.email=items.itemOwnerEmail and items.categoryId=categories.id and items.itemOwnerEmail='%s'";
 
     static final String findItemLendingHistory = "select * from itemLending, items, users, categories" +
             " where itemLending.itemId = items.id and items.categoryId = categoriesId" +

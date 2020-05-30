@@ -29,25 +29,6 @@ public abstract class Repository {
         this.dataSourceCache = DataSourceCache.getInstance(context);
         this.dataSourceFirebase = DataSourceFirebase.getInstance(context);
         this.dataSourceSQLite = DataSourceSQLite.getInstance(context);
-        //synchronizeDatabases();
-    }
-
-    private void synchronizeDatabases(){
-        if(InternetConnectivity.check(getContext())){
-            List<Item> itemsNotUploaded = this.dataSourceSQLite.checkItemsNotUploaded();
-            if(itemsNotUploaded!=null && itemsNotUploaded.size()>0){
-                for(Item item :itemsNotUploaded){
-                    MutableLiveData<BasicResult> loadResult = new MutableLiveData<>();
-                    loadResult.observeForever(basicResult -> {
-                        if(basicResult==null) return;
-                        if(basicResult.getSuccess()!=null){
-                            getDataSourceSQLite().itemWasUploaded(item);
-                        }
-                    });
-                    getDataSourceFirebase().saveItem(item, loadResult);
-                }
-            }
-        }
     }
 
     Context getContext() {

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLite extends SQLiteOpenHelper {
     private static final String database = "GORENT";
-    private static final int VERSION = 4;
+    private static final int VERSION = 5;
 
     private String databaseStatement = StatementsSQL.tableCategories+StatementsSQL.tableUsers+
             StatementsSQL.tableItems+StatementsSQL.tableItemLending;
@@ -20,6 +20,7 @@ public class SQLite extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTables(db);
+        uploadCategories(db);
     }
 
     public void createTables(SQLiteDatabase db){
@@ -34,6 +35,17 @@ public class SQLite extends SQLiteOpenHelper {
         db.execSQL(StatementsSQL.dropItems);
         db.execSQL(StatementsSQL.dropCategories);
         db.execSQL(StatementsSQL.dropUsers);
+    }
+
+    private void uploadCategories(SQLiteDatabase database) {
+        database.execSQL(String.format(StatementsSQL.insertCategory,
+                "LO61op82dlKYBZRvDqhr", "cars", "Luxury cars"));
+        database.execSQL(String.format(StatementsSQL.insertCategory,
+                "SLTJhEExgt2JrOCtIY0B", "pianos", "Grand piano"));
+        database.execSQL(String.format(StatementsSQL.insertCategory,
+                "bOInKzsFxkUGb7SrrtoF", "laptops", "High-quality"));
+        database.execSQL(String.format(StatementsSQL.insertCategory,
+                "mi9o7pYz7rDxX7wHLQgB", "houses", "camping houses"));
     }
 
     @Override

@@ -28,7 +28,8 @@ public class CursorUtils {
                 item.setImage_path(cursor.getString(cursor.getColumnIndex("items.image_path")));
                 item.setRent(cursor.getInt(cursor.getColumnIndex("items.isRent")) == 1);
                 item.setDeleted(cursor.getInt(cursor.getColumnIndex("items.isDeleted"))==1);
-                item.setUploaded(cursor.getInt(cursor.getColumnIndex("items.uploaded"))==1);
+                int uploaded = cursor.getInt(cursor.getColumnIndex("uploaded"));
+                item.setUploaded(uploaded==1);
                 category.setId(cursor.getString(cursor.getColumnIndex("items.categoryId")));
                 category.setName(cursor.getString(cursor.getColumnIndex("categories.name")));
                 category.setDescription(cursor.getString(cursor.getColumnIndex("categories.description")));

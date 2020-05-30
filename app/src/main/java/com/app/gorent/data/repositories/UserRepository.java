@@ -5,7 +5,9 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.app.gorent.data.model.LoggedInUser;
 import com.app.gorent.data.model.User;
+import com.app.gorent.data.storage.Session;
 import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.AuthResult;
 import com.app.gorent.utils.result.UserQueryResult;
@@ -41,7 +43,21 @@ public class UserRepository extends Repository{
     public void login(String email, String password, MutableLiveData<AuthResult> authResult) {
         // handle login
         if(InternetConnectivity.check(getContext())){
-            getDataSourceFirebase().login(email, password, authResult);
+            MutableLiveData<AuthResult> firebaseResult = new MutableLiveData<>();
+            firebaseResult.observeForever(authResultFB -> {
+                if(authResultFB==null) return;
+                if(authResultFB.getError()!=null){
+                    authResult.setValue(authResultFB);
+                }
+                if(authResultFB.getSuccess()!=null){
+                    DatabaseSynchronization.downloadUserInformation(
+                            new Session(getContext()).getLoggedInUser().getFull_name()+"",
+                            email+"",password+"",
+                            getDataSourceFirebase(), getDataSourceSQLite());
+                    authResult.setValue(authResultFB);
+                }
+            });
+            getDataSourceFirebase().login(email, password, firebaseResult);
         }else{
             getDataSourceSQLite().login(email, password, authResult);
         }
