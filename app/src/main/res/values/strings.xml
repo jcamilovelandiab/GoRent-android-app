@@ -141,5 +141,6 @@
     <string name="menu_items">Items</string>
     <string name="title_items">Items</string>
     <string name="title_item_lending_history">Lending History</string>
+    <string name="label_home">Don\'t worry! We lend you things you need to work at home!</string>
 
 </resources>

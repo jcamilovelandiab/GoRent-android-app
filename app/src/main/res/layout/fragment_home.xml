@@ -8,30 +8,42 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/home_iv_picture"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="100dp"
             android:src="@drawable/stay_at_home"
-            >
-
+            android:contentDescription="TODO">
         </ImageView>
 
         <TextView
-            android:layout_margin="20dp"
-            android:text="Don't worry! We lend you things you need to work at home!"
             android:id="@+id/text_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="20dp"
             android:gravity="center"
-            android:textSize="22sp" />
+            android:text="@string/label_home"
+            android:textSize="15sp" />
+
+        <VideoView
+            android:layout_gravity="center"
+            android:id="@+id/home_videoView"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            tools:layout_editor_absoluteY="578dp"
+
+            />
 
     </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

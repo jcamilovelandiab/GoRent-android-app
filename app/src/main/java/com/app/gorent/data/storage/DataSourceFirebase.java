@@ -69,6 +69,7 @@ public class DataSourceFirebase {
                 .setPersistenceEnabled(true)
                 .build();
         this.fireStoreDB.setFirestoreSettings(settings);
+        downloadAllImages();
     }
 
     public static DataSourceFirebase getInstance(Context context){

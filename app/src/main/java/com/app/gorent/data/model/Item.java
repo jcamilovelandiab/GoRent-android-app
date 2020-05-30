@@ -66,7 +66,6 @@ public class Item {
         this.isDeleted = false;
         this.isRent = false;
         this.uploaded = false;
-        this.id = UUID.randomUUID().toString();
     }
 
     public String getId() {
@@ -167,4 +166,6 @@ public class Item {
     public void setUploaded(boolean uploaded) {
         this.uploaded = uploaded;
     }
+
+
 }

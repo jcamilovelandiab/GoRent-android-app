@@ -47,7 +47,7 @@ public class ItemRepository extends Repository{
 
     public void saveItem(Item item, MutableLiveData<BasicResult> saveItemResult){
         if(InternetConnectivity.check(getContext())){
-            MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
+            /*MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
             itemResultMutable.observeForever(basicResult -> {
                 if(basicResult==null) return;
                 if(basicResult.getError()!=null){
@@ -57,8 +57,8 @@ public class ItemRepository extends Repository{
                     item.setUploaded(true);
                     getDataSourceSQLite().saveItem(item, saveItemResult);
                 }
-            });
-            getDataSourceFirebase().saveItem(item, itemResultMutable);
+            });*/
+            getDataSourceFirebase().saveItem(item, saveItemResult);
         }else{
             item.setUploaded(false);
             getDataSourceSQLite().saveItem(item, saveItemResult);
@@ -67,7 +67,7 @@ public class ItemRepository extends Repository{
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult){
         if(InternetConnectivity.check(getContext())){
-            MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
+            /*MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
             itemResultMutable.observeForever(basicResult -> {
                 if(basicResult==null) return;
                 if(basicResult.getError()!=null){
@@ -77,17 +77,17 @@ public class ItemRepository extends Repository{
                     item.setUploaded(true);
                     getDataSourceSQLite().updateItem(item, updateItemResult);
                 }
-            });
-            getDataSourceFirebase().updateItem(item, itemResultMutable);
+            });*/
+            getDataSourceFirebase().updateItem(item, updateItemResult);
         }else{
-            item.setUploaded(false);
-            getDataSourceSQLite().updateItem(item, updateItemResult);
+            /*item.setUploaded(false);
+            getDataSourceSQLite().updateItem(item, updateItemResult);*/
         }
     }
 
     public void deleteItem(String itemId, MutableLiveData<BasicResult> deleteItemResult){
         if(InternetConnectivity.check(getContext())){
-            MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
+            /*MutableLiveData<BasicResult> itemResultMutable = new MutableLiveData<>();
             itemResultMutable.observeForever(basicResult -> {
                 if(basicResult==null) return;
                 if(basicResult.getError()!=null){
@@ -96,8 +96,8 @@ public class ItemRepository extends Repository{
                 if(basicResult.getSuccess()!=null){
                     getDataSourceSQLite().deleteItem(itemId, true, deleteItemResult);
                 }
-            });
-            getDataSourceFirebase().deleteItem(itemId, itemResultMutable);
+            });*/
+            getDataSourceFirebase().deleteItem(itemId, deleteItemResult);
         }else{
             getDataSourceSQLite().deleteItem(itemId,false, deleteItemResult);
         }
@@ -105,7 +105,7 @@ public class ItemRepository extends Repository{
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         if(InternetConnectivity.check(getContext())){
-            MutableLiveData<ItemListQueryResult> itemListResultFB = new MutableLiveData<>();
+            /*MutableLiveData<ItemListQueryResult> itemListResultFB = new MutableLiveData<>();
             itemListResultFB.observeForever(itemListQueryResultFirebase -> {
                 if(itemListQueryResultFirebase == null) return;
                 if(itemListQueryResultFirebase.getError()!=null){
@@ -116,8 +116,8 @@ public class ItemRepository extends Repository{
                             itemListQueryResultFirebase.getItems());
                     itemListQueryResult.setValue(itemListQueryResultFirebase);
                 }
-            });
-            getDataSourceFirebase().getItemsByOwner(itemOwner, itemListResultFB);
+            });*/
+            getDataSourceFirebase().getItemsByOwner(itemOwner, itemListQueryResult);
         }else{
             getDataSourceSQLite().getItemsByOwner(itemOwner, itemListQueryResult);
         }

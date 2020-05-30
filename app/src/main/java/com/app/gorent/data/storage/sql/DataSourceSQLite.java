@@ -172,7 +172,6 @@ public class DataSourceSQLite {
 
     public void updateItem(Item item, MutableLiveData<BasicResult> updateItemResult) {
         ContentValues cv = new ContentValues();
-        cv.put("id", item.getId());
         cv.put("name", item.getName());
         cv.put("description", item.getDescription());
         cv.put("price",item.getPrice());
@@ -184,7 +183,7 @@ public class DataSourceSQLite {
         cv.put("itemOwnerEmail", item.getItemOwner().getEmail());
         cv.put("categoryId", item.getCategory().getId());
         int result = -1;
-        result = this.database.update("items", cv, "id= '?'", new String[]{item.getId()});
+        result = this.database.update("items", cv, String.format("id='%s'", item.getId()),null);
         if(result!=-1){
             updateItemResult.setValue(new BasicResult("Item successfully updated!"));
         }else{
