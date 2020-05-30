@@ -57,19 +57,109 @@ class StatementsSQL {
 
     static final String findUserByEmail = "select email, full_name, role from users where email='%s'";
 
-    static final String findItemById = "select * from items, users, categories where items.id='%s' " +
-            "and users.email=items.itemOwnerEmail and categories.id=items.categoryId";
+    static final String findItemById = "select " +
+            "items.id as itemId, " +
+            "items.name as itemName, " +
+            "items.description as itemDescription, " +
+            "items.price as itemPrice, " +
+            "items.feeType as itemFeeType, " +
+            "items.image_path as itemImagePath, " +
+            "items.isRent as itemIsRent, " +
+            "items.isDeleted as itemIsDeleted, " +
+            "items.uploaded as itemUploaded, " +
+            "categories.id as categoryId, " +
+            "categories.name as categoryName, " +
+            "categories.description as categoryDescription, " +
+            "users.email as userEmail, " +
+            "users.full_name as userFullName " +
+            "from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and " +
+            "categories.id=items.categoryId and " +
+            "items.isDeleted=0 and " +
+            "items.id='%s'";
 
-    static final String findAllItems = "select * from items, users, categories " +
-            "where users.email=items.itemOwnerEmail and categories.id=items.categoryId";
+    static final String findItemByIdWithDeleted = "select " +
+            "items.id as itemId, " +
+            "items.name as itemName, " +
+            "items.description as itemDescription, " +
+            "items.price as itemPrice, " +
+            "items.feeType as itemFeeType, " +
+            "items.image_path as itemImagePath, " +
+            "items.isRent as itemIsRent, " +
+            "items.isDeleted as itemIsDeleted, " +
+            "items.uploaded as itemUploaded, " +
+            "categories.id as categoryId, " +
+            "categories.name as categoryName, " +
+            "categories.description as categoryDescription, " +
+            "users.email as userEmail, " +
+            "users.full_name as userFullName " +
+            "from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and " +
+            "categories.id=items.categoryId and " +
+            "items.id='%s'";
+
+    static final String findAllItems = "select " +
+            "items.id as itemId, " +
+            "items.name as itemName, " +
+            "items.description as itemDescription, " +
+            "items.price as itemPrice, " +
+            "items.feeType as itemFeeType, " +
+            "items.image_path as itemImagePath, " +
+            "items.isRent as itemIsRent, " +
+            "items.isDeleted as itemIsDeleted, " +
+            "items.uploaded as itemUploaded, " +
+            "categories.id as categoryId, " +
+            "categories.name as categoryName, " +
+            "categories.description as categoryDescription, " +
+            "users.email as userEmail, " +
+            "users.full_name as userFullName " +
+            "from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and " +
+            "categories.id=items.categoryId and " +
+            "items.isDeleted=0";
 
     static final String findAllCategories = "select * from categories";
 
-    static final String findAllItemsNotUploaded = "select * from items, users, categories " +
-            "where users.email=items.itemOwnerEmail and categories.id=items.categoryId and items.uploaded=0";
+    static final String findAllItemsNotUploaded = "select " +
+            "items.id as itemId, " +
+            "items.name as itemName, " +
+            "items.description as itemDescription, " +
+            "items.price as itemPrice, " +
+            "items.feeType as itemFeeType, " +
+            "items.image_path as itemImagePath, " +
+            "items.isRent as itemIsRent, " +
+            "items.isDeleted as itemIsDeleted, " +
+            "items.uploaded as itemUploaded, " +
+            "categories.id as categoryId, " +
+            "categories.name as categoryName, " +
+            "categories.description as categoryDescription, " +
+            "users.email as userEmail, " +
+            "users.full_name as userFullName " +
+            "from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and " +
+            "categories.id=items.categoryId and " +
+            "items.uploaded=0";
 
-    static final String findItemsByOwner = "select * from items, users, categories " +
-            "where users.email=items.itemOwnerEmail and items.categoryId=categories.id and items.itemOwnerEmail='%s'";
+    static final String findItemsByOwner = "select " +
+            "items.id as itemId, " +
+            "items.name as itemName, " +
+            "items.description as itemDescription, " +
+            "items.price as itemPrice, " +
+            "items.feeType as itemFeeType, " +
+            "items.image_path as itemImagePath, " +
+            "items.isRent as itemIsRent, " +
+            "items.isDeleted as itemIsDeleted, " +
+            "items.uploaded as itemUploaded, " +
+            "categories.id as categoryId, " +
+            "categories.name as categoryName, " +
+            "categories.description as categoryDescription, " +
+            "users.email as userEmail, " +
+            "users.full_name as userFullName " +
+            "from items, users, categories " +
+            "where users.email=items.itemOwnerEmail and " +
+            "categories.id=items.categoryId and " +
+            "items.isDeleted=0 and " +
+            "users.email='%s'";
 
     static final String findItemLendingHistory = "select * from itemLending, items, users, categories" +
             " where itemLending.itemId = items.id and items.categoryId = categoriesId" +

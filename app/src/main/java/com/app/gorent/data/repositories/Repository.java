@@ -13,9 +13,6 @@ import com.app.gorent.data.storage.sql.DataSourceSQLite;
 import com.app.gorent.data.storage.sql.SQLite;
 import com.app.gorent.data.storage.Session;
 import com.app.gorent.utils.InternetConnectivity;
-import com.app.gorent.utils.result.BasicResult;
-
-import java.util.List;
 
 public abstract class Repository {
 
@@ -29,6 +26,13 @@ public abstract class Repository {
         this.dataSourceCache = DataSourceCache.getInstance(context);
         this.dataSourceFirebase = DataSourceFirebase.getInstance(context);
         this.dataSourceSQLite = DataSourceSQLite.getInstance(context);
+        synchronizeItems();
+    }
+
+    void synchronizeItems(){
+        if(InternetConnectivity.check(context)){
+            DatabaseSynchronization.uploadUncloudedItems(getDataSourceFirebase(), getDataSourceSQLite());
+        }
     }
 
     Context getContext() {

@@ -10,6 +10,7 @@ import com.app.gorent.data.model.User;
 import com.app.gorent.data.storage.DataSourceFirebase;
 import com.app.gorent.data.storage.Session;
 import com.app.gorent.data.storage.sql.DataSourceSQLite;
+import com.app.gorent.utils.InternetConnectivity;
 import com.app.gorent.utils.result.BasicResult;
 import com.app.gorent.utils.result.ItemQueryResult;
 import com.app.gorent.utils.result.UserQueryResult;
@@ -18,30 +19,56 @@ import java.util.List;
 
 public class DatabaseSynchronization {
 
-    static void synchronize(DataSourceFirebase dataSourceFirebase, DataSourceSQLite dataSourceSQLite){
-
-    }
-
     static void downloadCloudedItems(DataSourceFirebase dataSourceFirebase,
                                      DataSourceSQLite dataSourceSQLite, List<Item> itemList){
         for(Item itemToDownload: itemList){
-            MutableLiveData<ItemQueryResult> itemQueryResultMutable = new MutableLiveData<>();
-            itemQueryResultMutable.observeForever(itemQueryResult -> {
-                if(itemQueryResult==null) return;
-                if(itemQueryResult.getItem()==null){ //resource not found
-                    itemToDownload.setUploaded(true);
-                    dataSourceSQLite.saveItem(itemToDownload, new MutableLiveData<>());
-                    String [] array = itemToDownload.getImage_path().split("/");
-                    String imageFileName = array[array.length-1];
-                    dataSourceFirebase.downloadImage(imageFileName);
-                }
-            });
-            dataSourceSQLite.getItemById(itemToDownload.getId(), itemQueryResultMutable);
+            Item itemFound = dataSourceSQLite.findItemByIdWithDeleted(itemToDownload.getId());
+            if(itemFound==null){
+                dataSourceFirebase.saveItem(itemToDownload, new MutableLiveData<>());
+            }
         }
     }
 
-    private static void synchronizeItemLending(){
+    static void uploadUncloudedItems(DataSourceFirebase dataSourceFirebase,
+                                     DataSourceSQLite dataSourceSQLite){
+        List<Item> itemList = dataSourceSQLite.checkItemsNotUploaded();
+        for(Item item:  itemList){
+            MutableLiveData<ItemQueryResult> itemQueryResultMutable  =new MutableLiveData<>();
+            itemQueryResultMutable.observeForever(itemQueryResult -> {
+                if(itemQueryResult==null) return;
+                if(itemQueryResult.getError()!=null){ //item doesn't exists. Need to be uploaded
+                    saveUncloudedItem(dataSourceFirebase, dataSourceSQLite, item);
+                }
+                if(itemQueryResult.getItem()!=null){ //item already exists. Needs to be updated
+                    updateUncloudedItem(dataSourceFirebase, dataSourceSQLite, item);
+                }
+            });
+            dataSourceFirebase.getItemById(item.getId(), itemQueryResultMutable);
+        }
+    }
 
+    private static void saveUncloudedItem(DataSourceFirebase dataSourceFirebase,
+                                          DataSourceSQLite dataSourceSQLite, Item item){
+        MutableLiveData<BasicResult> saveItemResult = new MutableLiveData<>();
+        saveItemResult.observeForever(basicResult -> {
+            if(basicResult==null) return;
+            if(basicResult.getSuccess()!=null){
+                dataSourceSQLite.itemWasUploaded(item);
+            }
+        });
+        dataSourceFirebase.saveItem(item, saveItemResult);
+    }
+
+    private static void updateUncloudedItem(DataSourceFirebase dataSourceFirebase,
+                                          DataSourceSQLite dataSourceSQLite, Item item){
+        MutableLiveData<BasicResult> uploadItemResult = new MutableLiveData<>();
+        uploadItemResult.observeForever(basicResult -> {
+            if(basicResult==null) return;
+            if(basicResult.getSuccess()!=null){
+                dataSourceSQLite.itemWasUploaded(item);
+            }
+        });
+        dataSourceFirebase.updateItem(item, uploadItemResult);
     }
 
     static void downloadUserInformation(String full_name, String email, String password,

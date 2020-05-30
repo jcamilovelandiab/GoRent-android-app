@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLite extends SQLiteOpenHelper {
     private static final String database = "GORENT";
-    private static final int VERSION = 5;
+    private static final int VERSION = 8;
 
     private String databaseStatement = StatementsSQL.tableCategories+StatementsSQL.tableUsers+
             StatementsSQL.tableItems+StatementsSQL.tableItemLending;
@@ -20,7 +20,6 @@ public class SQLite extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTables(db);
-        uploadCategories(db);
     }
 
     public void createTables(SQLiteDatabase db){
@@ -28,6 +27,7 @@ public class SQLite extends SQLiteOpenHelper {
         db.execSQL(StatementsSQL.tableUsers);
         db.execSQL(StatementsSQL.tableItems);
         db.execSQL(StatementsSQL.tableItemLending);
+        uploadCategories(db);
     }
 
     public void removeTables(SQLiteDatabase db){

@@ -145,6 +145,8 @@ public class DataSourceFirebase {
                         assert element != null;
                         if(element.getItemOwner().getEmail().equals(loggedInUser.getEmail())) continue;
                         element.setId(snapshot.getId());
+                        element.setDeleted(snapshot.getBoolean("isDeleted"));
+                        element.setRent(snapshot.getBoolean("isRent"));
                         String [] array = element.getImage_path().split("/");
                         String imageFileName = array[array.length-1];
                         new Thread(()->{
@@ -168,8 +170,14 @@ public class DataSourceFirebase {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Item item = documentSnapshot.toObject(Item.class);
-                item.setId(documentSnapshot.getId());
-                itemQueryResult.setValue(new ItemQueryResult(item));
+                if(item==null){
+                    itemQueryResult.setValue(new ItemQueryResult(R.string.error_item_not_found));
+                }else{
+                    item.setId(documentSnapshot.getId());
+                    item.setDeleted(documentSnapshot.getBoolean("isDeleted"));
+                    item.setRent(documentSnapshot.getBoolean("isRent"));
+                    itemQueryResult.setValue(new ItemQueryResult(item));
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -189,7 +197,6 @@ public class DataSourceFirebase {
 
     public void getItemsByOwner(ItemOwner itemOwner, MutableLiveData<ItemListQueryResult> itemListQueryResult){
         fireStoreDB.collection("Items")
-                .whereEqualTo("isDeleted", false)
                 .whereEqualTo("itemOwner.email", itemOwner.getEmail()).get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
@@ -200,6 +207,8 @@ public class DataSourceFirebase {
                                     Item element = snapshot.toObject(Item.class);
                                     assert element != null;
                                     element.setId(snapshot.getId());
+                                    element.setDeleted(snapshot.getBoolean("isDeleted"));
+                                    element.setRent(snapshot.getBoolean("isRent"));
                                     items.add(element);
                                 }
                             }
@@ -227,6 +236,8 @@ public class DataSourceFirebase {
                     if(element.getCategory().getName().equals(finalSearch_text) ||
                         element.getName().equals(finalSearch_text)){
                         element.setId(snapshot.getId());
+                        element.setDeleted(snapshot.getBoolean("isDeleted"));
+                        element.setRent(snapshot.getBoolean("isRent"));
                         items.add(element);
                     }
                 }
@@ -386,7 +397,10 @@ public class DataSourceFirebase {
         fireStoreDB.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
-                Item itemQuery = transaction.get(itemRef).toObject(Item.class);
+                DocumentSnapshot snapshot = transaction.get(itemRef);
+                Item itemQuery = snapshot.toObject(Item.class);
+                itemQuery.setDeleted(snapshot.getBoolean("isDeleted"));
+                itemQuery.setRent(snapshot.getBoolean("isRent"));
                 assert itemQuery != null;
                 if(!item.getImage_path().equals(itemQuery.getImage_path())){
                     new Thread(()->{
@@ -604,6 +618,8 @@ public class DataSourceFirebase {
                         Item element = snapshot.toObject(Item.class);
                         assert element != null;
                         element.setId(snapshot.getId());
+                        element.setDeleted(snapshot.getBoolean("isDeleted"));
+                        element.setRent(snapshot.getBoolean("isRent"));
                         items.add(element);
                     }
                 }

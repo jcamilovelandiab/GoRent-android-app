@@ -46,10 +46,15 @@ public class DataSourceSQLite {
                         sqlite.getDatabaseName());
         this.database = sqlite.getWritableDatabase();
         //clearTables();
+        Cursor cursor = this.database.rawQuery(StatementsSQL.findAllItemsNotUploaded, null);
+        List<Item> item = CursorUtils.cursorToItemList(cursor);
+        System.out.println(item);
     }
 
     private void clearTables(){
         this.database.execSQL("delete from items");
+        this.database.execSQL("delete from itemLending");
+        this.database.execSQL("delete from users");
     }
 
     public static DataSourceSQLite getInstance(Context context){
@@ -196,7 +201,7 @@ public class DataSourceSQLite {
         cv.put("isDeleted", 1);
         cv.put("uploaded", uploaded);
         int result = -1;
-        result = this.database.update("items", cv, "id= ?", new String[]{itemId});
+        result = this.database.update("items", cv, String.format("id='%s'", itemId), null);
         if(result!=-1){
             deleteItemResult.setValue(new BasicResult("Item successfully deleted!"));
         }else{
@@ -241,6 +246,12 @@ public class DataSourceSQLite {
         String queryStatement = String.format(StatementsSQL.findUserByEmail, email);
         Cursor cursor = database.rawQuery(queryStatement, null);
         return CursorUtils.cursorToUser(cursor);
+    }
+
+    public Item findItemByIdWithDeleted(String id){
+        String queryStatement = String.format(StatementsSQL.findItemByIdWithDeleted, id);
+        Cursor cursor = database.rawQuery(queryStatement,null);
+        return CursorUtils.cursorToItem(cursor);
     }
 
 }
