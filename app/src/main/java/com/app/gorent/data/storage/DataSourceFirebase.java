@@ -609,7 +609,9 @@ public class DataSourceFirebase {
     }
 
     public void getAllItems(MutableLiveData<ItemListQueryResult> itemListQueryResult) {
-        fireStoreDB.collection("Items").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        fireStoreDB.collection("Items")
+                .whereEqualTo("isDeleted", false)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Item> items = new ArrayList<>();
